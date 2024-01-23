@@ -14,8 +14,9 @@ class Producto extends Model
         'cat_id',
         'prod_nombre',
         'prod_descripcion',
-        'prod_sector',
-        'prod_empresa'
+        'prod_cant',
+        'prod_precioventa',
+        'prod_preciocosto'
     ];
     public function categoria (){
         return $this->belongsTo('App\Models\Categoria','cat_id');

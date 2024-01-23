@@ -8,8 +8,8 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row mt-4">
+<div class="container mt-4">
+    <div class="row">
         <div class="col-md-5">
             <div class="card">
                 <div class="card-header">
@@ -19,6 +19,7 @@
                     <form method="post" action="{{ route('categorias.create') }}">
                         @csrf
                         <div class="form-group">
+                            <label for="cat_nombre">Nombre de la categoría:</label>
                             <input type="text" class="form-control" name="cat_nombre" placeholder="Nombre de la categoría" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Agregar Categoría</button>
@@ -60,7 +61,6 @@
                                     </td>
                                 </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div>
