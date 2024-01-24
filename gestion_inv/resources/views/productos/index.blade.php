@@ -4,10 +4,10 @@
 <script src="{{asset('js/jsdelivr.js')}}"></script>
 
 <div id="viewport">
-  @include('layouts.sidebar')
+  @include('layouts.sidebar') 
 
   <!-- Content -->
-    <div id="content">
+    <div class="content mt-4" id="content">
         <div class="container">
             @if (session('success'))
                 <div class="alert alert-success">
@@ -15,7 +15,7 @@
                 </div>
             @endif
 
-            <h1 class="text-center">Listado de Productos</h1>
+            <h1 class="titulo_principal text-center">Listado de Productos</h1>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="{{ route('nuevo') }}" class="btn btn-primary">
