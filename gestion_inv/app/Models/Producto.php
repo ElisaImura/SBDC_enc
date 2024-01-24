@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Producto extends Model
 {
     use HasFactory;
-    public $table = 'productos';
-     protected $fillable = [
+
+    protected $primaryKey = 'prod_id';
+
+    protected $fillable = [
         'prod_id',
         'cat_id',
         'prod_nombre',
@@ -18,7 +20,11 @@ class Producto extends Model
         'prod_precioventa',
         'prod_preciocosto'
     ];
-    public function categoria (){
-        return $this->belongsTo('App\Models\Categoria','cat_id');
+
+    public $incrementing = false;
+
+    public function categoria()
+    {
+        return $this->belongsTo('App\Models\Categoria', 'cat_id');
     }
 }
