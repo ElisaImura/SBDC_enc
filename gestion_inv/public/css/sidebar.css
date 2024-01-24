@@ -12,7 +12,7 @@ body {
   left: 0;
   z-index: 1000;
   padding: 20px;
-  width: 280px;
+  width: 15%;
   background-color: #343a40; /* Fondo oscuro */
   color: #fff; /* Letras blancas */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -28,7 +28,7 @@ body {
 }
 
 .content {
-  margin-left: 280px;
+  margin-left: 16%;
   padding: 20px;
   transition: margin-left 0.3s;
 }
