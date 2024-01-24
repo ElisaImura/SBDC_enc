@@ -47,11 +47,14 @@
                             <td>{{ $producto->prod_precioventa ?? 'NN' }}</td>
                             <td>{{ $producto->prod_preciocosto ?? 'NN' }}</td>
                             <td style="width: 280px">
-                              <a href="{{ route('productos.destroy', ['prod_id' => $producto->prod_id]) }}"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');"
-                                class="btn btn-danger">
-                                Eliminar
-                             </a>
+                                <form action="{{ route('productos.destroy', ['prod_id' => $producto->prod_id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                        Eliminar
+                                    </button>
+                                </form>
+                                
                              
                                 <a href="{{ route('productos.edit', ['prod_id' => $producto->prod_id]) }}" class="btn btn-warning">
                                     Editar
