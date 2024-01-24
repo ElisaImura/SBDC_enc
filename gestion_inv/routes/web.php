@@ -32,9 +32,9 @@ Route::post('/categorias/create', [CategoriaController::class, 'create'])->name(
 // Productos Controller
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
 Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
-Route::get('/productos/{id}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
-Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
-Route::delete('/productos/{id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+Route::get('/productos/{prod_id}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+Route::put('/productos/{prod_id}', [ProductoController::class, 'update'])->name('productos.update');
+Route::delete('/productos/{prod_id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 Route::post('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
 Route::get('/productos/formulario',[ProductoController::class,'formulario'])->name('nuevo'); 
-Route::get('productos/show/{id}',[ProductoController::class,'show'])->name('productos.show');
+Route::get('productos/show/{prod_id}',[ProductoController::class,'show'])->name('productos.show');

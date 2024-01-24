@@ -52,19 +52,21 @@ class ProductoController extends Controller
     
 
     public function destroy($prod_id)
-    {
-        try {   
-            $producto = Producto::find($prod_id);
-            if (!$producto) {
-                return redirect()->route('productos.index')->with('error', 'Producto no encontrado');
-            }
+{
+    try {   
+        $producto = Producto::find($prod_id);
 
-            $producto->delete();
-            return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
-        } catch (\Exception $e) {
-            return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');
+        if (!$producto) {
+            return redirect()->route('productos.index')->with('error', 'Producto no encontrado');
         }
+
+        $producto->delete();
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
+    } catch (\Exception $e) {
+        return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');
     }
+}
+
     public function formulario(){
 
         $categorias = Categoria::pluck('cat_nombre','cat_id');
@@ -89,5 +91,11 @@ class ProductoController extends Controller
         $producto->save();
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
     }
+
+    public function show($prod_id)
+{
+    $producto = Producto::with('categoria')->findOrFail($prod_id);
+    return view('productos.show', compact('producto'));
+}
 
 }

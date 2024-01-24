@@ -6,49 +6,44 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div style="background-color:rgb(4, 141, 141);" class="card-header">Formulario</div>
+                    <div class="card-header">Formulario</div>
                     
                     <div class="card-body">
-                      <form  method="post" action="{{route('actualizar',['id'=>$clientes->id])}}">
+                      <form  method="post" action="{{route('productos.update',['prod_id'=>$producto->prod_id])}}">
                             @csrf <!-- Campo CSRF -->
                            
                             <div class="form-group">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" name="nombre" id="nombre" class="form-control" value="{{$clientes->nombre}}"disabled="true">
+                                <label for="prod_nombre">Nombre:</label>
+                                <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{$producto->prod_nombre}}"disabled="true">
                             </div>
 
                             <div class="form-group">
-                                <label for="apellido">Apellido:</label>
-                                <input type="text" name="apellido" id="apellido" class="form-control" value="{{$clientes->apellido}}" disabled="true">
+                                <label for="cat_id">Categoría:</label>
+                                <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ optional($producto->categoria)->cat_nombre }}"disabled="true">
+                                
+                            </div>
+                            
+                            
+
+                            <div class="form-group">
+                                <label for="prod_descripcion">Descripcion:</label>
+                                <input type="text" name="prod_descripcion" id="prod_descripcion" class="form-control" value="{{$producto->prod_descripcion}}" disabled="true">
                             </div>
 
                             <div class="form-group">
-                                <label for="edad">Edad:</label>
-                                <input type="number" name="edad" id="edad" class="form-control" value="{{$clientes->edad}}"disabled="true">
+                                <label for="prod_cant">Cantidad:</label>
+                                <input type="number" name="prod_cant" id="prod_cant" class="form-control" value="{{$producto->prod_cant}}"disabled="true">
                             </div>
 
                             <div class="form-group">
-                                <label for="ci">CI:</label>
-                                <input type="text" name="ci" id="ci" class="form-control" value="{{$clientes->ci}}"disabled="true">
+                                <label for="prod_precioventa">Precio Venta:</label>
+                                <input type="number" name="prod_precioventa" id="prod_precioventa" class="form-control" value="{{$producto->prod_precioventa}}"disabled="true">
                             </div>
 
                             <div class="form-group">
-                                <label for="correo">Correo Electrónico:</label>
-                                <input type="email" name="correo" id="correo" class="form-control" value="{{$clientes->correo}}"disabled="true">
+                                <label for="prod_preciocosto">Precio Costo:</label>
+                                <input type="number" name="prod_preciocosto" id="prod_preciocosto" class="form-control" value="{{$producto->prod_preciocosto}}"disabled="true">
                             </div>
-
-                            <div class="form-group">
-                                <label for="fecha_nac">Fecha de Nacimiento:</label>
-                                <input type="date" name="fecha_nac" id="fecha_nac" class="form-control" value="{{$clientes->fecha_nac}}"disabled="true">
-                            </div>
-
-                           <div class="form-group">
-            <label for="estado">Estado:</label>
-            <select name="estado" id="estado" class="form-control" disabled="true">
-                <option value="Activo" {{ $clientes->estado === 'Activo' ? 'selected' : '' }}>Activo</option>
-                <option value="Inactivo" {{ $clientes->estado === 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
-            </select>
-        </div>
 
                         </form>
                         <div class="form-group">
