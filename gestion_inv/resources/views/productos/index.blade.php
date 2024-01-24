@@ -17,7 +17,7 @@
             <h1 class="titulo_principal text-center">Listado de Productos</h1>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ route('nuevo') }}" class="btn btn-primary">
+                <a href="{{ route('nuevoProducto') }}" class="btn btn-primary">
                     Nuevo Producto
                 </a>
             </div>
@@ -52,15 +52,11 @@
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
                                         Eliminar
                                     </button>
+                                    <a href="{{ route('productos.edit', ['prod_id' => $producto->prod_id]) }}" class="btn btn-warning">
+                                        Editar
+                                    </a>
                                 </form>
-                                
-                             
-                                <a href="{{ route('productos.edit', ['prod_id' => $producto->prod_id]) }}" class="btn btn-warning">
-                                    Editar
-                                </a>
-                                <a href="{{ route('productos.show', ['prod_id' => $producto->prod_id]) }}" class="btn btn-info">
-                                    Ver
-                                </a>
+
                             </td>
                         </tr>
                     @endforeach

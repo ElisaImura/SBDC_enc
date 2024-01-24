@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductoController;
 
 /*
@@ -36,5 +37,15 @@ Route::get('/productos/{prod_id}/edit', [ProductoController::class, 'edit'])->na
 Route::put('/productos/{prod_id}', [ProductoController::class, 'update'])->name('productos.update');
 Route::delete('/productos/{prod_id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 Route::post('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
-Route::get('/productos/formulario',[ProductoController::class,'formulario'])->name('nuevo'); 
+Route::get('/productos/formulario',[ProductoController::class,'formulario'])->name('nuevoProducto'); 
 Route::get('productos/show/{prod_id}',[ProductoController::class,'show'])->name('productos.show');
+
+// Cliente Controller
+Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
+Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
+Route::get('/clientes/{cli_id}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
+Route::put('/clientes/{cli_id}', [ClienteController::class, 'update'])->name('clientes.update');
+Route::delete('/clientes/{cli_id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
+Route::post('/clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
+Route::get('/clientes/formulario',[ClienteController::class,'formulario'])->name('nuevoCliente'); 
+Route::get('clientes/show/{cli_id}',[ClienteController::class,'show'])->name('clientes.show');

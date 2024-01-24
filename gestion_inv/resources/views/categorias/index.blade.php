@@ -52,9 +52,7 @@
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ $cat->cat_nombre }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('categorias.edit', $cat->cat_id) }}" class="btn btn-warning btn-sm" title="Editar">
-                                                    <span class="glyphicon glyphicon-edit"></span> Editar
-                                                </a>
+
                                                 
                                                 <form action="{{ route('categorias.destroy', $cat->cat_id) }}" method="post" style="display: inline;">
                                                     @csrf
@@ -62,6 +60,9 @@
                                                     <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro?')">
                                                         <span class="glyphicon glyphicon-trash"></span> Eliminar
                                                     </button>
+                                                    <a href="{{ route('categorias.edit', $cat->cat_id) }}" class="btn btn-warning btn-sm" title="Editar">
+                                                        <span class="glyphicon glyphicon-edit"></span> Editar
+                                                    </a>
                                                 </form>
                                             </td>
                                         </tr>
