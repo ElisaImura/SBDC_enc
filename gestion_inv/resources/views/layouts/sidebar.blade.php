@@ -1,9 +1,3 @@
-<link rel="stylesheet" type="text/css" href="{{asset('css/estilos.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('css/sidebar.css')}}">
-<script src="{{asset('js/jquery.js')}}"></script>
-<script src="{{asset('js/popper.js')}}"></script>
-<script src="{{asset('js/jsdelivr.js')}}"></script>
-
 <div class="sidebar">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">

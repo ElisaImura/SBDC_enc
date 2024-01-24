@@ -7,8 +7,7 @@ body {
 
 .sidebar {
   position: fixed;
-  top: 0;
-  bottom: 0;
+  height: 100%;
   left: 0;
   z-index: 1000;
   padding: 20px;
@@ -28,6 +27,7 @@ body {
 }
 
 .content {
+  width: 84%;
   margin-left: 16%;
   padding: 20px;
   transition: margin-left 0.3s;
