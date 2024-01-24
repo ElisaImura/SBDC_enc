@@ -1,7 +1,7 @@
 <div class="sidebar">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">
-        <a href="{{ route('categorias.index') }}" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="{{ route('clientes.index') }}" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Clientes
         </a>        
       </li>
