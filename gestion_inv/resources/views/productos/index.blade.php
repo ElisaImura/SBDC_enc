@@ -1,14 +1,13 @@
-<link rel="stylesheet" type="text/css" href="{{asset('css/estilos.css')}}">
-<script src="{{asset('js/jquery.js')}}"></script>
-<script src="{{asset('js/popper.js')}}"></script>
-<script src="{{asset('js/jsdelivr.js')}}"></script>
+@include('layouts.head') 
+
+@include('layouts.navbar') 
 
 <div id="viewport">
   @include('layouts.sidebar') 
 
   <!-- Content -->
-    <div class="content mt-4" id="content">
-        <div class="container">
+    <div class="content" id="content">
+        <div class="container mt-4">
             @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}

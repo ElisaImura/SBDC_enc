@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Categorías</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Lista de Categorías</title>    
 </head>
+@include('layouts.head') 
 <body>
-
+  @include('layouts.navbar') 
+  
 <div id="viewport">
   @include('layouts.sidebar')
 
-    <div class="content container mt-4">
-        <h1 class="titulo_principal text-center">Categorías</h1>
+    <div class="content">
+        <div class="container">
+            <h1 class="titulo_principal text-center">Categorías</h1>
 
-        <div class="row">
-            <div class="col-md-5">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Agregar Categoría</strong>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{{ route('categorias.create') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="cat_nombre">Nombre de la categoría:</label>
-                                <input type="text" class="form-control" name="cat_nombre" placeholder="Nombre de la categoría" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Agregar Categoría</button>
-                        </form>
+            <div class="mt-4 row">
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Agregar Categoría</strong>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ route('categorias.create') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="cat_nombre">Nombre de la categoría:</label>
+                                    <input type="text" class="form-control" name="cat_nombre" placeholder="Nombre de la categoría" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Agregar Categoría</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-7">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Lista de Categorías</strong>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" style="width: 50px;">#</th>
-                                    <th>Categorías</th>
-                                    <th class="text-center" style="width: 100px;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($categorias as $cat)
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Lista de Categorías</strong>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>{{ $cat->cat_nombre }}</td>
-                                        <td class="text-center">
-                                            <a href="{{ route('categorias.edit', $cat->cat_id) }}" class="btn btn-warning btn-sm" title="Editar">
-                                                <span class="glyphicon glyphicon-edit"></span> Editar
-                                            </a>
-                                            
-                                            <form action="{{ route('categorias.destroy', $cat->cat_id) }}" method="post" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro?')">
-                                                    <span class="glyphicon glyphicon-trash"></span> Eliminar
-                                                </button>
-                                            </form>
-                                        </td>
+                                        <th class="text-center" style="width: 50px;">#</th>
+                                        <th>Categorías</th>
+                                        <th class="text-center" style="width: 100px;">Acciones</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($categorias as $cat)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $cat->cat_nombre }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ route('categorias.edit', $cat->cat_id) }}" class="btn btn-warning btn-sm" title="Editar">
+                                                    <span class="glyphicon glyphicon-edit"></span> Editar
+                                                </a>
+                                                
+                                                <form action="{{ route('categorias.destroy', $cat->cat_id) }}" method="post" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro?')">
+                                                        <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
