@@ -1,43 +1,52 @@
 <div class="sidebar">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">
+<<<<<<< HEAD
+        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+=======
         <a href="{{ route('clientes.index') }}" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+>>>>>>> af53b54411eaa127ae17dd852619e07be6ce53e6
           Clientes
         </a>        
       </li>
       <li class="mb-1">
-        <a href="{{ route('categorias.index') }}" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+          Proveedores
+        </a>        
+      </li>
+      <li class="mb-1">
+        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Categorías
         </a>        
       </li>
       <li class="mb-1">
-        <a href="{{ route('productos.index') }}" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="{{ route('productos.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Productos
         </a>
       </li>
       <li class="mb-1">
-        <a href="/" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="/" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Ventas
         </a>
       </li>
       <li class="mb-1">
-        <a href="/" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="/" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Reportes
         </a>
       </li>
       <li class="mb-1">
-        <a href="/" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="/" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Presupuestos
         </a>
       </li>
       <li class="mb-1">
-        <a href="/" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="/" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Media
         </a>
       </li>
-      <li class="border-top my-3"></li>
+      <li class="line my-3"></li>
       <li class="mb-1">
-        <a href="/" class="btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="/" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Cuenta
         </a>
       </li>
