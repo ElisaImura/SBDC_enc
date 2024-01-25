@@ -34,12 +34,7 @@ nav{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.sidebar a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.sidebar a:hover {
+  @@ -26,11 +43,12 @@ body {
   color: #007bff;
 }
 
@@ -52,12 +47,7 @@ nav{
 }
 
 @media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-
-  .content {
-    margin-left: 0;
+  @@ -43,6 +61,53 @@ body {
   }
 }
 
