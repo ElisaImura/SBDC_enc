@@ -38,7 +38,6 @@ Route::put('/productos/{prod_id}', [ProductoController::class, 'update'])->name(
 Route::delete('/productos/{prod_id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 Route::post('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
 Route::get('/productos/formulario',[ProductoController::class,'formulario'])->name('nuevoProducto'); 
-Route::get('productos/show/{prod_id}',[ProductoController::class,'show'])->name('productos.show');
 
 // Cliente Controller
 Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
@@ -48,4 +47,3 @@ Route::put('/clientes/{cli_id}', [ClienteController::class, 'update'])->name('cl
 Route::delete('/clientes/{cli_id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
 Route::post('/clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
 Route::get('/clientes/formulario',[ClienteController::class,'formulario'])->name('nuevoCliente'); 
-Route::get('clientes/show/{cli_id}',[ClienteController::class,'show'])->name('clientes.show');

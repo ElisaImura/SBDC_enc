@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
-    public $table = 'clientes';
+    protected $primaryKey = 'cli_id';
      protected $fillable = [
         'cli_id',
         'cli_nombre',
