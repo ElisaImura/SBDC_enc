@@ -13,7 +13,7 @@
 
     <div id="main-container">
         @include('layouts.sidebar')
-    
+
         <div class="content">
             <div id="form" class="row justify-content-center">
                 <div class="col-md-8">
@@ -57,7 +57,7 @@
                                     <label for="prod_preciocosto">Precio Compra:</label>
                                     <input type="number" name="prod_preciocosto" id="prod_preciocosto" class="form-control" value="{{old('prod_preciocosto')}}">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
