@@ -32,7 +32,7 @@
 
                             <div class="form-group">
                                 <label for="cli_ruc">RUC:</label>
-                                <input type="number" name="cli_ruc" id="cli_ruc" class="form-control" value="{{old('cli_ruc')}}">
+                                <input type="text" name="cli_ruc" id="cli_ruc" class="form-control" value="{{old('cli_ruc')}}">
                             </div>
 
                             <div class="form-group">
