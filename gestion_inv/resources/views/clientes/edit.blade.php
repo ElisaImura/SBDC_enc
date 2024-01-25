@@ -34,7 +34,7 @@
 
                         <div class="form-group">
                             <label for="cli_ruc">RUC:</label>
-                            <input type="number" name="cli_ruc" id="cli_ruc" class="form-control" value="{{$cliente->cli_ruc}}" required>
+                            <input type="text" name="cli_ruc" id="cli_ruc" class="form-control" value="{{$cliente->cli_ruc}}" required>
                         </div>
 
                         <div class="form-group">

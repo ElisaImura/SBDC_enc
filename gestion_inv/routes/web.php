@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProveedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,12 @@ Route::put('/clientes/{cli_id}', [ClienteController::class, 'update'])->name('cl
 Route::delete('/clientes/{cli_id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
 Route::post('/clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
 Route::get('/clientes/formulario',[ClienteController::class,'formulario'])->name('nuevoCliente'); 
+
+// Proveedor Controller
+Route::get('/proveedores', [ProveedorController::class, 'index'])->name('proveedores.index');
+Route::post('/proveedores', [ProveedorController::class, 'store'])->name('proveedores.store');
+Route::get('/proveedores/{prove_id}/edit', [ProveedorController::class, 'edit'])->name('proveedores.edit');
+Route::put('/proveedores/{prove_id}', [ProveedorController::class, 'update'])->name('proveedores.update');
+Route::delete('/proveedores/{prove_id}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy');
+Route::post('/proveedores/create', [ProveedorController::class, 'create'])->name('proveedores.create');
+Route::get('/proveedores/formulario',[ProveedorController::class,'formulario'])->name('nuevoProveedor'); 
