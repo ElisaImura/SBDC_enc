@@ -41,9 +41,28 @@
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
+<<<<<<< HEAD
                                             <th class="text-center" style="width: 50px;">#</th>
                                             <th>Categorías</th>
                                             <th class="text-center" style="width: 100px;">Acciones</th>
+=======
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $cat->cat_nombre }}</td>
+                                            <td class="text-center">
+
+                                                
+                                                <form action="{{ route('categorias.destroy', $cat->cat_id) }}" method="post" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro?')">
+                                                        <span class="glyphicon glyphicon-trash"></span> Eliminar
+                                                    </button>
+                                                    <a href="{{ route('categorias.edit', $cat->cat_id) }}" class="btn btn-warning btn-sm" title="Editar">
+                                                        <span class="glyphicon glyphicon-edit"></span> Editar
+                                                    </a>
+                                                </form>
+                                            </td>
+>>>>>>> af53b54411eaa127ae17dd852619e07be6ce53e6
                                         </tr>
                                     </thead>
                                     <tbody>
