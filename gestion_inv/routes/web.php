@@ -64,3 +64,5 @@ Route::get('/proveedores/formulario',[ProveedorController::class,'formulario'])-
 //Ventas detalle Controller
 Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
 Route::post('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])->name('tablatemp.create');
+Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->name('DetalleTemp.create');

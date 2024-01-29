@@ -5,21 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Venta_detalle extends Model
+class DetalleTemp extends Model
 {
     use HasFactory;
-    public $table = 'compra_detalles';
+    public $table = 'temp_venta_detalles';
      protected $fillable = [
-        'dventa_id',
-        'venta_id',   
-        'prod_id',     
-        'compra_id',
+        'dventa_id',  
+        'prod_id',  
         'dventa_precio',
         'dventa_cantidad',
     ];
-    public function venta (){
-        return $this->belongsTo('App\Models\venta','venta_id');
-    }
     public function producto (){
         return $this->belongsTo('App\Models\Producto','prod_id');
     }
