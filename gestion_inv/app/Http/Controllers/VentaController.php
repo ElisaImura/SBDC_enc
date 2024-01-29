@@ -1,28 +1,90 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
-use App\Models\Venta;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use App\Models\Venta_detalle;
+use App\Models\Cliente;
+use App\Models\DetalleTemp;
+use App\Models\Venta;
+use App\Models\Producto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VentaController extends Controller
 {
     public function index()
     {
-        $ventas_detalle = Venta_detalle::all(); // Obtén todas las categorías
-        return view('ventas.index', compact('ventas_detalle'));
+        $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
+        $ventas = Venta::all(); // Obtén todas las categorías
+        $productos = Producto::all(); // Obtén todos los productos
+        $clientes = Cliente::pluck('cli_nombre','cli_id');
+        return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas'));
     }
-    
-    
-    public function create(Request $request)
+
+    public function createTempTable()
     {
+        // Verifica si la tabla temporal ya existe y, si es así, elimínala
+        if (Schema::hasTable('temp_venta_detalles')) {
+            Schema::dropIfExists('temp_venta_detalles');
+        }
+    
+        // Crea la nueva tabla temporal
+        Schema::create('temp_venta_detalles', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('prod_id');
+            $table->decimal('dventa_precio');
+            $table->integer('dventa_cantidad');           
+
+
+            $table->foreign('prod_id')->references('prod_id')->on('productos');
+    
+            $table->timestamps();
+        });
+    
+    
+        return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
+    }
+
+    
+    public function createDetalleTemp(Request $request)
+    {
+        // Verifica si la tabla temporal existe
+        if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
+            // La tabla no existe, crea la tabla temporal
+            $this->createTempTable();
+            return 'Tabla temporal creada exitosamente';
+        }
+
+        // Procede a insertar los datos en la tabla temporal sin un modelo
+        DetalleTemp::create([
+            'prod_id' => $request->input('prod_id'),
+            'dventa_precio' => $request->input('dventa_precio'),
+            'dventa_cantidad' => $request->input('dventa_cantidad'),
+        ]);
+        return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
+    }
+
+    public function createVenta(Request $request)
+    {
+
+        Venta::create([
+            'cli_id' => $request->input('cli_id'),
+            'venta_fecha' => Carbon::now(), 
+        ]);
+    }
+
+    public function createDetalle(Request $request)
+    {
+
         $rules = [
             'venta_id' => 'required',
             'prod_id' => 'required',
             'dventa_precio' => 'required',
             'dventa_cantidad' => 'required',
-            'dventa_iva' => 'required',
         ];
     
         $mensaje = [
@@ -31,59 +93,12 @@ class VentaController extends Controller
     
         $this->validate($request, $rules, $mensaje);
     
-        Venta_detalle::create([
-            'venta_id' => $request->input('venta_id'),
-            'prod_id' => $request->input('prod_id'),
-            'dventa_precio' => $request->input('dventa_precio'),
-            'dventa_cantidad' => $request->input('dventa_cantidad'),
-            'dventa_iva' => $request->input('dventa_iva'),
-        ]);
-    
+            Venta_detalle::create([
+                'venta_id' => $request->input('venta_id'),
+                'prod_id' => $request->input('prod_id'),
+                'dventa_precio' => $request->input('dventa_precio'),
+                'dventa_cantidad' => $request->input('dventa_cantidad'),
+            ]);
         return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
     }
-    
-    
-        /*public function destroy($cat_id)
-        {
-            try {
-                $categoria = Categoria::find($cat_id);
-                if (!$categoria) {
-                    return redirect()->route('categorias.index')->with('error', 'Categoría no encontrada');
-                }
-    
-                $categoria->delete();
-                return redirect()->route('categorias.index')->with('success', 'Categoría eliminada correctamente');
-            } catch (\Exception $e) {
-                return redirect()->route('categorias.index')->with('error', 'Categoría no se puede eliminar');
-            }
-        }
-    
-        public function edit($cat_id)
-        {
-            $categoria = Categoria::find($cat_id);
-            return view('categorias.edit', compact('categoria'));
-        }
-    
-        public function update(Request $request, $cat_id)
-        {
-            $categoria = Categoria::find($cat_id);
-            $categoria->cat_nombre = $request->input('cat_nombre');
-    
-            $categoria->save();
-            return redirect()->route('categorias.index')->with('success', 'Categoría actualizada correctamente');
-        }
-    
-        public function show($cat_id)
-        {
-            $categoria = Categoria::find($cat_id);
-            return view('categorias.ver', compact('categoria'));
-        }
-    
-        public function buscar(Request $request)
-        {
-            $buscar = $request->input('buscar');
-            $categorias = Categoria::where('cat_nombre', 'like', "%$buscar%")->paginate(2);
-            $vacio = $categorias->isEmpty();
-            return view('categorias.index', compact('categorias', 'buscar', 'vacio'));
-        }*/
 }
