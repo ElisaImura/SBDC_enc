@@ -1,5 +1,5 @@
 <head>
-    <title>Lista de Productos</title>
+    <title>Easy System - Lista de Productos</title>
     @include('layouts.head')   
 </head> 
 
@@ -11,7 +11,7 @@
       @include('layouts.sidebar') 
 
       <!-- Content -->
-      <div class="content" id="content">
+      <div class="content">
             <div class="container mt-4">
                 @if (session('success'))
                     <div class="alert alert-success">
