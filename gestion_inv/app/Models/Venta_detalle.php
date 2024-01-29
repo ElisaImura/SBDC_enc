@@ -25,3 +25,4 @@ class Venta_detalle extends Model
         return $this->belongsTo('App\Models\Producto','prod_id');
     }
 }
+
