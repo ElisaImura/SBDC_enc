@@ -1,12 +1,12 @@
 <div class="sidebar">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">
-        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="{{ route('clientes.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Clientes
         </a>        
       </li>
       <li class="mb-1">
-        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+        <a href="{{ route('proveedores.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
           Proveedores
         </a>        
       </li>

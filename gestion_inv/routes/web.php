@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Venta_detalle;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +59,8 @@ Route::put('/proveedores/{prove_id}', [ProveedorController::class, 'update'])->n
 Route::delete('/proveedores/{prove_id}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy');
 Route::post('/proveedores/create', [ProveedorController::class, 'create'])->name('proveedores.create');
 Route::get('/proveedores/formulario',[ProveedorController::class,'formulario'])->name('nuevoProveedor'); 
+
+
+//Ventas detalle Controller
+Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
+Route::post('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');

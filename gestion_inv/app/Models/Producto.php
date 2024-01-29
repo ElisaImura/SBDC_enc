@@ -27,4 +27,9 @@ class Producto extends Model
     {
         return $this->belongsTo('App\Models\Categoria', 'cat_id');
     }
+
+    public function detallesVentas()
+    {
+        return $this->hasMany(Venta_detalle::class);
+    }
 }
