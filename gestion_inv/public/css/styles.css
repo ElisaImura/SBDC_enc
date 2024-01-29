@@ -1,3 +1,4 @@
+/* Contenido principal */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -5,13 +6,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
   background-color: #fafafa;
-}
-
-nav{
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  background-color: white;
-  height: 45px;
 }
 
 #main-container {
@@ -22,22 +16,6 @@ nav{
   padding-top: 45px;
 }
 
-.sidebar {
-  flex: 0 0 280px;
-  position: fixed;
-  height: 100%;
-  left: 0;
-  z-index: 1000;
-  padding: 20px;
-  width: 15%;
-  background-color: #EDEDED;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-  @@ -26,11 +43,12 @@ body {
-  color: #007bff;
-}
-
 .content { 
   width: 84%;
   margin-left: 16%;
@@ -46,40 +24,14 @@ nav{
   flex: 1;
 }
 
-@media (max-width: 768px) {
-  @@ -43,6 +61,53 @@ body {
-  }
-}
-
 .titulo_principal {
   margin-bottom: 30px;
 }
 
-.custom-footer {
-  background-color: white;
-  color: #40454a;
-  width: 100%;
-  padding: 20px 0;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
 
-#redes{
-  right: 0;
-  margin-left: 30%;
-}
 
-.bi{
-  margin: 5px;
-}
 
-.line{
-  border-top: 1px solid #40454a!important;
-}
-
+/* Contenido de formularios */
 #form{
   padding: 30px;
   margin-bottom: 74px;
@@ -101,3 +53,73 @@ nav{
 .table td, .table th {
   vertical-align: middle!important;
 }
+
+#aggCat{
+  margin-bottom: 30px;
+}
+
+/*Iconos*/
+.bi{
+  margin: 5px;
+}
+
+
+
+
+/* NavBar */
+nav{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  background-color: white;
+  height: 45px;
+}
+
+
+
+/* Sidebar */
+.sidebar {
+  overflow: hidden;
+  flex: 0 0 280px;
+  position: fixed;
+  height: 100%;
+  left: 0;
+  z-index: 1000;
+  padding: 20px;
+  width: 15%;
+  background-color: #EDEDED;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+  @@ -26,11 +43,12 @@ body {
+  color: #007bff;
+}
+
+.sidebar a{
+  padding: 6px 0;
+}
+
+.line{
+  border-top: 1px solid #40454a!important;
+}
+
+
+
+
+/* Footer */
+.custom-footer {
+  background-color: white;
+  color: #40454a;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#poli{
+  right: 0;
+  margin-left: 30%;
+}
+

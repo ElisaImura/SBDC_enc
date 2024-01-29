@@ -1,5 +1,5 @@
 <head>
-    <title>Lista de Categorías</title>
+    <title>Easy System - Lista de Categorías</title>
     @include('layouts.head')   
 </head> 
 
@@ -15,7 +15,7 @@
                 <h1 class="titulo_principal text-center">Categorías</h1>
 
                 <div class="mt-4 row">
-                    <div class="col-md-5">
+                    <div id="aggCat" class="col-md-5">
                         <div class="card">
                             <div class="card-header">
                                 <strong>Agregar Categoría</strong>
