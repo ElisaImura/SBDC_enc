@@ -22,7 +22,7 @@
                 <h1 class="titulo_principal text-center">Listado de Productos</h1>
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a href="{{route('productos.create')}}" class="btn btn-primary" method="POST">
+                    <a href="{{route('productos.create')}}" class="btn btn-primary">
                         Agregar Producto
                     </a>
                 </div>
