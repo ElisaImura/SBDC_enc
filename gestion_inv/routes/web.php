@@ -68,3 +68,11 @@ Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])
 Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->name('DetalleTemp.create');
 Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
 Route::get('/ventas/{temp_id}/edit', [ProveedorController::class, 'edit'])->name('ventas.edit');
+
+// Usuario Controller
+Route::get('/cuenta', [UsuarioController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/{prod_id}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+Route::put('/usuarios/{prod_id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+Route::delete('/usuarios/{prod_id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+Route::post('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');
+Route::get('/usuarios/formulario',[UsuarioController::class,'formulario'])->name('nuevoUsuario');
