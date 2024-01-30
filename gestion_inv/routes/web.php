@@ -66,3 +66,5 @@ Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
 Route::post('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
 Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])->name('tablatemp.create');
 Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->name('DetalleTemp.create');
+Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
+Route::get('/ventas/{temp_id}/edit', [ProveedorController::class, 'edit'])->name('ventas.edit');
