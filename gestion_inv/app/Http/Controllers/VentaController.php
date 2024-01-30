@@ -113,7 +113,6 @@ class VentaController extends Controller
 
     public function destroy($temp_id)
     {
-        try {
             $temp_venta_detalles = DetalleTemp::find($temp_id);
             if (!$temp_venta_detalles) {
                 return redirect()->route('ventas.index')->with('error', 'Venta no encontrada');
@@ -121,8 +120,24 @@ class VentaController extends Controller
 
             $temp_venta_detalles->delete();
             return redirect()->route('ventas.index')->with('success', 'Venta eliminada correctamente');
-        } catch (\Exception $e) {
-            return redirect()->route('ventas.index')->with('error', 'Venta no se puede eliminar');
-        }
+
+    }
+
+    public function edit($temp_id)
+    {
+        $temp_venta_detalles = DetalleTemp::find($temp_id);
+        return view('ventas.edit', compact('temp_venta_detalles'));
+    }
+    
+    public function update(Request $request, $temp_id)
+    {
+        $temp_venta_detalles = DetalleTemp::find($temp_id);
+        $temp_venta_detalles->prod_id = $request->input('prod_id');
+        $temp_venta_detalles->dventa_cantidad = $request->input('dventa_cantidad');
+        $temp_venta_detalles->dventa_precio = $request->input('dventa_precio');
+
+
+        $temp_venta_detalles->save();
+        return redirect()->route('ventas.index')->with('success', 'Venta actualizada correctamente');
     }
 }
