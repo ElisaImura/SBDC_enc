@@ -62,7 +62,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Usuario::class,
         ],
 
         // 'users' => [
@@ -91,13 +91,14 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
+        'usuarios' => [
+            'provider' => 'usuarios', // Nombre del proveedor que coincide con la configuración del guardia en config/auth.php
+            'table' => 'password_reset_tokens_usuarios', // Nombre de la tabla para los tokens de reinicio de contraseña
             'expire' => 60,
             'throttle' => 60,
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------
