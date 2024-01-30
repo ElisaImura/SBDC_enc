@@ -18,11 +18,21 @@ class VentaController extends Controller
 {
     public function index()
     {
-        $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
-        $ventas = Venta::all(); // Obtén todas las categorías
-        $productos = Producto::all(); // Obtén todos los productos
-        $clientes = Cliente::pluck('cli_nombre','cli_id');
-        return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas'));
+        if (Schema::hasTable('temp_venta_detalles')) {
+            $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
+            $ventas = Venta::all(); // Obtén todas las categorías
+            $productos = Producto::all(); // Obtén todos los productos
+            $clientes = Cliente::pluck('cli_nombre','cli_id');
+            $temp_venta_detalles = DetalleTemp::all();
+            return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas', 'temp_venta_detalles'));
+        }else{
+            $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
+            $ventas = Venta::all(); // Obtén todas las categorías
+            $productos = Producto::all(); // Obtén todos los productos
+            $clientes = Cliente::pluck('cli_nombre','cli_id');
+            return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas'));
+        }
+        
     }
 
     public function createTempTable()
@@ -34,9 +44,9 @@ class VentaController extends Controller
     
         // Crea la nueva tabla temporal
         Schema::create('temp_venta_detalles', function (Blueprint $table) {
-            $table->id();
+            $table->id('temp_id');
             $table->unsignedBigInteger('prod_id');
-            $table->decimal('dventa_precio');
+            $table->integer('dventa_precio');
             $table->integer('dventa_cantidad');           
 
 
@@ -56,7 +66,6 @@ class VentaController extends Controller
         if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
             // La tabla no existe, crea la tabla temporal
             $this->createTempTable();
-            return 'Tabla temporal creada exitosamente';
         }
 
         // Procede a insertar los datos en la tabla temporal sin un modelo
@@ -100,5 +109,20 @@ class VentaController extends Controller
                 'dventa_cantidad' => $request->input('dventa_cantidad'),
             ]);
         return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
+    }
+
+    public function destroy($temp_id)
+    {
+        try {
+            $temp_venta_detalles = DetalleTemp::find($temp_id);
+            if (!$temp_venta_detalles) {
+                return redirect()->route('ventas.index')->with('error', 'Venta no encontrada');
+            }
+
+            $temp_venta_detalles->delete();
+            return redirect()->route('ventas.index')->with('success', 'Venta eliminada correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('ventas.index')->with('error', 'Venta no se puede eliminar');
+        }
     }
 }
