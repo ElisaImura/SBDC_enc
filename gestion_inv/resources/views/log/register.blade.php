@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Login</title>
+    <title>Easy System - Registro</title>
     @include('layouts.head')   
 </head> 
 
@@ -15,10 +15,10 @@
                 <div class="col-md-8">
 
                     <div class="card">
-                        <div class="card-header">Login</div>
+                        <div class="card-header">Registro</div>
 
                         <div class="card-body">
-                            <form method="POST" action="{{route('inicia-sesion') }}">
+                            <form method="POST" action="{{route('validar-registro') }}">
                                 @csrf <!-- Campo CSRF -->
                                 <div class="form-group">
                                     <label for="userInput">Nombre:</label>
@@ -31,7 +31,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+                                    <button type="submit" class="btn btn-primary">Registrarse</button>
                                 </div>
                             </form>
                         </div>
