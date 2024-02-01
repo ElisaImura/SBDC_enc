@@ -9,6 +9,7 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\V
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +71,6 @@ Route::get('/proveedores/formulario',[ProveedorController::class,'formulario'])-
 
 
 //Ventas detalle Controller
-<<<<<<< HEAD
 Route::get('/ventas', [VentaController::class, 'index'])->middleware('auth')->name('ventas.index');
 Route::post('/ventas/create', [VentaController::class, 'create'])->middleware('auth')->name('ventas.create');
 Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
@@ -78,13 +78,3 @@ Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp
 Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->middleware('auth')->name('ventas.destroy');
 Route::get('/ventas/{temp_id}/edit', [VentaController::class, 'edit'])->middleware('auth')->name('ventas.edit');
 Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obtenerPrecioProducto']);
-=======
-Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
-Route::post('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
-Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])->name('tablatemp.create');
-Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->name('DetalleTemp.create');
-Route::get('/ventas/{temp_id}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
-Route::put('/ventas/{temp_id}', [VentaController::class, 'update'])->name('ventas.update');
-Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
->>>>>>> 6952c1ef57ee2535143452c8d715d78234d64768
-

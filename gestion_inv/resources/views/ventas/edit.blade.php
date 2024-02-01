@@ -24,7 +24,6 @@
                                     <div class="form-group">
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="form-control">
-<<<<<<< HEAD
                                             @foreach($productos as $producto)
                                                 <option value="{{ $producto->prod_id }}" {{ $producto->prod_id == $temp_venta_detalles->prod_id ? 'selected' : '' }}>
                                                     {{ $producto->prod_nombre }}
@@ -33,13 +32,11 @@
                                         </select>
                                     </div>
                                     
-=======
                                             <option value="{{ optional($temp_venta_detalles->prod_id)->prod_id }}" selected>{{ optional($temp_venta_detalles->producto)->prod_nombre }}</option>
                                             <!-- Aquí deberías tener opciones para todas las categorías disponibles -->
                                         </select>
                                     </div>
 
->>>>>>> 6952c1ef57ee2535143452c8d715d78234d64768
                                     <div class="form-group">
                                         <label for="dventa_cantidad">Cantidad:</label>
                                         <input type="number" name="dventa_cantidad" id="dventa_cantidad" class="form-control" value="{{ $temp_venta_detalles->dventa_cantidad }}">

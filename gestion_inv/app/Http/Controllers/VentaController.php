@@ -125,15 +125,11 @@ class VentaController extends Controller
 
     public function edit($temp_id)
     {
-<<<<<<< HEAD
-
         $temp_venta_detalles = DetalleTemp::find($temp_id);
         $productos = Producto::all();
         return view('ventas.edit', compact('temp_venta_detalles','productos'));
-=======
         $temp_venta_detalles = DetalleTemp::find($temp_id);
         return view('ventas.edit', compact('temp_venta_detalles'));
->>>>>>> 6952c1ef57ee2535143452c8d715d78234d64768
     }
     
     public function update(Request $request, $temp_id)
@@ -146,7 +142,6 @@ class VentaController extends Controller
 
         $temp_venta_detalles->save();
         return redirect()->route('ventas.index')->with('success', 'Venta actualizada correctamente');
-<<<<<<< HEAD
     }
 
     public function obtenerPrecioProducto($prod_id)
@@ -158,8 +153,6 @@ class VentaController extends Controller
         return response()->json(['precio' => $producto->prod_precioventa], 200);
     } else {
         return response()->json(['error' => 'Producto no encontrado o precio no disponible'], 404);
-=======
->>>>>>> 6952c1ef57ee2535143452c8d715d78234d64768
     }
 }
 
