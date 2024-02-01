@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Venta_detalle extends Model
 {
     use HasFactory;
+
     public $table = 'compra_detalles';
      protected $fillable = [
         'dventa_id',
