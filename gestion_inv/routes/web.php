@@ -9,7 +9,6 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\V
 
 /*
 |--------------------------------------------------------------------------
