@@ -25,17 +25,13 @@
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="form-control">
                                             @foreach($productos as $producto)
-                                                <option value="{{ $producto->prod_id }}" {{ $producto->prod_id == $temp_venta_detalles->prod_id ? 'selected' : '' }}>
+                                                <option value="{{ $producto->prod_id }}" {{ $producto->prod_id == optional($temp_venta_detalles->producto)->prod_id ? 'selected' : '' }}>
                                                     {{ $producto->prod_nombre }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     
-                                            <option value="{{ optional($temp_venta_detalles->prod_id)->prod_id }}" selected>{{ optional($temp_venta_detalles->producto)->prod_nombre }}</option>
-                                            <!-- Aquí deberías tener opciones para todas las categorías disponibles -->
-                                        </select>
-                                    </div>
 
                                     <div class="form-group">
                                         <label for="dventa_cantidad">Cantidad:</label>

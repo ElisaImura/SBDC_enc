@@ -128,8 +128,6 @@ class VentaController extends Controller
         $temp_venta_detalles = DetalleTemp::find($temp_id);
         $productos = Producto::all();
         return view('ventas.edit', compact('temp_venta_detalles','productos'));
-        $temp_venta_detalles = DetalleTemp::find($temp_id);
-        return view('ventas.edit', compact('temp_venta_detalles'));
     }
     
     public function update(Request $request, $temp_id)
