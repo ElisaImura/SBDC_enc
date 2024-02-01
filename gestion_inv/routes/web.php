@@ -76,4 +76,5 @@ Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])
 Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTemp.create');
 Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->middleware('auth')->name('ventas.destroy');
 Route::get('/ventas/{temp_id}/edit', [VentaController::class, 'edit'])->middleware('auth')->name('ventas.edit');
+Route::put('/ventas/{temp_id}', [VentaController::class, 'update'])->middleware('auth')->name('ventas.update');
 Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obtenerPrecioProducto']);
