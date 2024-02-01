@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
     <title>Ventas</title>    
+
 </head>
 @include('layouts.head') 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
   @include('layouts.navbar') 
   
 <div id="viewport">
@@ -37,16 +40,66 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                
+
                                 
                                 <div class="form-group">
                                     <label for="dventa_cant">Cantidad</label>
                                     <input type="number" class="form-control" name="dventa_cantidad" placeholder="Cantidad" required>
                                 </div>
+                                <input type="hidden" name="precio" id="precio" value="">
                                 <div class="form-group">
                                     <label for="dventa_precio">Precio</label>
-                                    <input type="number" class="form-control" name="dventa_precio" placeholder="Precio" required>
+                                    <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" placeholder="Precio" required>
                                 </div>
+                                
+                                <!-- Mostrar el precio seleccionado en el input de dventa_precio -->
+                                <div>
+                                    <p>Precio seleccionado: <span id="precioSeleccionado"></span></p>
+                                </div>
+
+                                <script>
+                                    $(document).ready(function () {
+                                        // Función para obtener el precio del producto seleccionado
+                                        function obtenerPrecioProducto(prod_id) {
+                                            $.ajax({
+                                                url: url,
+                                                type: 'GET',
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                    if (response.precio !== null && response.precio !== undefined) {
+                                                        // El precio es válido, haz algo con él
+                                                        console.log("Precio obtenido:", response.precio);
+                                                    } else {
+                                                        // El precio no es válido, manejar según sea necesario
+                                                        console.error("Error al obtener el precio:", response.error);
+                                                    }
+                                                },
+                                                error: function(error) {
+                                                    // Manejar errores aquí
+                                                    console.error(error);
+                                                }
+                                            });
+                                            
+                                        }
+                                
+                                        // Manejar el clic en el input de dventa_precio
+                                        $('#dventa_precio').click(function () {
+                                            // Obtener el valor actual del input de prod_id
+                                            var prod_id = $('#categoria').val();
+                                
+                                            if (prod_id !== 'opcion') {
+                                                // Si se ha seleccionado un producto, obtener su precio
+                                                obtenerPrecioProducto(prod_id);
+                                            } else {
+                                                console.error('Seleccione un producto antes de obtener el precio.');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                
+                                
+
+
                                 <div class="form-group">
                                     <label for="total">Total</label>
                                     <input type="number" class="form-control" name="total" placeholder="Total" required>
@@ -133,22 +186,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#categoria').on('change', function() {
-            var selectedProductPrice = $('option:selected', this).data('precio');
-
-            // Actualiza el campo de precio con el precio del producto seleccionado
-            $('input[name="dventa_precio"]').val(selectedProductPrice);
-        });
-    });
-</script>
-
+<script href="{{asset('./js/app.js')}}"></script>
 
 
 
