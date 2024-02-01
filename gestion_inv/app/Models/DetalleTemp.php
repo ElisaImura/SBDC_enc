@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DetalleTemp extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'temp_id';
     public $table = 'temp_venta_detalles';
      protected $fillable = [
         'dventa_id',  
