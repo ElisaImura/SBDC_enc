@@ -8,33 +8,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        // Manejar el cambio en la selección del producto
-        $('#categoria').change(function () {
-            // Obtener el valor seleccionado
-            var selectedProductId = $(this).val();
-
-            // Verificar si la opción seleccionada no es "Seleccione una Opción"
-            if (selectedProductId !== 'opcion') {
-                // Obtener el precio del producto desde el atributo data-precio
-                var selectedProductPrice = $('option:selected', this).data('precio');
-
-                // Establecer el precio en el campo de entrada
-                $('#dventa_precio').val(selectedProductPrice);
-
-                // Actualizar el campo oculto de precio si es necesario
-                $('#precio').val(selectedProductPrice);
-            } else {
-                // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
-                $('#dventa_precio').val('');
-                $('#precio').val('');
-            }
-        });
-    });
-</script>
-
-
 <body>
 
   @include('layouts.navbar') 
@@ -171,6 +144,30 @@
 <script href="{{asset('./js/app.js')}}"></script>
 
 <script>
+    
+    $(document).ready(function () {
+        // Manejar el cambio en la selección del producto
+        $('#categoria').change(function () {
+            // Obtener el valor seleccionado
+            var selectedProductId = $(this).val();
+
+            // Verificar si la opción seleccionada no es "Seleccione una Opción"
+            if (selectedProductId !== 'opcion') {
+                // Obtener el precio del producto desde el atributo data-precio
+                var selectedProductPrice = $('option:selected', this).data('precio');
+
+                // Establecer el precio en el campo de entrada
+                $('#dventa_precio').val(selectedProductPrice);
+
+                // Actualizar el campo oculto de precio si es necesario
+                $('#precio').val(selectedProductPrice);
+            } else {
+                // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
+                $('#dventa_precio').val('');
+                $('#precio').val('');
+            }
+        });
+    });
                                 
     document.getElementById('prod_id').addEventListener('change', function() {
         var selectedOption = this.options[this.selectedIndex];
