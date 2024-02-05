@@ -141,7 +141,7 @@ class VentaController extends Controller
         $temp_venta_detalles->prod_id = $request->input('prod_id');
         $temp_venta_detalles->dventa_cantidad = $request->input('dventa_cantidad');
         $temp_venta_detalles->dventa_precio = $request->input('dventa_precio');
-
+        $temp_venta_detalles->total = $request->input('total');
 
         $temp_venta_detalles->save();
         return redirect()->route('ventas.index')->with('success', 'Venta actualizada correctamente');
