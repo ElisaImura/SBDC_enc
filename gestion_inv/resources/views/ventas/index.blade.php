@@ -62,32 +62,32 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="prod_id">Producto:</label>
-                                    <select name="prod_id" id="categoria" class="form-control">
+                                    <select name="prod_id" id="prod_id" class="form-control">
                                         <option value="opcion">Seleccione una Opción</option>
                                         @foreach($productos as $producto)
-                                            <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->precioventa }}">{{ $producto->prod_nombre }}</option>
+                                            <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}">{{ $producto->prod_nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                
+                                                            
                                 <div class="form-group">
                                     <label for="dventa_cant">Cantidad</label>
-                                    <input type="number" class="form-control" name="dventa_cantidad" placeholder="Cantidad" required>
+                                    <input type="number" class="form-control" name="dventa_cantidad" id="dventa_cantidad" placeholder="Cantidad" required>
                                 </div>
-
+                            
                                 <input type="hidden" name="precio" id="precio" value="">
                                 <div class="form-group">
                                     <label for="dventa_precio">Precio</label>
                                     <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" placeholder="Precio" required>
                                 </div>
-
+                            
                                 <div class="form-group">
-                                    <label for="total">Total</label>
-                                    <input type="number" class="form-control" name="total" placeholder="Total" required>
+                                    <label for="total"></label>
+                                    <input type="number" class="form-control" name="total" id="total" placeholder="Total" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Agregar</button>
                             </form>
-                        </div>
+                            
                     </div>
 
                     <div>
@@ -106,6 +106,7 @@
                       </div>
                 </div>
 
+            </div>
                 
                 <div class="col-md-7">
                     <div class="card">
@@ -124,12 +125,12 @@
                                 <tbody>
                                     @if (Schema::hasTable('temp_venta_detalles'))
                                     @foreach ($temp_venta_detalles as $dventa)
-                                        <tr>
-                                            <td>{{ $dventa->temp_id ?? 'NN' }}</td>
-                                            <td>{{ $dventa->producto->prod_nombre }}</td>
-                                            <td>{{ $dventa->dventa_cantidad }}</td>
-                                            <td>{{ $dventa->dventa_precio }}</td>
-                                            <td>Total</td>
+                                    <tr id="row_{{ $dventa->temp_id }}">
+                                        <td>{{ $dventa->temp_id ?? 'NN' }}</td>
+                                        <td>{{ $dventa->producto->prod_nombre }}</td>
+                                        <td>{{ $dventa->dventa_cantidad }}</td>
+                                        <td>{{ $dventa->dventa_precio }}</td>
+                                        <td>{{$dventa->total}}</td>
                                             <td class="text-center">
                                                 <div id="btn-pro" class="botones">
                                                     <form action="{{ route('ventas.destroy', ['temp_id' => $dventa->temp_id]) }}" method="POST">
@@ -169,7 +170,33 @@
 
 <script href="{{asset('./js/app.js')}}"></script>
 
+<script>
+                                
+    document.getElementById('prod_id').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var precio = selectedOption.getAttribute('data-precio');
+        document.getElementById('precio').value = precio;
+        document.getElementById('dventa_precio').value = precio; // Optionally, you can set the price input field directly
+        console.log(precio)
+    });
 
+    document.getElementById('dventa_cantidad').addEventListener('change', function() {
+        var cantidad = parseFloat(this.value);
+        var precio = parseFloat(document.getElementById('precio').value);
+        var total = Math.round(cantidad * precio);
+    
+        if (!isNaN(total)) {
+            document.getElementById('total').value = total;
+    
+            // Obtén la fila actual y actualiza el total en la columna correspondiente
+            var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
+            currentRow.querySelector('.total-column').textContent = total;
+        } else {
+            document.getElementById('total').value = '';
+        }
+    });
+
+</script>
 
 </body>
 </html>

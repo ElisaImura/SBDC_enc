@@ -48,7 +48,7 @@ class VentaController extends Controller
             $table->unsignedBigInteger('prod_id');
             $table->integer('dventa_precio');
             $table->integer('dventa_cantidad');           
-
+            $table->integer('total');
 
             $table->foreign('prod_id')->references('prod_id')->on('productos');
     
@@ -61,22 +61,27 @@ class VentaController extends Controller
 
     
     public function createDetalleTemp(Request $request)
-    {
-        // Verifica si la tabla temporal existe
-        if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
-            // La tabla no existe, crea la tabla temporal
-            $this->createTempTable();
-        }
-
-        // Procede a insertar los datos en la tabla temporal sin un modelo
-        DetalleTemp::create([
-            'prod_id' => $request->input('prod_id'),
-            'dventa_precio' => $request->input('dventa_precio'),
-            'dventa_cantidad' => $request->input('dventa_cantidad'),
-        ]);
-        return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
+{
+    // Verifica si la tabla temporal existe
+    if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
+        // La tabla no existe, crea la tabla temporal
+        $this->createTempTable();
     }
 
+    // Procede a insertar los datos en la tabla temporal sin un modelo
+    $total = $request->input('total') ?? 0; // Asigna un valor predeterminado si 'total' no está presente en la solicitud
+
+    DB::table('temp_venta_detalles')->insert([
+        'prod_id' => $request->input('prod_id'),
+        'dventa_precio' => $request->input('dventa_precio'),
+        'dventa_cantidad' => $request->input('dventa_cantidad'),
+        'total' => $total,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
+}
     public function createVenta(Request $request)
     {
 
