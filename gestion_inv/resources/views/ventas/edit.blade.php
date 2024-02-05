@@ -7,7 +7,7 @@
 
 <body>
     <div id="main-container">
-      @include('layouts.sidebar')
+        @include('layouts.sidebar')
 
         <div class="content">
             <div class="container">
@@ -35,15 +35,15 @@
                                         <input type="number" name="dventa_cantidad" id="dventa_cantidad" class="form-control" value="{{ $temp_venta_detalles->dventa_cantidad }}">
                                     </div>
 
-                                    <input type="hidden" name="precio" id="precio" value="">
+                                    <input type="hidden" name="precio" id="precio" value="{{ $temp_venta_detalles->dventa_precio }}">
                                     <div class="form-group">
                                         <label for="dventa_precio">Precio</label>
-                                        <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" value="{{ $temp_venta_detalles->dventa_precio }}">
+                                        <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" value="{{ $temp_venta_detalles->dventa_precio }}" readonly>
                                     </div>
                                                                 
                                     <div class="form-group">
                                         <label for="total">Total:</label>
-                                        <input type="number" class="form-control" name="total" id="total" placeholder="Total" value="{{$temp_venta_detalles->total}}">
+                                        <input type="number" class="form-control" name="total" id="total" placeholder="Total" value="{{ $temp_venta_detalles->total }}" readonly>
                                     </div>
 
                                     <div class="form-group">
@@ -58,59 +58,53 @@
         </div>
     </div>
 
-    <script href="{{asset('./js/app.js')}}"></script>
+    <script>
 
-<script>
+        $(document).ready(function () {
+            // Manejar el cambio en la selección del producto
+            $('#prod_id').change(function () {
+                // Obtener el valor seleccionado
+                var selectedProductId = $(this).val();
 
-    $(document).ready(function () {
-        // Manejar el cambio en la selección del producto
-        $('#categoria').change(function () {
-            // Obtener el valor seleccionado
-            var selectedProductId = $(this).val();
+                // Verificar si la opción seleccionada no es "Seleccione una Opción"
+                if (selectedProductId !== 'opcion') {
+                    // Obtener el precio del producto desde el atributo data-precio
+                    var selectedProductPrice = $('option:selected', this).data('precio');
 
-            // Verificar si la opción seleccionada no es "Seleccione una Opción"
-            if (selectedProductId !== 'opcion') {
-                // Obtener el precio del producto desde el atributo data-precio
-                var selectedProductPrice = $('option:selected', this).data('precio');
+                    // Establecer el precio en el campo de entrada
+                    $('#dventa_precio').val(selectedProductPrice);
 
-                // Establecer el precio en el campo de entrada
-                $('#dventa_precio').val(selectedProductPrice);
+                    // Actualizar el campo oculto de precio si es necesario
+                    $('#precio').val(selectedProductPrice);
+                } else {
+                    // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
+                    $('#dventa_precio').val('');
+                    $('#precio').val('');
 
-                // Actualizar el campo oculto de precio si es necesario
-                $('#precio').val(selectedProductPrice);
-            } else {
-                // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
-                $('#dventa_precio').val('');
-                $('#precio').val('');
+                    // Limpiar el campo de total
+                    $('#total').val('');
+                }
+                actualizarCampos();
+            });
+
+            // Manejar el cambio en la cantidad
+            $('#dventa_cantidad').change(function () {
+                actualizarCampos();
+            });
+
+            function actualizarCampos() {
+                var cantidad = parseFloat($('#dventa_cantidad').val()) || 0;
+                var precio = parseFloat($('#precio').val()) || 0;
+
+                // Calcular el total
+                var total = Math.round(cantidad * precio);
+
+                // Actualizar los campos
+                $('#total').val(!isNaN(total) ? total : '');
             }
         });
-    });
-                                
-    document.getElementById('prod_id').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
-        var precio = selectedOption.getAttribute('data-precio');
-        document.getElementById('precio').value = precio;
-        document.getElementById('dventa_precio').value = precio; // Optionally, you can set the price input field directly
-        console.log(precio)
-    });
 
-    document.getElementById('dventa_cantidad').addEventListener('change', function() {
-        var cantidad = parseFloat(this.value);
-        var precio = parseFloat(document.getElementById('precio').value);
-        var total = Math.round(cantidad * precio);
-    
-        if (!isNaN(total)) {
-            document.getElementById('total').value = total;
-    
-            // Obtén la fila actual y actualiza el total en la columna correspondiente
-            var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
-            currentRow.querySelector('.total-column').textContent = total;
-        } else {
-            document.getElementById('total').value = '';
-        }
-    });
-
-</script>
+    </script>
 
     @include('layouts.footer') 
 
