@@ -125,51 +125,60 @@ class VentaController extends Controller
     }
 
     public function obtenerPrecioProducto($prod_id)
-{
-    // Lógica para obtener el precio del producto
-    $producto = Producto::find($prod_id);
+    {
+        // Lógica para obtener el precio del producto
+        $producto = Producto::find($prod_id);
 
-    if ($producto) {
-        return response()->json(['precio' => $producto->prod_precioventa], 200);
-    } else {
-        return response()->json(['error' => 'Producto no encontrado o precio no disponible'], 404);
+        if ($producto) {
+            return response()->json(['precio' => $producto->prod_precioventa], 200);
+        } else {
+            return response()->json(['error' => 'Producto no encontrado o precio no disponible'], 404);
+        }
     }
-}
 
-public function concretarVenta(Request $request)
-{
-    $venta = Venta::create([
-        'cli_id' => $request->input('cli_id'),
-        'venta_fecha' => now(),
-    ]);
-
-    $productosTemporales = DetalleTemp::all();
-
-    foreach ($productosTemporales as $productoTemporal) {
-        Venta_detalle::create([
-
-        'venta_id' => $venta->venta_id,
-        'prod_id'=> $productoTemporal->prod_id,
-        'dventa_precio'=> $productoTemporal->dventa_precio,
-        'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
+    public function concretarVenta(Request $request)
+    {
+        $venta = Venta::create([
+            'cli_id' => $request->input('cli_id'),
+            'venta_fecha' => now(),
         ]);
 
+        $productosTemporales = DetalleTemp::all();
+
+        foreach ($productosTemporales as $productoTemporal) {
+            Venta_detalle::create([
+
+            'venta_id' => $venta->venta_id,
+            'prod_id'=> $productoTemporal->prod_id,
+            'dventa_precio'=> $productoTemporal->dventa_precio,
+            'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
+            ]);
+
+        }
+        // Paso 3: Eliminar los datos de la tabla temporal
+        Schema::dropIfExists('temp_venta_detalles');
+
+        // Redirigir o devolver una respuesta como sea necesario
+        return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');;
     }
-    // Paso 3: Eliminar los datos de la tabla temporal
-    Schema::dropIfExists('temp_venta_detalles');
 
-    // Redirigir o devolver una respuesta como sea necesario
-    return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');;
-}
+    public function verificarProducto($prod_id)
+    {
+        // Buscar el detalle en la tabla temporal que coincide con el prod_id
+        $detalle = DB::table('temp_venta_detalles')
+            ->where('prod_id', $prod_id)
+            ->first();
 
-public function verificarProducto($id)
-{
-    // Verificar si el producto está en la tabla temp_venta_detalles
-    $productoExistente = DetalleTemp::where('prod_id', $id)->exists();
+        // Verificar si se encontró el detalle
+        if ($detalle) {
+            // Si el detalle existe, devolver su ID en la respuesta JSON
+            return response()->json(['existe' => true, 'temp_id' => $detalle->temp_id]);
+        } else {
+            // Si no se encuentra el detalle, devolver false en la respuesta JSON
+            return response()->json(['existe' => false]);
+        }
+    }
 
-    // Devolver una respuesta JSON indicando si el producto existe o no
-    return response()->json(['existe' => $productoExistente]);
-}
 
 }
 
