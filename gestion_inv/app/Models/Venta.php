@@ -9,8 +9,8 @@ class Venta extends Model
 {
     use HasFactory;
     public $table = 'ventas';
+    protected $primaryKey = 'venta_id';
      protected $fillable = [
-        'venta_id',
         'cli_id',
         'venta_fecha'
     ];

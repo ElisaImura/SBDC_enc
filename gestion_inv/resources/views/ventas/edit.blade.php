@@ -11,6 +11,7 @@
 
         <div class="content">
             <div class="container">
+
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -24,7 +25,7 @@
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="form-control">
                                             @foreach($productos as $producto)
-                                                <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" {{ $producto->prod_id == optional($temp_venta_detalles->producto)->prod_id ? 'selected' : '' }}>
+                                                <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}" {{ $producto->prod_id == optional($temp_venta_detalles->producto)->prod_id ? 'selected' : '' }}>
                                                     {{ $producto->prod_nombre }}</option>
                                             @endforeach
                                         </select>
@@ -88,9 +89,19 @@
             });
 
             // Manejar el cambio en la cantidad
-            $('#dventa_cantidad').change(function () {
-                actualizarCampos();
-            });
+        document.getElementById('dventa_cantidad').addEventListener('change', function() {
+            var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
+            var cantidadDisponibleEnTabla = parseInt($('#prod_id option:selected').data('cantidad'));
+            // Calcular el total cuando cambia la cantidad
+            if (cantidadIngresada > cantidadDisponibleEnTabla) {
+                // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+                alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
+            } else {
+                // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
+                calcularTotal();
+            }
+       
+         });
 
             function actualizarCampos() {
                 var cantidad = parseFloat($('#dventa_cantidad').val()) || 0;

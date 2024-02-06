@@ -14,12 +14,13 @@
 
     <div class="content" id="ventas-vista">
         <div class="container">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="mt-4 row justify-content-center">
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-header">
@@ -59,7 +60,8 @@
                     </div>
 
                     <div>
-                        <form method="post" action="{{ route('ventas.create') }}">
+                        <form method="post" action="{{ route('ventas.concretarVenta') }}">
+                            @csrf
                             <div class="form-group">
                                 <label for="cli_id">Cliente:</label>
                                 <select name="cli_id" id="cliente" class="form-control">
@@ -69,10 +71,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Concretar Venta</button>
+                            <button type="submit" class="btn btn-primary">Seleccionar Cliente</button>
                         </form>
                       </div>
                 </div>
+
 
             </div>
                 

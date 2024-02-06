@@ -91,30 +91,7 @@ class VentaController extends Controller
         ]);
     }
 
-    public function createDetalle(Request $request)
-    {
 
-        $rules = [
-            'venta_id' => 'required',
-            'prod_id' => 'required',
-            'dventa_precio' => 'required',
-            'dventa_cantidad' => 'required',
-        ];
-    
-        $mensaje = [
-            'required' => 'El :attribute campo es requerido',
-        ];
-    
-        $this->validate($request, $rules, $mensaje);
-    
-            Venta_detalle::create([
-                'venta_id' => $request->input('venta_id'),
-                'prod_id' => $request->input('prod_id'),
-                'dventa_precio' => $request->input('dventa_precio'),
-                'dventa_cantidad' => $request->input('dventa_cantidad'),
-            ]);
-        return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
-    }
 
     public function destroy($temp_id)
     {
@@ -158,6 +135,33 @@ class VentaController extends Controller
         return response()->json(['error' => 'Producto no encontrado o precio no disponible'], 404);
     }
 }
+
+public function concretarVenta(Request $request)
+{
+    $venta = Venta::create([
+        'cli_id' => $request->input('cli_id'),
+        'venta_fecha' => now(),
+    ]);
+
+    $productosTemporales = DetalleTemp::all();
+
+    foreach ($productosTemporales as $productoTemporal) {
+        Venta_detalle::create([
+                 
+        'venta_id' => $venta->venta_id,
+        'prod_id'=> $productoTemporal->prod_id,
+        'dventa_precio'=> $productoTemporal->dventa_precio,
+        'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
+        ]);
+
+    }
+    // Paso 3: Eliminar los datos de la tabla temporal
+    Schema::dropIfExists('temp_venta_detalles');
+
+    // Redirigir o devolver una respuesta como sea necesario
+    return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');;
+}
+
 
 
 }

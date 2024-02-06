@@ -71,10 +71,11 @@ Route::get('/proveedores/formulario',[ProveedorController::class,'formulario'])-
 
 //Ventas detalle Controller
 Route::get('/ventas', [VentaController::class, 'index'])->middleware('auth')->name('ventas.index');
-Route::post('/ventas/create', [VentaController::class, 'create'])->middleware('auth')->name('ventas.create');
 Route::get('/crear-tabla-temporal', [VentaController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
 Route::post('/ventasDetTemp/create', [VentaController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTemp.create');
 Route::delete('/ventas/{temp_id}', [VentaController::class, 'destroy'])->middleware('auth')->name('ventas.destroy');
 Route::get('/ventas/{temp_id}/edit', [VentaController::class, 'edit'])->middleware('auth')->name('ventas.edit');
 Route::put('/ventas/{temp_id}', [VentaController::class, 'update'])->middleware('auth')->name('ventas.update');
 Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obtenerPrecioProducto']);
+Route::post('/ventas/concretarVenta', [VentaController::class, 'concretarVenta'])->middleware('auth')->name('ventas.concretarVenta');
+Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->middleware('auth')->name('ventas.crearCliente');

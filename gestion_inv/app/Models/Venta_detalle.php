@@ -9,9 +9,9 @@ class Venta_detalle extends Model
 {
     use HasFactory;
 
-    public $table = 'compra_detalles';
+    public $table = 'venta_detalles';
+    protected $primaryKey = 'dventa_id';
      protected $fillable = [
-        'dventa_id',
         'venta_id',   
         'prod_id',     
         'compra_id',
