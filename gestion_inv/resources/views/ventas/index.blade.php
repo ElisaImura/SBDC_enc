@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<html lang="es">
 <head>
-    <title>Ventas</title>    
-
-</head>
-@include('layouts.head') 
+    <title>Easy System - Ventas</title>
+    @include('layouts.head')   
+</head> 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+@include('layouts.navbar') 
+
 <body>
-
-  @include('layouts.navbar') 
   
-<div id="viewport">
-  @include('layouts.sidebar')
+<div id="main-container">
+    @include('layouts.sidebar')
 
-  
-
-    <div class="content">
-
-        
+    <div class="content" id="ventas-vista">
         <div class="container">
-
-            
-
-            <div class="mt-4 row">
+            <div class="mt-4 row justify-content-center">
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-header">
@@ -141,6 +136,8 @@
     </div>
 </div>
 
+    @include('layouts.footer') 
+
 <script href="{{asset('./js/app.js')}}"></script>
 
 <script>
@@ -178,7 +175,7 @@
     // Manejar el cambio en la cantidad
     document.getElementById('dventa_cantidad').addEventListener('change', function() {
         var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
-        var cantidadDisponibleEnTabla = parseInt($('#prod_id option::selected').data('cantidad'));
+        var cantidadDisponibleEnTabla = parseInt($('#prod_id option:selected').data('cantidad'));
         // Calcular el total cuando cambia la cantidad
         if (cantidadIngresada > cantidadDisponibleEnTabla) {
             // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
@@ -209,7 +206,6 @@
 
                 // Obtén la fila actual y actualiza el total en la columna correspondiente
                 var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
-                currentRow.querySelector('.total-column').textContent = total;
             } else {
                 $('#total').val('');
             }
