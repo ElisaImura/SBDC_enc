@@ -67,25 +67,22 @@
                 // Obtener el valor seleccionado
                 var selectedProductId = $(this).val();
 
-                // Verificar si la opción seleccionada no es "Seleccione una Opción"
                 if (selectedProductId !== 'opcion') {
                     // Obtener el precio del producto desde el atributo data-precio
                     var selectedProductPrice = $('option:selected', this).data('precio');
-
                     // Establecer el precio en el campo de entrada
                     $('#dventa_precio').val(selectedProductPrice);
-
                     // Actualizar el campo oculto de precio si es necesario
                     $('#precio').val(selectedProductPrice);
+                    // Calcular el total cuando cambia el producto (precio y cantidad)
+                    calcularTotal();
                 } else {
                     // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
                     $('#dventa_precio').val('');
                     $('#precio').val('');
-
                     // Limpiar el campo de total
                     $('#total').val('');
                 }
-                actualizarCampos();
             });
 
             // Manejar el cambio en la cantidad
@@ -103,16 +100,25 @@
        
          });
 
-            function actualizarCampos() {
-                var cantidad = parseFloat($('#dventa_cantidad').val()) || 0;
-                var precio = parseFloat($('#precio').val()) || 0;
+        function calcularTotal() {
+            var cantidad = parseFloat($('#dventa_cantidad').val());
+            var precio = parseFloat($('#precio').val());
 
-                // Calcular el total
+            // Verificar si tanto cantidad como precio tienen valores
+            if (!isNaN(cantidad) && !isNaN(precio)) {
                 var total = Math.round(cantidad * precio);
 
-                // Actualizar los campos
-                $('#total').val(!isNaN(total) ? total : '');
+                if (!isNaN(total)) {
+                    $('#total').val(total);
+
+                    // Obtén la fila actual y actualiza el total en la columna correspondiente
+                    var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
+                } else {
+                    $('#total').val('');
+                }
             }
+        }
+        
         });
 
     </script>

@@ -59,7 +59,7 @@
                             
                     </div>
 
-                    <div>
+                    <div class="container">
                         <form method="post" action="{{ route('ventas.concretarVenta') }}">
                             @csrf
                             <div class="form-group">
@@ -71,7 +71,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Seleccionar Cliente</button>
+                            <button type="submit" class="btn btn-primary">Concretar venta</button>
                         </form>
                       </div>
                 </div>
@@ -142,6 +142,8 @@
     @include('layouts.footer') 
 
 <script href="{{asset('./js/app.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
     
@@ -156,11 +158,20 @@
             success: function(response) {
                 // Verificar la respuesta del servidor
                 if (response.existe) {
-                    // Si el producto existe, mostrar un alert
-                    alert('Este producto ya esta agregado.');
-                    // Puedes hacer aquí otras acciones si es necesario
-                } else {
-                   
+                    // Si el producto existe, mostrar un SweetAlert con el botón personalizado
+                    var detalleId = response.temp_id;
+                    Swal.fire({
+                        title: 'Este producto ya está agregado',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Editar Detalle', // Cambiar el texto del botón
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
+                            window.location.href = '/ventas/' + detalleId + '/edit';
+                        }
+                    });
                 }
             },
             error: function(xhr, status, error) {
@@ -168,28 +179,24 @@
                 console.error(error);
             }
         });
-        // Verificar si la opción seleccionada no es "Seleccione una Opción"
         if (selectedProductId !== 'opcion') {
             // Obtener el precio del producto desde el atributo data-precio
             var selectedProductPrice = $('option:selected', this).data('precio');
-
             // Establecer el precio en el campo de entrada
             $('#dventa_precio').val(selectedProductPrice);
-
             // Actualizar el campo oculto de precio si es necesario
             $('#precio').val(selectedProductPrice);
-
             // Calcular el total cuando cambia el producto (precio y cantidad)
             calcularTotal();
         } else {
             // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
             $('#dventa_precio').val('');
             $('#precio').val('');
-
             // Limpiar el campo de total
             $('#total').val('');
         }
     });
+
 
 
     // Manejar el cambio en la cantidad
@@ -231,24 +238,25 @@
             }
         }
     }
+
+    function verificarCantidad() {
+        // Obtener el valor de la cantidad ingresada por el usuario
+        var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
+        
+        // Obtener la cantidad de productos disponibles desde la tabla de productos (reemplaza esto con tu lógica de cómo obtienes los datos de la tabla)
+        var cantidadDisponibleEnTabla = 10; // Aquí deberías obtener la cantidad real de la tabla de productos
+        
+        // Verificar si la cantidad ingresada por el usuario es mayor que la cantidad disponible en la tabla de productos
+        if (cantidadIngresada > cantidadDisponibleEnTabla) {
+            // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+            alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
+        } else {
+            // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
+            alert("La cantidad ingresada es válida.");
+        }
+    }
 });
 
-function verificarCantidad() {
-    // Obtener el valor de la cantidad ingresada por el usuario
-    var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
-    
-    // Obtener la cantidad de productos disponibles desde la tabla de productos (reemplaza esto con tu lógica de cómo obtienes los datos de la tabla)
-    var cantidadDisponibleEnTabla = 10; // Aquí deberías obtener la cantidad real de la tabla de productos
-    
-    // Verificar si la cantidad ingresada por el usuario es mayor que la cantidad disponible en la tabla de productos
-    if (cantidadIngresada > cantidadDisponibleEnTabla) {
-        // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
-        alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
-    } else {
-        // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
-        alert("La cantidad ingresada es válida.");
-    }
-}
 </script>
 
 </body>
