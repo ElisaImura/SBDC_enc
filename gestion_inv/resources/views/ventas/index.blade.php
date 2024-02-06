@@ -38,7 +38,7 @@
                                     <select name="prod_id" id="prod_id" class="form-control">
                                         <option value="opcion">Seleccione una Opción</option>
                                         @foreach($productos as $producto)
-                                            <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}">{{ $producto->prod_nombre }}</option>
+                                            <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}">{{ $producto->prod_nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -174,10 +174,20 @@
         }
     });
 
+
     // Manejar el cambio en la cantidad
     document.getElementById('dventa_cantidad').addEventListener('change', function() {
+        var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
+        var cantidadDisponibleEnTabla = parseInt($('#prod_id option::selected').data('cantidad'));
         // Calcular el total cuando cambia la cantidad
-        calcularTotal();
+        if (cantidadIngresada > cantidadDisponibleEnTabla) {
+            // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+            alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
+        } else {
+            // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
+            calcularTotal();
+        }
+       
     });
 
     // Manejar el cambio en el precio
@@ -207,7 +217,22 @@
     }
 });
 
-
+function verificarCantidad() {
+    // Obtener el valor de la cantidad ingresada por el usuario
+    var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
+    
+    // Obtener la cantidad de productos disponibles desde la tabla de productos (reemplaza esto con tu lógica de cómo obtienes los datos de la tabla)
+    var cantidadDisponibleEnTabla = 10; // Aquí deberías obtener la cantidad real de la tabla de productos
+    
+    // Verificar si la cantidad ingresada por el usuario es mayor que la cantidad disponible en la tabla de productos
+    if (cantidadIngresada > cantidadDisponibleEnTabla) {
+        // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+        alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
+    } else {
+        // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
+        alert("La cantidad ingresada es válida.");
+    }
+}
 </script>
 
 </body>
