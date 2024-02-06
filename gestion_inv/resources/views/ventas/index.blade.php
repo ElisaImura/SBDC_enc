@@ -150,7 +150,24 @@
     $('#prod_id').change(function () {
         // Obtener el valor seleccionado
         var selectedProductId = $(this).val();
-
+        $.ajax({
+            url: '/verificar-producto/' + selectedProductId,
+            type: 'GET',
+            success: function(response) {
+                // Verificar la respuesta del servidor
+                if (response.existe) {
+                    // Si el producto existe, mostrar un alert
+                    alert('Este producto ya esta agregado.');
+                    // Puedes hacer aquí otras acciones si es necesario
+                } else {
+                   
+                }
+            },
+            error: function(xhr, status, error) {
+                // Manejar el error si ocurre
+                console.error(error);
+            }
+        });
         // Verificar si la opción seleccionada no es "Seleccione una Opción"
         if (selectedProductId !== 'opcion') {
             // Obtener el precio del producto desde el atributo data-precio
