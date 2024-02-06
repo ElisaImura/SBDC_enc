@@ -147,7 +147,7 @@ public function concretarVenta(Request $request)
 
     foreach ($productosTemporales as $productoTemporal) {
         Venta_detalle::create([
-                 
+
         'venta_id' => $venta->venta_id,
         'prod_id'=> $productoTemporal->prod_id,
         'dventa_precio'=> $productoTemporal->dventa_precio,
@@ -162,7 +162,14 @@ public function concretarVenta(Request $request)
     return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');;
 }
 
+public function verificarProducto($id)
+{
+    // Verificar si el producto está en la tabla temp_venta_detalles
+    $productoExistente = DetalleTemp::where('prod_id', $id)->exists();
 
+    // Devolver una respuesta JSON indicando si el producto existe o no
+    return response()->json(['existe' => $productoExistente]);
+}
 
 }
 

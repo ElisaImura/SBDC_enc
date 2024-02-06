@@ -79,3 +79,4 @@ Route::put('/ventas/{temp_id}', [VentaController::class, 'update'])->middleware(
 Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obtenerPrecioProducto']);
 Route::post('/ventas/concretarVenta', [VentaController::class, 'concretarVenta'])->middleware('auth')->name('ventas.concretarVenta');
 Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->middleware('auth')->name('ventas.crearCliente');
+Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarProducto'])->middleware('auth');
