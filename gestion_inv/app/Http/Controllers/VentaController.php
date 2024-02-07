@@ -138,28 +138,37 @@ class VentaController extends Controller
 
     public function concretarVenta(Request $request)
     {
-        $venta = Venta::create([
-            'cli_id' => $request->input('cli_id'),
-            'venta_fecha' => now(),
-        ]);
-
-        $productosTemporales = DetalleTemp::all();
-
-        foreach ($productosTemporales as $productoTemporal) {
-            Venta_detalle::create([
-
-            'venta_id' => $venta->venta_id,
-            'prod_id'=> $productoTemporal->prod_id,
-            'dventa_precio'=> $productoTemporal->dventa_precio,
-            'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
+        if (Schema::hasTable('temp_venta_detalles')) {
+            $venta = Venta::create([
+                'cli_id' => $request->input('cli_id'),
+                'venta_fecha' => now(),
             ]);
 
-        }
-        // Paso 3: Eliminar los datos de la tabla temporal
-        Schema::dropIfExists('temp_venta_detalles');
+            $productosTemporales = DetalleTemp::all();
 
-        // Redirigir o devolver una respuesta como sea necesario
-        return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');;
+            foreach ($productosTemporales as $productoTemporal) {
+                Venta_detalle::create([
+
+                'venta_id' => $venta->venta_id,
+                'prod_id'=> $productoTemporal->prod_id,
+                'dventa_precio'=> $productoTemporal->dventa_precio,
+                'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
+                ]);
+                
+
+                $producto = Producto::find($productoTemporal->prod_id);
+                $producto->prod_cant = ($producto->prod_cant)-($productoTemporal->dventa_cantidad);
+                $producto->save();
+
+            }
+            // Paso 3: Eliminar los datos de la tabla temporal
+            Schema::dropIfExists('temp_venta_detalles');
+
+            // Redirigir o devolver una respuesta como sea necesario
+            return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');
+        }else{
+            return redirect()->route('ventas.index')->with('error', 'No se puede crear venta sin detalles');
+        }
     }
 
     public function verificarProducto($prod_id)
