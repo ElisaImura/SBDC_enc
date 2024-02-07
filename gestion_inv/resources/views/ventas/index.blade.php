@@ -36,8 +36,8 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="prod_id">Producto:</label>
-                                    <select name="prod_id" id="prod_id" class="form-control">
-                                        <option value="opcion">Seleccione una Opción</option>
+                                    <select name="prod_id" id="prod_id" class="form-control" required>
+                                        <option value="">Seleccione una Opción</option>
                                         @foreach($productos as $producto)
                                             <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}">{{ $producto->prod_nombre }}</option>
                                         @endforeach
@@ -65,12 +65,12 @@
                     </div>
 
                     <div class="container">
-                        <form method="post" action="{{ route('ventas.concretarVenta') }}">
+                        <form id="form-concretarV" method="post" action="{{ route('ventas.concretarVenta') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="cli_id">Cliente:</label>
-                                <select name="cli_id" id="cliente" class="form-control">
-                                    <option value="opcion">Seleccione una Opción</option>
+                                <select name="cli_id" id="cliente" class="form-control" required>
+                                    <option value="">Seleccione una Opción</option>
                                     @foreach($clientes as $cli_id => $cli_nombre)
                                         <option value="{{ $cli_id }}">{{ $cli_nombre }}</option>
                                     @endforeach
@@ -262,6 +262,25 @@
         }
     }
 });
+
+$(document).ready(function() {
+    $('#form-ventas').submit(function(event) {
+        if ($('#prod_id').val() == '') {
+            alert('Por favor, seleccione un producto.');
+            event.preventDefault(); // Evita que el formulario se envíe
+        }
+    });
+});
+
+$(document).ready(function() {
+    $('#form-concretarV').submit(function(event) {
+        if ($('#cliente').val() == '') {
+            alert('Por favor, seleccione un cliente.');
+            event.preventDefault(); // Evita que el formulario se envíe
+        }
+    });
+});
+
 
 </script>
 

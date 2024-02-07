@@ -37,6 +37,8 @@ class VentaController extends Controller
 
     public function createTempTable()
     {
+
+
         // Verifica si la tabla temporal ya existe y, si es así, elimínala
         if (Schema::hasTable('temp_venta_detalles')) {
             Schema::dropIfExists('temp_venta_detalles');
@@ -84,6 +86,18 @@ class VentaController extends Controller
 }
     public function createVenta(Request $request)
     {
+        $rules = [
+            'cli_id' => 'required|not_in:opcion',
+            'venta_fecha' => 'required',
+
+        ];
+    
+        $mensaje = [
+            'required' => 'El :attribute campo es requerido',
+            //'exists' => 'La categoría seleccionada no es válida',
+        ];
+    
+        $this->validate($request, $rules, $mensaje);
 
         Venta::create([
             'cli_id' => $request->input('cli_id'),
@@ -138,6 +152,19 @@ class VentaController extends Controller
 
     public function concretarVenta(Request $request)
     {
+        $rules = [
+            'venta_id' => 'required',
+            'prod_id' => 'required',
+            'dventa_precio' => 'required',
+            'dventa_cantidad' => 'required',
+        ];
+    
+        $mensaje = [
+            'required' => 'El :attribute campo es requerido',
+            //'exists' => 'La categoría seleccionada no es válida',
+        ];
+    
+        $this->validate($request, $rules, $mensaje);
         if (Schema::hasTable('temp_venta_detalles')) {
             $venta = Venta::create([
                 'cli_id' => $request->input('cli_id'),
