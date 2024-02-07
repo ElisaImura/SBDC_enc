@@ -19,6 +19,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="mt-4 row justify-content-center">
                 
                 <div class="col-md-5">
@@ -27,7 +32,7 @@
                             <strong>Nueva Venta</strong>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{{ route('DetalleTemp.create') }}">
+                            <form id="form-ventas" method="post" action="{{ route('DetalleTemp.create') }}">
                                 @csrf
                                 <div class="form-group">
                                     <label for="prod_id">Producto:</label>
@@ -160,6 +165,7 @@
                 if (response.existe) {
                     // Si el producto existe, mostrar un SweetAlert con el botón personalizado
                     var detalleId = response.temp_id;
+                     $('#form-ventas')[0].reset();
                     Swal.fire({
                         title: 'Este producto ya está agregado',
                         icon: 'warning',
