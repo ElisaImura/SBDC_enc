@@ -84,6 +84,7 @@ class ProductoController extends Controller
         $producto = Producto::find($prod_id);
         $producto->prod_nombre = $request->input('prod_nombre');
         $producto->prod_descripcion = $request->input('prod_descripcion');
+        $producto->prod_cant = $request->input('prod_cant');
         $producto->prod_precioventa = $request->input('prod_precioventa');
         $producto->prod_preciocosto = $request->input('prod_preciocosto');
         $producto->cat_id = $request->input('cat_id'); // Asumiendo que 'cat_id' es la clave foránea
