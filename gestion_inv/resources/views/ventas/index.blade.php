@@ -263,23 +263,7 @@
     }
 });
 
-$(document).ready(function() {
-    $('#form-ventas').submit(function(event) {
-        if ($('#prod_id').val() == '') {
-            alert('Por favor, seleccione un producto.');
-            event.preventDefault(); // Evita que el formulario se envíe
-        }
-    });
-});
 
-$(document).ready(function() {
-    $('#form-concretarV').submit(function(event) {
-        if ($('#cliente').val() == '') {
-            alert('Por favor, seleccione un cliente.');
-            event.preventDefault(); // Evita que el formulario se envíe
-        }
-    });
-});
 
 
 </script>
