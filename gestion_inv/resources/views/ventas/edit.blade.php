@@ -48,7 +48,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                        <button type="submit" id="botonEnviar" class="btn btn-primary">Guardar</button>
                                     </div>
                                 </form>
                             </div>
@@ -59,8 +59,10 @@
         </div>
     </div>
 
-    <script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
         $(document).ready(function () {
             // Manejar el cambio en la selección del producto
             $('#prod_id').change(function () {
@@ -86,43 +88,51 @@
             });
 
             // Manejar el cambio en la cantidad
-        document.getElementById('dventa_cantidad').addEventListener('change', function() {
-            var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
-            var cantidadDisponibleEnTabla = parseInt($('#prod_id option:selected').data('cantidad'));
-            // Calcular el total cuando cambia la cantidad
-            if (cantidadIngresada > cantidadDisponibleEnTabla) {
-                // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
-                alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
-            } else {
-                // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
-                calcularTotal();
-            }
-       
-         });
+            $('#dventa_cantidad').change(function() {
+                var cantidadIngresada = parseInt($(this).val());
+                var cantidadDisponibleEnTabla = "{{ $cantidad }}";
 
-        function calcularTotal() {
-            var cantidad = parseFloat($('#dventa_cantidad').val());
-            var precio = parseFloat($('#precio').val());
+                if (cantidadIngresada > cantidadDisponibleEnTabla) {
+                    // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+                    Swal.fire({
+                        title: 'La cantidad ingresada excede a la cantidad disponible',
+                        icon: 'warning',
+                        showCancelButton: false,
+                        confirmButtonText: 'Entendido',
+                    });
 
-            // Verificar si tanto cantidad como precio tienen valores
-            if (!isNaN(cantidad) && !isNaN(precio)) {
-                var total = Math.round(cantidad * precio);
-
-                if (!isNaN(total)) {
-                    $('#total').val(total);
-
-                    // Obtén la fila actual y actualiza el total en la columna correspondiente
-                    var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
+                    // Deshabilita el botón de enviar
+                    $('#botonEnviar').prop('disabled', true);
                 } else {
-                    $('#total').val('');
+                    // Si la cantidad ingresada es menor o igual, calcular el total y habilitar el botón de enviar
+                    calcularTotal();
+                    $('#botonEnviar').prop('disabled', false);
+                }
+            });
+
+            // Manejar el cambio en el precio
+            $('#dventa_precio').change(function() {
+                // Calcular el total cuando cambia el precio
+                calcularTotal();
+            });
+
+            function calcularTotal() {
+                var cantidad = parseFloat($('#dventa_cantidad').val());
+                var precio = parseFloat($('#precio').val());
+
+                // Verificar si tanto cantidad como precio tienen valores
+                if (!isNaN(cantidad) && !isNaN(precio)) {
+                    var total = Math.round(cantidad * precio);
+
+                    if (!isNaN(total)) {
+                        $('#total').val(total);
+                    } else {
+                        $('#total').val('');
+                    }
                 }
             }
-        }
-        
         });
-
     </script>
 
     @include('layouts.footer') 
-
 </body>
