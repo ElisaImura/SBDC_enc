@@ -109,10 +109,10 @@
                                         <td>{{$dventa->total}}</td>
                                             <td class="text-center">
                                                 <div id="btn-pro" class="botones">
-                                                    <form action="{{ route('ventas.destroy', ['temp_id' => $dventa->temp_id]) }}" method="POST" id="formEliminarVenta">
+                                                    <form action="{{ route('ventas.destroy', ['temp_id' => $dventa->temp_id]) }}" method="POST" id="formEliminarVenta-{{ $dventa->temp_id }}" data-id="{{ $dventa->temp_id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="btn btn-danger" id="btnEliminarVenta">
+                                                        <button type="button" class="btn btn-danger btnEliminarVenta">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -163,8 +163,10 @@
                 success: function(response) {
                     // Verificar la respuesta del servidor
                     if (response.existe) {
+                        $('#form-ventas')[0].reset();
                         // Si el producto existe, mostrar un SweetAlert con el botón personalizado
                         var detalleId = response.temp_id;
+
                         Swal.fire({
                             title: 'Este producto ya está agregado',
                             icon: 'warning',
@@ -252,11 +254,13 @@
                 }
             }
         }
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Define la función confirmarEliminacion
         function confirmarEliminacion() {
+            // Obtiene el formulario asociado al botón clickeado
+            var formulario = event.target.closest('form');
+            
+            // Obtiene el valor del atributo data-id del formulario
+            var id = formulario.dataset.id;
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Esta acción no se puede revertir",
@@ -269,18 +273,27 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Envía el formulario para eliminar la venta
-                    document.getElementById('formEliminarVenta').submit();
+                    formulario.submit();
                 }
             });
         }
 
-        // Asigna la función confirmarEliminacion al evento onclick del botón
-        var btnEliminarVenta = document.getElementById('btnEliminarVenta');
-        if (btnEliminarVenta) {
-            btnEliminarVenta.onclick = confirmarEliminacion;
-        }
-    });
+        window.addEventListener('load', function() {
+            var formsEliminar = document.querySelectorAll('form[id^="formEliminarVenta-"]');
 
+            // Itera sobre cada formulario de eliminar
+            formsEliminar.forEach(function(formEliminar) {
+                // Obtiene el botón de eliminar dentro del formulario actual
+                var btnEliminarVenta = formEliminar.querySelector('.btnEliminarVenta');
+                
+                // Asigna el evento click al botón de eliminar
+                btnEliminarVenta.addEventListener('click', function() {
+                    confirmarEliminacion(formEliminar); // Pasa el formulario actual como argumento
+                });
+            });
+        });
+
+    });
 
 </script>
 
