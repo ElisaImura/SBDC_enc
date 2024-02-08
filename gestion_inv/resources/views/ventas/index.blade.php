@@ -59,7 +59,7 @@
                                     <label for="total"></label>
                                     <input type="number" class="form-control" name="total" id="total" placeholder="Total" required readonly>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Agregar</button>
+                                <button id="botonEnviar" type="submit" class="btn btn-primary">Agregar</button>
                             </form>
                             
                     </div>
@@ -109,21 +109,21 @@
                                         <td>{{$dventa->total}}</td>
                                             <td class="text-center">
                                                 <div id="btn-pro" class="botones">
-                                                    <form action="{{ route('ventas.destroy', ['temp_id' => $dventa->temp_id]) }}" method="POST">
+                                                    <form action="{{ route('ventas.destroy', ['temp_id' => $dventa->temp_id]) }}" method="POST" id="formEliminarVenta">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">
+                                                        <button type="button" class="btn btn-danger" id="btnEliminarVenta">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                                              </svg>
+                                                            </svg>
                                                         </button>
                                                     </form>
                                                     <form action="{{ route('ventas.edit', ['temp_id' => $dventa->temp_id]) }}">                                   
                                                         <button class="btn btn-warning">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                                              </svg>
+                                                            </svg>
                                                         </button>
                                                     </form>
                                                 </div>
@@ -153,117 +153,133 @@
 <script>
     
     $(document).ready(function () {
-    // Manejar el cambio en la selección del producto
-    $('#prod_id').change(function () {
-        // Obtener el valor seleccionado
-        var selectedProductId = $(this).val();
-        $.ajax({
-            url: '/verificar-producto/' + selectedProductId,
-            type: 'GET',
-            success: function(response) {
-                // Verificar la respuesta del servidor
-                if (response.existe) {
-                    // Si el producto existe, mostrar un SweetAlert con el botón personalizado
-                    var detalleId = response.temp_id;
-                     $('#form-ventas')[0].reset();
-                    Swal.fire({
-                        title: 'Este producto ya está agregado',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Editar Detalle', // Cambiar el texto del botón
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
-                            window.location.href = '/ventas/' + detalleId + '/edit';
-                        }
-                    });
+        // Manejar el cambio en la selección del producto
+        $('#prod_id').change(function () {
+            // Obtener el valor seleccionado
+            var selectedProductId = $(this).val();
+            $.ajax({
+                url: '/verificar-producto/' + selectedProductId,
+                type: 'GET',
+                success: function(response) {
+                    // Verificar la respuesta del servidor
+                    if (response.existe) {
+                        // Si el producto existe, mostrar un SweetAlert con el botón personalizado
+                        var detalleId = response.temp_id;
+                        Swal.fire({
+                            title: 'Este producto ya está agregado',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Editar Detalle', // Cambiar el texto del botón
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
+                                window.location.href = '/ventas/' + detalleId + '/edit';
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Manejar el error si ocurre
+                    console.error(error);
                 }
-            },
-            error: function(xhr, status, error) {
-                // Manejar el error si ocurre
-                console.error(error);
-            }
-        });
-        if (selectedProductId !== 'opcion') {
-            // Obtener el precio del producto desde el atributo data-precio
-            var selectedProductPrice = $('option:selected', this).data('precio');
-            // Establecer el precio en el campo de entrada
-            $('#dventa_precio').val(selectedProductPrice);
-            // Actualizar el campo oculto de precio si es necesario
-            $('#precio').val(selectedProductPrice);
-            // Calcular el total cuando cambia el producto (precio y cantidad)
-            calcularTotal();
-        } else {
-            // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
-            $('#dventa_precio').val('');
-            $('#precio').val('');
-            // Limpiar el campo de total
-            $('#total').val('');
-        }
-    });
-
-
-
-    // Manejar el cambio en la cantidad
-    document.getElementById('dventa_cantidad').addEventListener('change', function() {
-        var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
-        var cantidadDisponibleEnTabla = parseInt($('#prod_id option:selected').data('cantidad'));
-        // Calcular el total cuando cambia la cantidad
-        if (cantidadIngresada > cantidadDisponibleEnTabla) {
-            // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
-            alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
-        } else {
-            // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
-            calcularTotal();
-        }
-       
-    });
-
-    // Manejar el cambio en el precio
-    document.getElementById('dventa_precio').addEventListener('change', function() {
-        // Calcular el total cuando cambia el precio
-        calcularTotal();
-    });
-
-    function calcularTotal() {
-        var cantidad = parseFloat($('#dventa_cantidad').val());
-        var precio = parseFloat($('#precio').val());
-
-        // Verificar si tanto cantidad como precio tienen valores
-        if (!isNaN(cantidad) && !isNaN(precio)) {
-            var total = Math.round(cantidad * precio);
-
-            if (!isNaN(total)) {
-                $('#total').val(total);
-
-                // Obtén la fila actual y actualiza el total en la columna correspondiente
-                var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
+            });
+            if (selectedProductId !== 'opcion') {
+                // Obtener el precio del producto desde el atributo data-precio
+                var selectedProductPrice = $('option:selected', this).data('precio');
+                // Establecer el precio en el campo de entrada
+                $('#dventa_precio').val(selectedProductPrice);
+                // Actualizar el campo oculto de precio si es necesario
+                $('#precio').val(selectedProductPrice);
+                // Calcular el total cuando cambia el producto (precio y cantidad)
+                calcularTotal();
             } else {
+                // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
+                $('#dventa_precio').val('');
+                $('#precio').val('');
+                // Limpiar el campo de total
                 $('#total').val('');
             }
+        });
+
+
+
+        // Manejar el cambio en la cantidad
+        document.getElementById('dventa_cantidad').addEventListener('change', function() {
+            var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
+            var cantidadDisponibleEnTabla = parseInt($('#prod_id option:selected').data('cantidad'));
+
+            if (cantidadIngresada > cantidadDisponibleEnTabla) {
+                // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
+                Swal.fire({
+                    title: 'La cantidad ingresada excede a la cantidad disponible',
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonText: 'Entendido',
+                });
+
+                // Deshabilita el botón de enviar
+                document.getElementById('botonEnviar').disabled = true;
+            } else {
+                // Si la cantidad ingresada es menor o igual, calcular el total y habilitar el botón de enviar
+                calcularTotal();
+                document.getElementById('botonEnviar').disabled = false;
+            }
+        });
+
+
+        // Manejar el cambio en el precio
+        document.getElementById('dventa_precio').addEventListener('change', function() {
+            // Calcular el total cuando cambia el precio
+            calcularTotal();
+        });
+
+        function calcularTotal() {
+            var cantidad = parseFloat($('#dventa_cantidad').val());
+            var precio = parseFloat($('#precio').val());
+
+            // Verificar si tanto cantidad como precio tienen valores
+            if (!isNaN(cantidad) && !isNaN(precio)) {
+                var total = Math.round(cantidad * precio);
+
+                if (!isNaN(total)) {
+                    $('#total').val(total);
+
+                    // Obtén la fila actual y actualiza el total en la columna correspondiente
+                    var currentRow = document.getElementById('current_row_id'); // Reemplaza 'current_row_id' con la clase o ID específico de la fila actual
+                } else {
+                    $('#total').val('');
+                }
+            }
         }
-    }
+    });
 
-    function verificarCantidad() {
-        // Obtener el valor de la cantidad ingresada por el usuario
-        var cantidadIngresada = parseInt(document.getElementById("dventa_cantidad").value);
-        
-        // Obtener la cantidad de productos disponibles desde la tabla de productos (reemplaza esto con tu lógica de cómo obtienes los datos de la tabla)
-        var cantidadDisponibleEnTabla = 10; // Aquí deberías obtener la cantidad real de la tabla de productos
-        
-        // Verificar si la cantidad ingresada por el usuario es mayor que la cantidad disponible en la tabla de productos
-        if (cantidadIngresada > cantidadDisponibleEnTabla) {
-            // Si la cantidad ingresada es mayor, mostrar un mensaje de alerta
-            alert("La cantidad ingresada excede la cantidad disponible en la tabla de productos.");
-        } else {
-            // Si la cantidad ingresada es menor o igual, mostrar un mensaje de éxito
-            alert("La cantidad ingresada es válida.");
+    document.addEventListener('DOMContentLoaded', function() {
+        // Define la función confirmarEliminacion
+        function confirmarEliminacion() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede revertir",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Envía el formulario para eliminar la venta
+                    document.getElementById('formEliminarVenta').submit();
+                }
+            });
         }
-    }
-});
 
-
+        // Asigna la función confirmarEliminacion al evento onclick del botón
+        var btnEliminarVenta = document.getElementById('btnEliminarVenta');
+        if (btnEliminarVenta) {
+            btnEliminarVenta.onclick = confirmarEliminacion;
+        }
+    });
 
 
 </script>
