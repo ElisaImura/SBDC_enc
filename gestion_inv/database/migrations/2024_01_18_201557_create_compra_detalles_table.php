@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('prod_id')->references('prod_id')->on('productos');
             $table->float('dcompra_precio');
             $table->integer('dcompra_cantidad');
-            $table->float('dcompra_iva');
             $table->timestamps();
         });
     }
