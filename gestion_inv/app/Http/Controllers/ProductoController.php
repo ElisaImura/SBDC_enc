@@ -20,10 +20,6 @@ class ProductoController extends Controller
         $rules = [
             'prod_nombre' => 'required',
             'prod_descripcion' => 'required',
-            'prod_cant' => 'required',
-            'prod_precioventa' => 'required',
-            'prod_preciocosto' => 'required',
-            //'cat_id' => 'required|exists:categorias,cat_id',
         ];
     
         $mensaje = [
@@ -41,9 +37,9 @@ class ProductoController extends Controller
         Producto::create([
             'prod_nombre' => $request->input('prod_nombre'),
             'prod_descripcion' => $request->input('prod_descripcion'),
-            'prod_cant' => $request->input('prod_cant'),
-            'prod_precioventa' => $request->input('prod_precioventa'),
-            'prod_preciocosto' => $request->input('prod_preciocosto'),
+            'prod_cant' => 0,
+            'prod_precioventa' => 0,
+            'prod_preciocosto' => 0,
             'cat_id' => $request->input('cat_id')
         ]);
     

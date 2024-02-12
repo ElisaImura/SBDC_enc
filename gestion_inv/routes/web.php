@@ -4,6 +4,7 @@ use App\Models\Venta_detalle;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaController;
@@ -80,3 +81,9 @@ Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obten
 Route::post('/ventas/concretarVenta', [VentaController::class, 'concretarVenta'])->middleware('auth')->name('ventas.concretarVenta');
 Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->middleware('auth')->name('ventas.crearCliente');
 Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarProducto'])->middleware('auth');
+
+
+//Compra Controller
+Route::get('/compras', [CompraController::class, 'index'])->middleware('auth')->name('compras.index');
+Route::get('/crear-tabla-temporal', [CompraController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
+Route::post('/comprasDetTemp/create', [CompraController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTempCompra.create');

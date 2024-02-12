@@ -3,13 +3,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compra;
 use App\Models\Proveedor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Compra_detalle;
-use App\Models\DetalleTemp;
-use App\Models\Venta;
+use App\Models\TempCompra;
 use App\Models\Producto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,15 +20,17 @@ class CompraController extends Controller
     {
         if (Schema::hasTable('temp_compra_detalles')) {
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
+            $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
             $proveedores = Proveedor::pluck('prove_nombre','prove_id');
-            $temp_compra_detalles = DetalleTemp::all();
-            return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','ventas', 'temp_compra_detalles'));
+            $temp_compra_detalles = TempCompra::all();
+            return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras', 'temp_compra_detalles'));
         }else{
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
+            $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $proveedor = Proveedor::pluck('prove_nombre','prove_id');
-            return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','ventas'));
+            $proveedores = Proveedor::pluck('prove_nombre','prove_id');
+            return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras'));
         }
         
     }
@@ -45,17 +47,16 @@ class CompraController extends Controller
         // Crea la nueva tabla temporal
         Schema::create('temp_compra_detalles', function (Blueprint $table) {
             $table->id('temp_id');
-            $table->unsignedBigInteger('compra_id');
             $table->unsignedBigInteger('prod_id');
             $table->integer('dcompra_precio');
-            $table->integer('dcompra_cantidad');           
-            $table->integer('total');
-
+            $table->integer('dcompra_pcompra');
+            $table->integer('dcompra_pventa');
+            $table->integer('dcompra_cantidad');
             $table->foreign('prod_id')->references('prod_id')->on('productos');
-            $table->foreign('compra_id')->references('compra_id')->on('compras');
     
             $table->timestamps();
         });
+    
     
         return redirect()->route('compras.index')->with('success', 'Se creó correctamente.');
     }
@@ -73,23 +74,24 @@ class CompraController extends Controller
     $total = $request->input('total') ?? 0; // Asigna un valor predeterminado si 'total' no está presente en la solicitud
 
     DB::table('temp_compra_detalles')->insert([
-        'compra_id' => $request->input('compra_id'),
         'prod_id' => $request->input('prod_id'),
-        'dcompra_precio' => $request->input('dcompra_precio'),
+        'dcompra_precio' => $request->input('dcompra_pcompra'),
+        'dcompra_pcompra' => $request->input('dcompra_pcompra'),
+        'dcompra_pventa' => $request->input('dcompra_pventa'),
         'dcompra_cantidad' => $request->input('dcompra_cantidad'),
-        'total' => $total,
         'created_at' => now(),
         'updated_at' => now(),
     ]);
 
     return redirect()->route('compras.index')->with('success', 'Se creó correctamente.');
 }
-    public function createVenta(Request $request)
+    public function createCompra(Request $request)
     {
 
-        Venta::create([
+        Compra::create([
             'prove_id' => $request->input('prove_id'),
-            'venta_fecha' => Carbon::now(), 
+            'compra_fecha' => Carbon::now(), 
+            'compra_factura' => $request->input('compra_factura'),
         ]);
     }
 
@@ -97,7 +99,7 @@ class CompraController extends Controller
 
     public function destroy($temp_id)
     {
-            $temp_compra_detalles = DetalleTemp::find($temp_id);
+            $temp_compra_detalles = TempCompra::find($temp_id);
             if (!$temp_compra_detalles) {
                 return redirect()->route('compras.index')->with('error', 'Compra no encontrada');
             }
@@ -109,18 +111,22 @@ class CompraController extends Controller
 
     public function edit($temp_id)
     {
-        $temp_compra_detalles = DetalleTemp::find($temp_id);
+        $temp_compra_detalles = TempCompra::find($temp_id);
+        $IDproductoSeleccionado = $temp_compra_detalles->prod_id;
         $productos = Producto::all();
-        return view('compras.edit', compact('temp_compra_detalles','productos'));
+        $ProductoSeleccionado = Producto::find($IDproductoSeleccionado); // Corregir aquí
+        $cantidad = $ProductoSeleccionado->prod_cant;
+        return view('compras.edit', compact('temp_compra_detalles', 'productos', 'cantidad'));
     }
+
     
     public function update(Request $request, $temp_id)
     {
-        $temp_compra_detalles = DetalleTemp::find($temp_id);
+        $temp_compra_detalles = TempCompra::find($temp_id);
         $temp_compra_detalles->prod_id = $request->input('prod_id');
-        $temp_compra_detalles->compra_id = $request->input('compra_id');
         $temp_compra_detalles->dcompra_cantidad = $request->input('dcompra_cantidad');
-        $temp_compra_detalles->dcompra_precio = $request->input('dcompra_precio');
+        $temp_compra_detalles->dcompra_pcompra = $request->input('dcompra_pcompra');
+        $temp_compra_detalles->dcompra_pventa = $request->input('dcompra_pventa');
         $temp_compra_detalles->total = $request->input('total');
 
         $temp_compra_detalles->save();
@@ -139,43 +145,43 @@ class CompraController extends Controller
         }
     }
 
-    public function concretarVenta(Request $request)
+    public function concretarCompra(Request $request)
     {
-      
         if (Schema::hasTable('temp_compra_detalles')) {
-            $venta = Venta::create([
+            $compra = Compra::create([
                 'prove_id' => $request->input('prove_id'),
-                'venta_fecha' => now(),
+                'compra_fecha' => now(),
             ]);
-
-            $productosTemporales = DetalleTemp::all();
-
+    
+            $productosTemporales = TempCompra::all();
+    
             foreach ($productosTemporales as $productoTemporal) {
                 Compra_detalle::create([
-
-                'compra_id' => $venta->compra_id,
-                'venta_id'=> $productoTemporal->venta_id,
-                'prod_id'=> $productoTemporal->prod_id,
-                'dcompra_precio'=> $productoTemporal->dcompra_precio,
-                'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
+                    'compra_id' => $compra->compra_id,
+                    'prod_id'=> $productoTemporal->prod_id,
+                    'dcompra_precio'=> $productoTemporal->dcompra_precio,
+                    'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
                 ]);
-                
-
+    
+                // Actualizar los valores en la tabla de productos
                 $producto = Producto::find($productoTemporal->prod_id);
-                $producto->prod_cant = ($producto->prod_cant)-($productoTemporal->dcompra_cantidad);
+                $producto->prod_cant += $productoTemporal->dcompra_cantidad; // Incrementar la cantidad
+                $producto->prod_precioventa = $productoTemporal->prod_precioventa; // Actualizar el precio de venta
+                $producto->prod_preciocosto = $productoTemporal->dcompra_precio; // Actualizar el precio de compra
                 $producto->save();
-
             }
-            // Paso 3: Eliminar los datos de la tabla temporal
+    
+            // Eliminar los datos de la tabla temporal después de procesarlos
             Schema::dropIfExists('temp_compra_detalles');
-
+    
             // Redirigir o devolver una respuesta como sea necesario
             return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
-        }else{
-            return redirect()->route('compras.index')->with('error', 'No se puede crear venta sin detalles');
+        } else {
+            return redirect()->route('compras.index')->with('error', 'No se puede crear compra sin detalles');
         }
     }
-
+    
+   
     public function verificarProducto($prod_id)
     {
         // Buscar el detalle en la tabla temporal que coincide con el prod_id
@@ -192,6 +198,7 @@ class CompraController extends Controller
             return response()->json(['existe' => false]);
         }
     }
+
 
 }
 
