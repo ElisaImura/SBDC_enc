@@ -28,7 +28,9 @@ body {
   margin-bottom: 30px;
 }
 
-
+#TextoTotal{
+  margin: 0;
+}
 
 
 /* Contenido de formularios */

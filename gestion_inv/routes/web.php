@@ -90,3 +90,17 @@ Route::post('/comprasDetTemp/create', [CompraController::class, 'createDetalleTe
 Route::post('/compras/concretarCompra', [CompraController::class, 'concretarCompra'])->middleware('auth')->name('compras.concretarCompra');
 Route::delete('/compras/{temp_id}', [CompraController::class, 'destroy'])->middleware('auth')->name('compras.destroy');
 Route::get('/compras/{temp_id}/edit', [CompraController::class, 'edit'])->middleware('auth')->name('compras.edit');
+Route::put('/compras/{temp_id}', [CompraController::class, 'update'])->middleware('auth')->name('compras.update');
+
+
+//Presupuesto Controller
+Route::get('/presupuesto', [PresupuestoController::class, 'index'])->middleware('auth')->name('presupuesto.index');
+Route::get('/crear-tabla-temporal', [PresupuestoController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
+Route::post('/presupuestoDetTemp/create', [PresupuestoController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTemp.create');
+Route::delete('/presupuesto/{temp_id}', [PresupuestoController::class, 'destroy'])->middleware('auth')->name('presupuesto.destroy');
+Route::get('/presupuesto/{temp_id}/edit', [PresupuestoController::class, 'edit'])->middleware('auth')->name('presupuesto.edit');
+Route::put('/presupuesto/{temp_id}', [PresupuestoController::class, 'update'])->middleware('auth')->name('presupuesto.update');
+Route::get('/obtener-precio-producto/{prod_id}', [PresupuestoController::class, 'obtenerPrecioProducto']);
+Route::post('/presupuesto/concretarVenta', [PresupuestoController::class, 'concretarVenta'])->middleware('auth')->name('presupuesto.concretarVenta');
+Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
+Route::get('/verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');

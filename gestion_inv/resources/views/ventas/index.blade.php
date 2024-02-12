@@ -133,9 +133,10 @@
                                 @endif
                                 
                                 </tbody>
-
-
                             </table>
+
+                            <strong><p id="TextoTotal">Total: </strong><span id="total-value"></span></p>
+
                         </div>
                     </div>
                 </div>
@@ -154,6 +155,36 @@
     
     $(document).ready(function () {
         // Manejar el cambio en la selección del producto
+
+        console.log(calcularTotalAcumulado());
+
+        // Calcula el total acumulado al cargar la página
+        var totalAcumulado = calcularTotalAcumulado();
+
+        // Muestra el total acumulado en la página
+        mostrarTotalAcumulado(totalAcumulado);
+
+        function calcularTotalAcumulado() {
+            var totalAcumulado = 0;
+            // Recorre cada fila de la tabla y suma los totales
+            $('table tbody tr').each(function () {
+                var totalDetalle = parseFloat($(this).find('td:eq(4)').text());
+                if (!isNaN(totalDetalle)) {
+                    totalAcumulado += totalDetalle;
+                }
+            });
+            return totalAcumulado;
+        }
+
+        function mostrarTotalAcumulado(totalAcumulado) {
+            if (totalAcumulado > 0) {
+                $('#total-value').text(totalAcumulado);
+            } else {
+                $('#total-value').text(" -");
+            }
+        }
+
+
         $('#prod_id').change(function () {
             // Obtener el valor seleccionado
             var selectedProductId = $(this).val();
