@@ -105,3 +105,4 @@ Route::get('/presupuesto-obtener-precio-producto/{prod_id}', [PresupuestoControl
 Route::post('/presupuesto/reiniciar', [PresupuestoController::class, 'reiniciar'])->middleware('auth')->name('presupuesto.reiniciar');
 Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
 Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');
+Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->middleware('auth')->name('presupuesto.generarPDF');
