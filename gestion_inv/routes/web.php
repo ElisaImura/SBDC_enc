@@ -102,6 +102,6 @@ Route::delete('/presupuesto/{temp_id}', [PresupuestoController::class, 'destroy'
 Route::get('/presupuesto/{temp_id}/edit', [PresupuestoController::class, 'edit'])->middleware('auth')->name('presupuesto.edit');
 Route::put('/presupuesto/{temp_id}', [PresupuestoController::class, 'update'])->middleware('auth')->name('presupuesto.update');
 Route::get('/presupuesto-obtener-precio-producto/{prod_id}', [PresupuestoController::class, 'PresupuestoObtenerPrecioProducto']);
-Route::post('/presupuesto/concretarVenta', [PresupuestoController::class, 'concretarVenta'])->middleware('auth')->name('presupuesto.concretarVenta');
+Route::post('/presupuesto/reiniciar', [PresupuestoController::class, 'reiniciar'])->middleware('auth')->name('presupuesto.reiniciar');
 Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
 Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');

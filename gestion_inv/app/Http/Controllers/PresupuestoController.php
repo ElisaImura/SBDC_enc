@@ -129,39 +129,17 @@ class PresupuestoController extends Controller
         }
     }
 
-    public function concretarVenta(Request $request)
+    public function reiniciar(Request $request)
     {
       
         if (Schema::hasTable('Presupuesto_temp_venta_detalles')) {
-            $venta = Venta::create([
-                'cli_id' => $request->input('cli_id'),
-                'venta_fecha' => now(),
-            ]);
-
-            $productosTemporales = PresupuestoDetalleTemp::all();
-
-            foreach ($productosTemporales as $productoTemporal) {
-                Venta_detalle::create([
-
-                'venta_id' => $venta->venta_id,
-                'prod_id'=> $productoTemporal->prod_id,
-                'dventa_precio'=> $productoTemporal->dventa_precio,
-                'dventa_cantidad'=> $productoTemporal->dventa_cantidad,
-                ]);
-                
-
-                $producto = Producto::find($productoTemporal->prod_id);
-                $producto->prod_cant = ($producto->prod_cant)-($productoTemporal->dventa_cantidad);
-                $producto->save();
-
-            }
             // Paso 3: Eliminar los datos de la tabla temporal
             Schema::dropIfExists('Presupuesto_temp_venta_detalles');
 
             // Redirigir o devolver una respuesta como sea necesario
-            return redirect()->route('presupuesto.index')->with('success', 'Venta creada correctamente');
+            return redirect()->route('presupuesto.index')->with('success', 'Presupuesto reiniciado correctamente');
         }else{
-            return redirect()->route('presupuesto.index')->with('error', 'No se puede crear venta sin detalles');
+            return redirect()->route('presupuesto.index')->with('error', 'No existe presupuesto para reiniciar');
         }
     }
 
