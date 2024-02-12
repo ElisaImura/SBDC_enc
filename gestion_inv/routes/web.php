@@ -87,3 +87,6 @@ Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarP
 Route::get('/compras', [CompraController::class, 'index'])->middleware('auth')->name('compras.index');
 Route::get('/crear-tabla-temporal', [CompraController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
 Route::post('/comprasDetTemp/create', [CompraController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTempCompra.create');
+Route::post('/compras/concretarCompra', [CompraController::class, 'concretarCompra'])->middleware('auth')->name('compras.concretarCompra');
+Route::delete('/compras/{temp_id}', [CompraController::class, 'destroy'])->middleware('auth')->name('compras.destroy');
+Route::get('/compras/{temp_id}/edit', [CompraController::class, 'edit'])->middleware('auth')->name('compras.edit');
