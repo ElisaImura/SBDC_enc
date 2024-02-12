@@ -49,20 +49,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="prod_cant">Cantidad:</label>
-                                        <input type="text" name="prod_cant" id="prod_cant" class="form-control" value="{{ old('prod_cant') }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="prod_precioventa">Precio Venta:</label>
-                                        <input type="number" name="prod_precioventa" id="prod_precioventa" class="form-control" value="{{ old('prod_precioventa') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="prod_preciocosto">Precio Compra:</label>
-                                        <input type="number" name="prod_preciocosto" id="prod_preciocosto" class="form-control" value="{{ old('prod_preciocosto') }}">
-                                    </div>
-
-                                    <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                     </div>
                                 </form>

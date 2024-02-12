@@ -2,14 +2,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Categoría</title>
-    @include('layouts.head') 
+    @include('layouts.head')
 </head>
 
 @include('layouts.navbar')
 
-<body> 
+<body>
     <div id="main-container">
-      @include('layouts.sidebar')
+        @include('layouts.sidebar')
 
         <div class="content">
             <div class="container mt-4">
@@ -23,7 +23,8 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="cat_nombre">Nombre de la categoría</label>
-                                <input type="text" class="form-control" name="cat_nombre" value="{{ $categoria->cat_nombre }}" required>
+                                <input type="text" class="form-control" name="cat_nombre"
+                                    value="{{ $categoria->cat_nombre }}" required>
 
                             </div>
                             <button type="submit" class="btn btn-primary">Actualizar Categoría</button>
@@ -34,6 +35,6 @@
         </div>
     </div>
 
-    @include('layouts.footer') 
+    @include('layouts.footer')
 
 </body>
