@@ -7,6 +7,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
@@ -95,12 +96,12 @@ Route::put('/compras/{temp_id}', [CompraController::class, 'update'])->middlewar
 
 //Presupuesto Controller
 Route::get('/presupuesto', [PresupuestoController::class, 'index'])->middleware('auth')->name('presupuesto.index');
-Route::get('/crear-tabla-temporal', [PresupuestoController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
-Route::post('/presupuestoDetTemp/create', [PresupuestoController::class, 'createDetalleTemp'])->middleware('auth')->name('DetalleTemp.create');
+Route::get('/presupuesto-crear-tabla-temporal', [PresupuestoController::class, 'createTempTable'])->middleware('auth')->name('tablatemp.create');
+Route::post('/presupuestoDetTemp/create', [PresupuestoController::class, 'createDetalleTemp'])->middleware('auth')->name('PresupuestoDetalleTemp.create');
 Route::delete('/presupuesto/{temp_id}', [PresupuestoController::class, 'destroy'])->middleware('auth')->name('presupuesto.destroy');
 Route::get('/presupuesto/{temp_id}/edit', [PresupuestoController::class, 'edit'])->middleware('auth')->name('presupuesto.edit');
 Route::put('/presupuesto/{temp_id}', [PresupuestoController::class, 'update'])->middleware('auth')->name('presupuesto.update');
-Route::get('/obtener-precio-producto/{prod_id}', [PresupuestoController::class, 'obtenerPrecioProducto']);
+Route::get('/presupuesto-obtener-precio-producto/{prod_id}', [PresupuestoController::class, 'PresupuestoObtenerPrecioProducto']);
 Route::post('/presupuesto/concretarVenta', [PresupuestoController::class, 'concretarVenta'])->middleware('auth')->name('presupuesto.concretarVenta');
 Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
-Route::get('/verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');
+Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');
