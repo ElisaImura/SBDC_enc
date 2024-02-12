@@ -1,3 +1,7 @@
+@php
+    require 'C:\Users\Yuri\Documents\SBDC_enc\gestion_inv\vendor\autoload.php';
+@endphp
+
 <head>
     <title>Easy System</title>
     @include('layouts.head')   
