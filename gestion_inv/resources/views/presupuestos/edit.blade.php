@@ -15,17 +15,17 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Editar Venta</div>
+                            <div class="card-header">Editar Detalle de Presupuesto</div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('ventas.update', ['temp_id' => $temp_venta_detalles->temp_id]) }}">
+                                <form method="POST" action="{{ route('presupuesto.update', ['temp_id' => $Presupuesto_temp_venta_detalles->temp_id]) }}">
                                     @csrf
                                     @method('PUT') <!-- Cambiado a PUT -->
                                     <div class="form-group">
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="form-control">
                                             @foreach($productos as $producto)
-                                                <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}" {{ $producto->prod_id == optional($temp_venta_detalles->producto)->prod_id ? 'selected' : '' }}>
+                                                <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}" {{ $producto->prod_id == optional($Presupuesto_temp_venta_detalles->producto)->prod_id ? 'selected' : '' }}>
                                                     {{ $producto->prod_nombre }}</option>
                                             @endforeach
                                         </select>
@@ -33,18 +33,18 @@
 
                                     <div class="form-group">
                                         <label for="dventa_cantidad">Cantidad:</label>
-                                        <input type="number" name="dventa_cantidad" id="dventa_cantidad" class="form-control" value="{{ $temp_venta_detalles->dventa_cantidad }}">
+                                        <input type="number" name="dventa_cantidad" id="dventa_cantidad" class="form-control" value="{{ $Presupuesto_temp_venta_detalles->dventa_cantidad }}">
                                     </div>
 
-                                    <input type="hidden" name="precio" id="precio" value="{{ $temp_venta_detalles->dventa_precio }}">
+                                    <input type="hidden" name="precio" id="precio" value="{{ $Presupuesto_temp_venta_detalles->dventa_precio }}">
                                     <div class="form-group">
                                         <label for="dventa_precio">Precio</label>
-                                        <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" value="{{ $temp_venta_detalles->dventa_precio }}" readonly>
+                                        <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" value="{{ $Presupuesto_temp_venta_detalles->dventa_precio }}" readonly>
                                     </div>
                                                                 
                                     <div class="form-group">
                                         <label for="total">Total:</label>
-                                        <input type="number" class="form-control" name="total" id="total" placeholder="Total" value="{{ $temp_venta_detalles->total }}" readonly>
+                                        <input type="number" class="form-control" name="total" id="total" placeholder="Total" value="{{ $Presupuesto_temp_venta_detalles->total }}" readonly>
                                     </div>
 
                                     <div class="form-group">

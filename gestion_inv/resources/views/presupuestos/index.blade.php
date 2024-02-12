@@ -29,7 +29,7 @@
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Nueva Venta</strong>
+                            <strong>Presupuesto</strong>
                         </div>
                         <div class="card-body">
                             <form id="form-presupuesto" method="post" action="{{ route('PresupuestoDetalleTemp.create') }}">
@@ -118,7 +118,17 @@
                                 </tbody>
                             </table>
 
-                            <strong><p id="TextoTotal">Total: </strong><span id="total-value"></span></p>
+                            <div class="row justify-content-between">
+                                <div class="col-md-5">
+                                    <strong><p id="TextoTotal">Total: </strong><span id="total-value"></span></p>
+                                </div>
+                                <div class="col-md-4 d-flex justify-content-end">
+                                    <form method="post" action="{{ route('presupuesto.reiniciar') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Reiniciar</button>
+                                    </form>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
