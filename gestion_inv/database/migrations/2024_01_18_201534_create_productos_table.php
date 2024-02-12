@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreign('cat_id')->references('cat_id')->on('categorias');
             $table->text('prod_nombre');
             $table->text('prod_descripcion');
-            $table->text('prod_cant');
-            $table->text('prod_precioventa');
-            $table->text('prod_preciocosto');
+            $table->integer('prod_cant');
+            $table->integer('prod_precioventa');
+            $table->integer('prod_preciocosto');
             $table->timestamps();
         });
     }

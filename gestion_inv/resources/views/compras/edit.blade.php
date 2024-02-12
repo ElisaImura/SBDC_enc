@@ -18,7 +18,7 @@
                             <div class="card-header">Editar Venta</div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('ventas.update', ['temp_id' => $temp_venta_detalles->temp_id]) }}">
+                                <form method="POST" action="{{ route('compras.update', ['temp_id' => $temp_venta_detalles->temp_id]) }}">
                                     @csrf
                                     @method('PUT') <!-- Cambiado a PUT -->
                                     <div class="form-group">

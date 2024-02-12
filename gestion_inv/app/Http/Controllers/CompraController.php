@@ -127,61 +127,46 @@ class CompraController extends Controller
         $temp_compra_detalles->dcompra_cantidad = $request->input('dcompra_cantidad');
         $temp_compra_detalles->dcompra_pcompra = $request->input('dcompra_pcompra');
         $temp_compra_detalles->dcompra_pventa = $request->input('dcompra_pventa');
-        $temp_compra_detalles->total = $request->input('total');
 
         $temp_compra_detalles->save();
         return redirect()->route('compras.index')->with('success', 'Compra actualizada correctamente');
     }
 
-    public function obtenerPrecioProducto($prod_id)
-    {
-        // Lógica para obtener el precio del producto
-        $producto = Producto::find($prod_id);
-
-        if ($producto) {
-            return response()->json(['precio' => $producto->prod_precioventa], 200);
-        } else {
-            return response()->json(['error' => 'Producto no encontrado o precio no disponible'], 404);
-        }
-    }
-
     public function concretarCompra(Request $request)
     {
+      
         if (Schema::hasTable('temp_compra_detalles')) {
             $compra = Compra::create([
                 'prove_id' => $request->input('prove_id'),
-                'compra_fecha' => now(),
+                'compra_factura' => $request->input('compra_factura'),
+                'compra_fecha' => Carbon::now(),
             ]);
-    
+
             $productosTemporales = TempCompra::all();
-    
             foreach ($productosTemporales as $productoTemporal) {
                 Compra_detalle::create([
-                    'compra_id' => $compra->compra_id,
-                    'prod_id'=> $productoTemporal->prod_id,
-                    'dcompra_precio'=> $productoTemporal->dcompra_precio,
-                    'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
+                'compra_id'=>$compra->compra_id,
+                'prod_id'=> $productoTemporal->prod_id,
+                'dcompra_precio'=> $productoTemporal->dcompra_precio,
+                'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
                 ]);
-    
-                // Actualizar los valores en la tabla de productos
+                
+
                 $producto = Producto::find($productoTemporal->prod_id);
-                $producto->prod_cant += $productoTemporal->dcompra_cantidad; // Incrementar la cantidad
-                $producto->prod_precioventa = $productoTemporal->prod_precioventa; // Actualizar el precio de venta
-                $producto->prod_preciocosto = $productoTemporal->dcompra_precio; // Actualizar el precio de compra
+                $producto->prod_cant = ($producto->prod_cant)-($productoTemporal->dcompra_cantidad);
                 $producto->save();
+                
             }
-    
-            // Eliminar los datos de la tabla temporal después de procesarlos
+            // Paso 3: Eliminar los datos de la tabla temporal
             Schema::dropIfExists('temp_compra_detalles');
-    
+
             // Redirigir o devolver una respuesta como sea necesario
-            return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
-        } else {
+            return redirect()->route('compras.index')->with('success', 'compra creada correctamente');
+        }else{
             return redirect()->route('compras.index')->with('error', 'No se puede crear compra sin detalles');
         }
     }
     
-   
     public function verificarProducto($prod_id)
     {
         // Buscar el detalle en la tabla temporal que coincide con el prod_id

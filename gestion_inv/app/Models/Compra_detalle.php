@@ -9,13 +9,12 @@ class Compra_detalle extends Model
 {
     use HasFactory;
     public $table = 'compra_detalles';
+    protected $primaryKey = 'dcompra_id';
      protected $fillable = [
-        'dcompra_id',
         'compra_id',
         'prod_id',
         'dcompra_precio',
         'dcompra_cantidad',
-        'dcompra_iva'
     ];
     public function compra (){
         return $this->belongsTo('App\Models\Compra','compra_id');
