@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Venta_detalle;
@@ -11,6 +11,7 @@ use App\Models\PresupuestoDetalleTemp;
 use App\Models\Producto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PDF;
 
 class PresupuestoController extends Controller
 {
@@ -158,5 +159,11 @@ class PresupuestoController extends Controller
             // Si no se encuentra el detalle, devolver false en la respuesta JSON
             return response()->json(['existe' => false]);
         }
+    }
+
+    public function generarPDF(){
+        $presupuesto = PresupuestoDetalleTemp::all();
+        $pdf =PDF::loadView('presupuesto.pdf',compact('presupuesto'));
+        return $pdf->download('presupuesto.pdf');
     }
 }

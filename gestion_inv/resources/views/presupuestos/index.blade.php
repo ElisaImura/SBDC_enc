@@ -127,6 +127,10 @@
                                         @csrf
                                         <button type="submit" class="btn btn-primary">Reiniciar</button>
                                     </form>
+                                    <form id="PDF" method="post" action="{{ route('presupuesto.generarPDF') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                                    </form>
                                 </div>
                             </div>
 

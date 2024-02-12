@@ -28,10 +28,6 @@ body {
   margin-bottom: 30px;
 }
 
-#TextoTotal{
-  margin: 0;
-}
-
 
 /* Contenido de formularios */
 #form{
@@ -66,6 +62,10 @@ body {
 
 #aggCat{
   margin-bottom: 30px;
+}
+
+#TextoTotal{
+  margin: 0;
 }
 
 /*Iconos*/
@@ -133,3 +133,10 @@ nav{
   margin-left: 30%;
 }
 
+
+
+/* PDF */
+
+#PDF{
+  margin-left: 10px;
+}
