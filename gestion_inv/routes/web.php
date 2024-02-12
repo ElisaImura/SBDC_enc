@@ -82,7 +82,7 @@ Route::get('/obtener-precio-producto/{prod_id}', [VentaController::class, 'obten
 Route::post('/ventas/concretarVenta', [VentaController::class, 'concretarVenta'])->middleware('auth')->name('ventas.concretarVenta');
 Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->middleware('auth')->name('ventas.crearCliente');
 Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarProducto'])->middleware('auth');
-
+Route::get('/verificar-factura/{facturaValue}', [CompraController::class, 'verificarFactura'])->middleware('auth');
 
 //Compra Controller
 Route::get('/compras', [CompraController::class, 'index'])->middleware('auth')->name('compras.index');

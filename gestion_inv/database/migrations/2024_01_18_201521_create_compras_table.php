@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('prove_id');
             $table->foreign('prove_id')->references('prove_id')->on('proveedores');
             $table->date('compra_fecha');
-            $table->BigInteger('compra_factura');
+            $table->bigInteger('compra_factura')->unique();
             $table->timestamps();
         });
     }

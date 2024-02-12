@@ -13,6 +13,7 @@ use App\Models\TempCompra;
 use App\Models\Producto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class CompraController extends Controller
 {
@@ -37,8 +38,7 @@ class CompraController extends Controller
 
     public function createTempTable()
     {
-
-
+    
         // Verifica si la tabla temporal ya existe y, si es así, elimínala
         if (Schema::hasTable('temp_compra_detalles')) {
             Schema::dropIfExists('temp_compra_detalles');
@@ -85,15 +85,42 @@ class CompraController extends Controller
 
     return redirect()->route('compras.index')->with('success', 'Se creó correctamente.');
 }
-    public function createCompra(Request $request)
-    {
+public function createCompra(Request $request)
+{
+    try {
+        $rules = [
+            'compra_factura' => 'unique:compras,compra_factura',
+        ];
+    
+        $mensaje = [
+            'unique' => 'El :attribute debe ser único',
+        ];
+    
+        $this->validate($request, $rules, $mensaje);
 
+        // Verificar si ya existe una compra con el mismo número de factura
+        $existingCompra = Compra::where('compra_factura', $request->input('compra_factura'))->first();
+        
+        if ($existingCompra) {
+            // Si ya existe, retornar con un mensaje de error
+            return redirect()->route('compras.index')->with('error', 'La factura debe ser única');
+        }
+
+        // Si no existe, crear la compra normalmente
         Compra::create([
             'prove_id' => $request->input('prove_id'),
             'compra_fecha' => Carbon::now(), 
             'compra_factura' => $request->input('compra_factura'),
         ]);
+
+        return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
+    } catch (\Exception $e) {
+        // Manejar cualquier excepción que pueda ocurrir durante el proceso de creación de la compra
+        return redirect()->route('compras.index')->with('error', 'Error al crear la compra: ' . $e->getMessage());
     }
+}
+
+
 
 
 
@@ -135,55 +162,47 @@ class CompraController extends Controller
     public function concretarCompra(Request $request)
     {
       
-        if (Schema::hasTable('temp_compra_detalles')) {
-            $compra = Compra::create([
-                'prove_id' => $request->input('prove_id'),
-                'compra_factura' => $request->input('compra_factura'),
-                'compra_fecha' => Carbon::now(),
-            ]);
-
-            $productosTemporales = TempCompra::all();
-            foreach ($productosTemporales as $productoTemporal) {
-                Compra_detalle::create([
-                'compra_id'=>$compra->compra_id,
-                'prod_id'=> $productoTemporal->prod_id,
-                'dcompra_precio'=> $productoTemporal->dcompra_precio,
-                'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
-                ]);
-                
-
-                $producto = Producto::find($productoTemporal->prod_id);
-                $producto->prod_cant = ($producto->prod_cant)+($productoTemporal->dcompra_cantidad);
-                $producto->save();
-                
-            }
-            // Paso 3: Eliminar los datos de la tabla temporal
-            Schema::dropIfExists('temp_compra_detalles');
-
-            // Redirigir o devolver una respuesta como sea necesario
-            return redirect()->route('compras.index')->with('success', 'compra creada correctamente');
-        }else{
-            return redirect()->route('compras.index')->with('error', 'No se puede crear compra sin detalles');
-        }
-    }
+        DB::beginTransaction();
     
-    public function verificarProducto($prod_id)
-    {
-        // Buscar el detalle en la tabla temporal que coincide con el prod_id
-        $detalle = DB::table('temp_compra_detalles')
-            ->where('prod_id', $prod_id)
-            ->first();
-
-        // Verificar si se encontró el detalle
-        if ($detalle) {
-            // Si el detalle existe, devolver su ID en la respuesta JSON
-            return response()->json(['existe' => true, 'temp_id' => $detalle->temp_id]);
-        } else {
-            // Si no se encuentra el detalle, devolver false en la respuesta JSON
-            return response()->json(['existe' => false]);
+        try {
+            // Verificar si ya existe una compra con el mismo número de factura
+            $existingCompra = Compra::where('compra_factura', $request->input('compra_factura'))->exists();
+            
+            if ($existingCompra) {
+                // Si ya existe, hacer rollback de la transacción y mostrar un alert
+                DB::rollBack();
+                return redirect()->route('compras.index')->with('error', 'El número de factura ya existe. Debe ser único.');
+            }
+    
+            // Si no existe, crear la compra normalmente
+            Compra::create([
+                'prove_id' => $request->input('prove_id'),
+                'compra_fecha' => Carbon::now(), 
+                'compra_factura' => $request->input('compra_factura'),
+            ]);
+    
+            // Confirmar la transacción
+            DB::commit();
+    
+            return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción, hacer rollback de la transacción y mostrar un mensaje de error
+            DB::rollBack();
+            return redirect()->route('compras.index')->with('error', 'Error al crear la compra: ' . $e->getMessage());
         }
     }
-
+  
+    
+    public function verificarFactura($facturaValue)
+    {
+        // Verificar si ya existe una compra con el mismo número de factura
+        $existingCompra = Compra::where('compra_factura', $facturaValue)->exists();
+        
+        // Devolver una respuesta JSON indicando si la factura existe o no
+        return response()->json([
+            'exists' => $existingCompra
+        ]);
+    }
 
 }
 
