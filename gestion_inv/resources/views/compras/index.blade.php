@@ -75,12 +75,12 @@
                                         <option value="{{ $prove_id }}">{{ $prove_nombre }}</option>
                                     @endforeach
                                 </select>
-                                <input type="hidden" name="compra_factura" id="compra_factura" value="">
+                                
                                 <div class="form-group">
                                     <label for="compra_factura">Factura N°</label>
-                                    <input type="number" class="form-control" name="compra_factura" id="compra_factura" placeholder="Numero de Factura" required>
+                                    <input type="number" class="form-control" name="compra_factura" id="compra_factura_input" placeholder="Numero de Factura" required>
                                 </div>
-                            </div>
+                             </div>
                             <button type="submit" class="btn btn-primary">Concretar compra</button>
                         </form>
                       </div>
@@ -118,13 +118,14 @@
                                                     <form action="{{ route('compras.destroy', ['temp_id' => $dcompra->temp_id]) }}" method="POST" id="formEliminarCompra-{{ $dcompra->temp_id }}" data-id="{{ $dcompra->temp_id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btnEliminarCompra">
+                                                        <button type="button" class="btn btn-danger btnEliminarCompra" onclick="confirmarEliminacion(this)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                                             </svg>
                                                         </button>
                                                     </form>
+                                                    
                                                     
                                                     
                                                     <form action="{{ route('compras.edit', ['temp_id' => $dcompra->temp_id]) }}">                                   
@@ -211,12 +212,9 @@
             }
         });
 
-        function confirmarEliminacion() {
-            // Obtiene el formulario asociado al botón clickeado
-            var formulario = event.target.closest('form');
-            
-            // Obtiene el valor del atributo data-id del formulario
-            var id = formulario.dataset.id;
+        function confirmarEliminacion(btnEliminar) {
+            var formulario = btnEliminar.closest('form');
+        
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Esta acción no se puede revertir",
@@ -228,11 +226,11 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Envía el formulario para eliminar la venta
                     formulario.submit();
                 }
             });
         }
+        
 
         window.addEventListener('load', function() {
             var formsEliminar = document.querySelectorAll('form[id^="formEliminarCompra-"]');
@@ -251,6 +249,32 @@
 
     });
 
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtener el input del número de factura
+        const inputFactura = document.getElementById('compra_factura_input');
+
+        // Agregar un event listener para verificar la unicidad del número de factura al cambiar su valor
+        inputFactura.addEventListener('change', function() {
+            // Obtener el valor del número de factura
+            const facturaValue = inputFactura.value;
+
+            // Realizar una petición AJAX para verificar si el número de factura ya existe
+            fetch(`/verificarFactura/${facturaValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Si el número de factura ya existe, mostrar un mensaje de error
+                    if (data.exists) {
+                        alert('El número de factura ya existe. Debe ser único.');
+                        // Limpiar el valor del input para que el usuario pueda ingresar un nuevo número
+                        inputFactura.value = '';
+                        // Enfocar nuevamente en el input para que el usuario pueda ingresar un nuevo número
+                        inputFactura.focus();
+                    }
+                })
+                .catch(error => console.error('Error al verificar el número de factura:', error));
+        });
+    });
 </script>
 
 </body>
