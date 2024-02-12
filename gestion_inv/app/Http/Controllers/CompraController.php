@@ -153,7 +153,7 @@ class CompraController extends Controller
                 
 
                 $producto = Producto::find($productoTemporal->prod_id);
-                $producto->prod_cant = ($producto->prod_cant)-($productoTemporal->dcompra_cantidad);
+                $producto->prod_cant = ($producto->prod_cant)+($productoTemporal->dcompra_cantidad);
                 $producto->save();
                 
             }
