@@ -11,6 +11,7 @@ use App\Models\PresupuestoDetalleTemp;
 use App\Models\Producto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 use PDF;
 
 class PresupuestoController extends Controller
@@ -161,9 +162,11 @@ class PresupuestoController extends Controller
         }
     }
 
-    public function generarPDF(){
-        $presupuesto = PresupuestoDetalleTemp::all();
-        $pdf =PDF::loadView('presupuesto.pdf',compact('presupuesto'));
-        return $pdf->download('presupuesto.pdf');
-    }
+    public function generarPDF()
+{
+    $Presupuesto_temp_venta_detalles = PresupuestoDetalleTemp::all();
+    $pdf = PDF::loadView('mi_vista', compact('Presupuesto_temp_venta_detalles'));
+    return $pdf->download('archivo.pdf');
+}
+
 }
