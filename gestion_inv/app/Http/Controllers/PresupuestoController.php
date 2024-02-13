@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Venta_detalle;
@@ -11,7 +11,6 @@ use App\Models\PresupuestoDetalleTemp;
 use App\Models\Producto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Dompdf\Dompdf;
 use PDF;
 
 class PresupuestoController extends Controller
@@ -162,11 +161,17 @@ class PresupuestoController extends Controller
         }
     }
 
-    public function generarPDF()
-{
-    $Presupuesto_temp_venta_detalles = PresupuestoDetalleTemp::all();
-    $pdf = PDF::loadView('mi_vista', compact('Presupuesto_temp_venta_detalles'));
-    return $pdf->download('archivo.pdf');
-}
+    public function generarPDF(){
+        $Presupuesto_temp_venta_detalles = PresupuestoDetalleTemp::all();
+        
+        // Calcula el total de los detalles
+        $totalDetalles = $Presupuesto_temp_venta_detalles->sum('total');
+        
+        // Carga la vista del PDF con los detalles y el total
+        $pdf = PDF::loadView('presupuestos.pdf', compact('Presupuesto_temp_venta_detalles', 'totalDetalles'));
+        
+        // Descarga el PDF
+        return $pdf->download('presupuestos.pdf');
+    }
 
 }
