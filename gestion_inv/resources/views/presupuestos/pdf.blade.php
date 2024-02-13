@@ -20,7 +20,7 @@
         }
 
         th {
-            background-color: #007bff;
+            background-color: #b4d3f5;
             color: #fff;
             text-align: center; /* Centra el texto en las celdas del encabezado */
         }
@@ -32,6 +32,21 @@
         h1 {
             text-align: center; /* Centra el texto del encabezado principal */
             margin-top: 20px; /* Ajusta el margen superior del encabezado principal */
+        }
+        .total-container {
+            display: inline-block; /* Hace que el contenedor se comporte como un elemento en línea, pero que aún puede tener anchura y altura */
+            vertical-align: middle; /* Alinea verticalmente el contenedor con respecto a otros elementos en línea */
+            padding-top: 20px;
+        }
+        
+        #TextoTotal {
+            display: inline; /* Hace que el párrafo se comporte como un elemento en línea */
+            margin-left: 5px; /* Añade un espacio entre el texto "Total:" y el número */
+            padding-top: 20px;
+        }
+        @page {
+            margin: 20px;
+            border: 1px solid black; /* Define el borde de página */
         }
     </style>
 </head> 
@@ -73,7 +88,10 @@
                         </table>
                         <div class="row justify-content-between">
                             <div class="col-md-5">
-                                <strong><p id="TextoTotal">Total: </strong>{{ $totalDetalles }}</p>
+                                <div class="total-container">
+                                    <strong>Total:</strong>
+                                    <p id="TextoTotal">{{ $totalDetalles }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
