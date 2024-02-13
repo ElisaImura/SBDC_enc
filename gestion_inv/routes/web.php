@@ -11,7 +11,7 @@ use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
-
+use App\Http\Controllers\ReporteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -106,3 +106,8 @@ Route::post('/presupuesto/reiniciar', [PresupuestoController::class, 'reiniciar'
 Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
 Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');
 Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->middleware('auth')->name('presupuesto.generarPDF');
+
+//Generar Reportes 
+
+Route::get('/reportes', [ReporteController::class, 'formulario'])->name('reportes.index');
+Route::get('/reportes/pdf', [ReporteController::class, 'generar'])->name('reportes.pdf');
