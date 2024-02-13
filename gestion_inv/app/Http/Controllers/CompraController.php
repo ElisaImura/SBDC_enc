@@ -172,18 +172,40 @@ public function createCompra(Request $request)
                 // Si ya existe, hacer rollback de la transacción y mostrar un alert
                 DB::rollBack();
                 return redirect()->route('compras.index')->with('error', 'El número de factura ya existe. Debe ser único.');
+
+            }else if (Schema::hasTable('temp_compra_detalles')) {
+                    $compra = Compra::create([
+                        'prove_id' => $request->input('prove_id'),
+                        'compra_fecha' => Carbon::now(), 
+                        'compra_factura' => $request->input('compra_factura'),
+                    ]);
+        
+                    $productosTemporales = TempCompra::all();
+        
+                    foreach ($productosTemporales as $productoTemporal) {
+                        Compra_detalle::create([
+                            'compra_id' => $compra->compra_id,
+                            'prod_id'=> $productoTemporal->prod_id,
+                            'dcompra_cantidad'=> $productoTemporal->dcompra_cantidad,
+                            'dcompra_pventa'=> $productoTemporal->dcompra_pventa,
+                            'dcompra_precio'=> $productoTemporal->dcompra_precio,
+
+                        ]);
+                        
+        
+                        $producto = Producto::find($productoTemporal->prod_id);
+                        $producto->prod_cant = ($producto->prod_cant)+($productoTemporal->dcompra_cantidad);
+                        $producto->prod_preciocosto = $productoTemporal->dcompra_precio;
+                        $producto->prod_precioventa = $productoTemporal->dcompra_pventa;
+                        $producto->save();
+        
+                    }
+                    // Paso 3: Eliminar los datos de la tabla temporal
+                    Schema::dropIfExists('temp_compra_detalles');
+        
             }
     
-            // Si no existe, crear la compra normalmente
-            Compra::create([
-                'prove_id' => $request->input('prove_id'),
-                'compra_fecha' => Carbon::now(), 
-                'compra_factura' => $request->input('compra_factura'),
-            ]);
-    
-            // Confirmar la transacción
-            DB::commit();
-    
+            
             return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
         } catch (\Exception $e) {
             // Si ocurre alguna excepción, hacer rollback de la transacción y mostrar un mensaje de error
@@ -191,7 +213,7 @@ public function createCompra(Request $request)
             return redirect()->route('compras.index')->with('error', 'Error al crear la compra: ' . $e->getMessage());
         }
     }
-  
+
     
     public function verificarFactura($facturaValue)
     {
