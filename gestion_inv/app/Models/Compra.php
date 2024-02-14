@@ -19,4 +19,8 @@ class Compra extends Model
     public function proveedor (){
         return $this->belongsTo('App\Models\Proveedor','prove_id');
     }
+    public function detalles()
+    {
+        return $this->hasMany(Compra_detalle::class, 'compra_id'); // 'compra_id' es el nombre de la clave foránea en la tabla compra_detalles
+    }
 }

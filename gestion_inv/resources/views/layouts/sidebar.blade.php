@@ -31,8 +31,13 @@
         </a>
       </li>
       <li class="mb-1">
-        <a href="{{ route('categorias.index') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
-          Reportes
+        <a href="{{ route('reportes.proveedor') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+          Reportes Compras
+        </a>
+      </li>
+      <li class="mb-1">
+        <a href="{{ route('reportes.cliente') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+          Reportes Ventas
         </a>
       </li>
       <li class="mb-1">

@@ -22,6 +22,10 @@ class Venta extends Model
     {
         return $this->hasMany(Venta_detalle::class);
     }
+    public function detalles()
+    {
+        return $this->hasMany(Venta_detalle::class, 'venta_id'); // 'compra_id' es el nombre de la clave foránea en la tabla compra_detalles
+    }
 
     
 }
