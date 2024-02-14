@@ -28,13 +28,15 @@
 
     @if ($tipoReporte === 'ventas' && isset($datos['ventas']) && count($datos['ventas']) > 0)
 <p>Se realizaron un total de {{ $total }} {{ $tipoReporte }} en el rango de fechas proporcionado.</p>
-        <p>Cantidad de Ventas: {{ $cantidadVentas }}</p>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <!-- Agrega más columnas según los campos de tu modelo de ventas -->
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,7 +44,22 @@
                     <tr>
                         <td>{{ $venta->venta_id }}</td>
                         <td>{{ $venta->venta_fecha }}</td>
-                        <!-- Agrega más columnas según los campos de tu modelo de ventas -->
+                        <td>{{ $venta->cliente->cli_nombre }}</td>
+                        <td>
+                            @foreach ($venta->detalles as $detalle)
+                                {{ $detalle->producto->prod_nombre }}
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach ($venta->detalles as $detalle)
+                                {{ $detalle->dventa_cantidad }}
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach ($venta->detalles as $detalle)
+                                {{ $detalle->dventa_precio }}
+                            @endforeach
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -56,18 +73,37 @@
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Factura</th>
-                    <!-- Agrega más columnas según los campos de tu modelo de compras -->
+                    <th>Proveedor</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Venta</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 @foreach ($datos['compras'] as $compra)
-                    <tr>
-                        <td>{{ $compra->compra_id }}</td>
-                        <td>{{ $compra->compra_fecha }}</td>
-                        <td>{{ $compra->compra_factura }}</td>
-                        <!-- Agrega más columnas según los campos de tu modelo de compras -->
-                    </tr>
-                @endforeach
+                <tr>
+                    <td>{{ $compra->compra_id }}</td>
+                    <td>{{ $compra->compra_fecha }}</td>
+                    <td>{{ $compra->compra_factura }}</td>
+                    <td>{{ $compra->proveedor->prove_nombre }}</td>
+                    <td>
+                        @foreach ($compra->detalles as $detalle)
+                            {{ $detalle->producto->prod_nombre }}
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($compra->detalles as $detalle)
+                            {{ $detalle->dcompra_cantidad }}
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($compra->detalles as $detalle)
+                            {{ $detalle->dcompra_precio }}
+                        @endforeach
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     @else

@@ -109,5 +109,6 @@ Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->m
 
 //Generar Reportes 
 
-Route::get('/reportes', [ReporteController::class, 'formulario'])->name('reportes.index');
+Route::get('/reportesVenta', [ReporteController::class, 'formularioCliente'])->name('reportes.cliente');
+Route::get('/reportesCompra', [ReporteController::class, 'formularioProveedor'])->name('reportes.proveedor');
 Route::get('/reportes/pdf', [ReporteController::class, 'generar'])->name('reportes.pdf');

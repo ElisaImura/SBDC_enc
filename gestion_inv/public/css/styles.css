@@ -42,6 +42,9 @@ body {
 #presupuesto-vista{
   padding-bottom: 100px;
 }
+#reporte-vista{
+  padding-bottom: 100px;
+}
 
 .botones{
   display: inline-flex;
