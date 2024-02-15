@@ -12,6 +12,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\MediaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,10 @@ Route::view('/registro', "log.register")->name('registro');
 Route::post('/validar-registro', [LoginController::class, 'register'])->name('validar-registro');
 Route::post('/inicia-sesion', [LoginController::class, 'login'])->name('inicia-sesion');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+//Dashboard
+Route::get('/dashboard', [LoginController::class, 'dashboard'])->middleware('auth')->name('dashboard');
+
 
 //CategoriaController
 Route::get('/categorias', [CategoriaController::class, 'index'])->middleware('auth')->name('categorias.index');
@@ -112,3 +117,7 @@ Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->m
 Route::get('/reportesVenta', [ReporteController::class, 'formularioCliente'])->name('reportes.cliente');
 Route::get('/reportesCompra', [ReporteController::class, 'formularioProveedor'])->name('reportes.proveedor');
 Route::get('/reportes/pdf', [ReporteController::class, 'generar'])->name('reportes.pdf');
+
+
+//Media Controller
+Route::get('/media', [MediaController::class, 'index'])->middleware('auth')->name('media.index');

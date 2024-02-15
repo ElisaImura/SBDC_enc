@@ -25,7 +25,7 @@
                             <div class="card-header">Crear Producto</div>
                             
                             <div class="card-body">
-                                <form method="POST" action="{{ route('productos.create') }}">
+                                <form method="POST" action="{{ route('productos.create') }}" enctype="multipart/form-data">
                                     @csrf <!-- Campo CSRF -->
 
                                     <div class="form-group">
@@ -49,6 +49,14 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="prod_imagen">Imagen:</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="prod_imagen" name="prod_imagen">
+                                            <label class="custom-file-label" for="prod_imagen">Seleccionar archivo</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                     </div>
                                 </form>
@@ -61,5 +69,23 @@
     </div>
 
     @include('layouts.footer') 
+
+    <script type="text/javascript">
+        document.getElementById('prod_imagen').addEventListener('change', function(event) {
+            const files = event.target.files; // Obtiene los archivos seleccionados
+            if (files.length > 0) { // Verifica si se seleccionó al menos un archivo
+                const file = files[0]; // Toma el primer archivo seleccionado
+                console.log('Nombre del archivo:', file.name); // Muestra el nombre del archivo en la consola
+                console.log('Tipo del archivo:', file.type); // Muestra el tipo del archivo en la consola
+                console.log('Tamaño del archivo:', file.size, 'bytes'); // Muestra el tamaño del archivo en la consola
+                // Actualiza la etiqueta del input con el nombre del archivo seleccionado
+                var fileName = document.getElementById("prod_imagen").files[0].name;
+                var label = document.querySelector('.custom-file-label');
+                label.textContent = fileName;
+            } else {
+                console.log('No se seleccionó ningún archivo'); // Muestra un mensaje si no se seleccionó ningún archivo
+            }
+        });
+    </script>
     
 </body>

@@ -18,7 +18,8 @@ class Producto extends Model
         'prod_descripcion',
         'prod_cant',
         'prod_precioventa',
-        'prod_preciocosto'
+        'prod_preciocosto',
+        'prod_imagen'
     ];
 
     public $incrementing = false;

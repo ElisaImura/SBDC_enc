@@ -202,11 +202,11 @@ public function createCompra(Request $request)
                     }
                     // Paso 3: Eliminar los datos de la tabla temporal
                     Schema::dropIfExists('temp_compra_detalles');
-        
+                    return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
+            }else{
+                return redirect()->route('compras.index')->with('error', 'No se puede crear compra sin detalles');
             }
-    
-            
-            return redirect()->route('compras.index')->with('success', 'Compra creada correctamente');
+
         } catch (\Exception $e) {
             // Si ocurre alguna excepción, hacer rollback de la transacción y mostrar un mensaje de error
             DB::rollBack();

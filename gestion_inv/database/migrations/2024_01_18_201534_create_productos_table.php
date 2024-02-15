@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('prod_cant');
             $table->integer('prod_precioventa');
             $table->integer('prod_preciocosto');
+            $table->text('prod_imagen')->nullable();
             $table->timestamps();
         });
     }
