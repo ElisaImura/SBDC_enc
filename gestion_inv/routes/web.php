@@ -121,4 +121,4 @@ Route::get('/reportes/pdf', [ReporteController::class, 'generar'])->name('report
 
 //Media Controller
 Route::get('/media', [MediaController::class, 'index'])->middleware('auth')->name('media.index');
-Route::get('/productos/search', [ProductoController::class, 'search'])->name('productos.search');
+Route::get('/media/search', [MediaController::class, 'search'])->name('media.search');
