@@ -51,7 +51,7 @@ class ReporteController extends Controller
             $compra_detalles = Compra_detalle::all();
             $clientes = Cliente::all();
             $proveedores = Proveedor::all();
-            return view('reportes.o', compact( 'ventas', 'compras','clientes','proveedores'));
+            return view('reportes.proveedor', compact( 'ventas', 'compras','clientes','proveedores'));
         }
 
     }
