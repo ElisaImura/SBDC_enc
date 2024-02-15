@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Venta;
+use App\Models\Compra;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +14,17 @@ class LoginController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard');
+       // Calcular el total de compras
+        $totalCompras = Compra::count();
+
+        // Calcular el total de ventas
+        $totalVentas = Venta::count();
+
+        // Calcular el total de productos
+        $totalProductos = Producto::count();
+
+        // Pasar los datos al dashboard
+        return view('dashboard', compact('totalCompras', 'totalVentas', 'totalProductos'));
     }
 
     public function register(Request $request)
