@@ -16,6 +16,15 @@
         <div class="content vista">
             <div class="container mt-5">
                 <h1 class="text-center titulo">Biblioteca de Media</h1>
+                <form action="{{ route('productos.search') }}" method="GET">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar producto" name="search">
+                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    </div>
+                </form>
+                @if ($productos->isEmpty())
+                    <p>No se encontraron productos que coincidan con la búsqueda.</p>
+                @else
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     @foreach($productos as $producto)
                     <div class="col col-md-4">
