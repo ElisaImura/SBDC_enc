@@ -23,11 +23,9 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header">Crear Producto</div>
-                            
                             <div class="card-body">
                                 <form method="POST" action="{{ route('productos.create') }}" enctype="multipart/form-data">
                                     @csrf <!-- Campo CSRF -->
-
                                     <div class="form-group">
                                         <label for="prod_nombre">Nombre:</label>
                                         <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ old('prod_nombre') }}">
