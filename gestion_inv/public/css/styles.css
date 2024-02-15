@@ -136,3 +136,57 @@ nav{
 #PDF{
   margin-left: 10px;
 }
+
+
+
+/*Media*/
+
+.fixed-img {
+    width: 230px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.img-container {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-media {
+    width: 100%;
+    height: 300px; /* Altura por defecto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.no-media span {
+    font-size: 24px;
+    color: #ccc;
+}
+
+.cartas{
+    margin-top: 30px;
+}
+
+.titulo{
+    margin: 0;
+}
+
+#editar-media{
+    margin: 0;
+    border:none;
+    background-color: #EDEDED;
+}
+
+.card-media {
+    height: 100%;
+}
+
+.btn-block {
+    height: 100%;
+}

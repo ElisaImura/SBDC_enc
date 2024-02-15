@@ -75,10 +75,11 @@ class ProductoController extends Controller
         return view('productos.formulario',compact('categorias'));
        }
 
-    public function edit($prod_id)
+    public function edit($prod_id, Request $request)
     {
         $producto = Producto::find($prod_id);
-        return view('productos.edit', compact('producto'));
+        $source = $request->input('source');
+        return view('productos.edit', ['source' => $source], compact('producto'));
     }
 
     public function update(Request $request, $prod_id)
@@ -87,9 +88,14 @@ class ProductoController extends Controller
         $producto->prod_nombre = $request->input('prod_nombre');
         $producto->prod_descripcion = $request->input('prod_descripcion');
         $producto->cat_id = $request->input('cat_id'); // Asumiendo que 'cat_id' es la clave foránea
-
         $producto->save();
-        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+
+        // Verifica el valor del parámetro 'source' para determinar la redirección
+        if ($request->input('source') === 'media') {
+            return redirect()->route('media.index')->with('success', 'Producto actualizado correctamente');
+        } else {
+            return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+        }
     }
 
     public function show($prod_id)

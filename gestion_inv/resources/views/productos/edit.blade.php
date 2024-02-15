@@ -20,7 +20,7 @@
                                 <form method="POST" action="{{ route('productos.update', ['prod_id' => $producto->prod_id]) }}">
                                     @csrf
                                     @method('PUT') <!-- Cambiado a PUT -->
-
+                                    <input type="hidden" id="source" name="source" value="{{$source}}">
                                     <div class="form-group">
                                         <label for="prod_nombre">Nombre:</label>
                                         <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ $producto->prod_nombre }}">

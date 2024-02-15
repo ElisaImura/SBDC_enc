@@ -38,10 +38,27 @@
                                     <span>No media</span>
                                 </div>
                                 @endif
-                                <div class="card-body">
+                                <div id="card-media" class="card-body">
                                     <h5 class="card-title">{{ $producto->prod_nombre }}</h5>
-                                    <p class="card-text">{{ $producto->prod_descripcion }}</p>
+                                    <div class="row justify-content-between">
+                                        <div class="col">
+                                            <p class="card-text">{{ $producto->prod_descripcion }}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="card-text"><strong>Stock: </strong>{{ $producto->prod_cant }}</p>
+                                        </div>
+                                    </div>
                                 </div>
+                                <form id="editar-media" action="{{ route('productos.edit', ['prod_id' => $producto->prod_id]) }}">
+                                @csrf <!-- Agrega el token CSRF para proteger el formulario -->
+                                <input type="hidden" id="source" name="source" value="media"> <!-- Campo oculto para enviar la variable 'source' -->
+                                <button id="btnEditarMedia" class="btn btn-block mt-auto">
+                                    Editar 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg>
+                                </button>
+                            </form>
                             </div>
                         </div>
                         @endforeach
@@ -51,43 +68,5 @@
         </div>
     </div>
     @include('layouts.footer')
-
-    <style>
-        .fixed-img {
-            width: 230px;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .img-container {
-            width: 100%;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .no-media {
-            width: 100%;
-            height: 300px; /* Altura por defecto */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-        }
-
-        .no-media span {
-            font-size: 24px;
-            color: #ccc;
-        }
-
-        .cartas{
-            margin-top: 30px;
-        }
-
-        .titulo{
-            margin: 0;
-        }
-    </style>
 </body>
 </html>
