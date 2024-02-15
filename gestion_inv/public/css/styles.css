@@ -35,14 +35,7 @@ body {
   margin-bottom: 74px;
 }
 
-#ventas-vista{
-  padding-bottom: 100px;
-}
-
-#presupuesto-vista{
-  padding-bottom: 100px;
-}
-#reporte-vista{
+.vista{
   padding-bottom: 100px;
 }
 

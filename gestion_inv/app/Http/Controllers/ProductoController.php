@@ -20,19 +20,24 @@ class ProductoController extends Controller
         $rules = [
             'prod_nombre' => 'required',
             'prod_descripcion' => 'required',
+            'prod_imagen' => 'nullable|mimes:jpeg,jpg,png',
         ];
-    
+
         $mensaje = [
             'required' => 'El :attribute campo es requerido',
-            //'exists' => 'La categoría seleccionada no es válida',
         ];
-    
+
         $this->validate($request, $rules, $mensaje);
-    
-        // Obtenemos el cat_id del request después de la validació
-    
-        // Verificamos si la categoría existe
-    
+
+        $imagen = null;
+
+        // Verifica si se ha enviado una imagen
+        if ($request->hasFile('prod_imagen')) {
+            // Mueve la imagen al directorio deseado
+            $imagen = time().".".$request->prod_imagen->extension();
+            $request->prod_imagen->move(public_path("image"), $imagen);
+        }
+
         // Crear nuevo producto
         Producto::create([
             'prod_nombre' => $request->input('prod_nombre'),
@@ -40,12 +45,13 @@ class ProductoController extends Controller
             'prod_cant' => 0,
             'prod_precioventa' => 0,
             'prod_preciocosto' => 0,
+            'prod_imagen' => $imagen, 
             'cat_id' => $request->input('cat_id')
         ]);
-    
+
         return redirect()->route('productos.index')->with('success', 'Se creó correctamente.');
     }
-    
+        
 
     public function destroy($prod_id)
 {
@@ -80,9 +86,6 @@ class ProductoController extends Controller
         $producto = Producto::find($prod_id);
         $producto->prod_nombre = $request->input('prod_nombre');
         $producto->prod_descripcion = $request->input('prod_descripcion');
-        $producto->prod_cant = $request->input('prod_cant');
-        $producto->prod_precioventa = $request->input('prod_precioventa');
-        $producto->prod_preciocosto = $request->input('prod_preciocosto');
         $producto->cat_id = $request->input('cat_id'); // Asumiendo que 'cat_id' es la clave foránea
 
         $producto->save();

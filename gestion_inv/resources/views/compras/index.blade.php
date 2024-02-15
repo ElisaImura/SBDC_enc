@@ -12,7 +12,7 @@
 <div id="main-container">
     @include('layouts.sidebar')
 
-    <div class="content" id="compras-vista">
+    <div class="content vista">
         <div class="container">
             @if (session('success'))
                 <div class="alert alert-success">

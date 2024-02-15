@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
+
     public function register(Request $request)
     {
         $user = new User();
@@ -20,7 +25,7 @@ class LoginController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('ventas.index'));
+        return redirect(route('dashboard'));
     }
 
     public function login(Request $request)
@@ -34,7 +39,7 @@ class LoginController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('ventas.index'));
+            return redirect()->intended(route('dashboard'));
 
         }else{
             return redirect()->route('login')->with('error', 'Las credenciales no son correctas.');

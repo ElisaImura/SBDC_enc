@@ -12,7 +12,7 @@
 <div id="main-container">
     @include('layouts.sidebar')
 
-    <div class="content" id="reporte-vista">
+    <div class="content vista">
         <h1 class="mt-4">Generar Reporte de Venta</h1>
 
         <form action="{{ route('reportes.pdf') }}" method="GET">
