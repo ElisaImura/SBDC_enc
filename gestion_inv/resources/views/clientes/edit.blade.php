@@ -51,7 +51,7 @@
 
                                     <div class="form-group">
                                         <label for="cli_telefono">Telefono:</label>
-                                        <input type="number" name="cli_telefono" id="cli_telefono" class="form-control" value="{{$cliente->cli_telefono}}" required>
+                                        <input type="text" name="cli_telefono" id="cli_telefono" class="form-control" value="{{$cliente->cli_telefono}}" required>
                                     </div>
 
                                     <div class="form-group">

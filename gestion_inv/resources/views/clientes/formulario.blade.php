@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="cli_telefono">Telefono:</label>
-                                        <input type="number" name="cli_telefono" id="cli_telefono" class="form-control" value="{{old('prod_preciocosto')}}">
+                                        <input type="text" name="cli_telefono" id="cli_telefono" class="form-control" value="{{old('prod_preciocosto')}}">
                                     </div>
                                     
                                     <div class="form-group">
