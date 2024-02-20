@@ -97,7 +97,7 @@ Route::post('/compras/concretarCompra', [CompraController::class, 'concretarComp
 Route::delete('/compras/{temp_id}', [CompraController::class, 'destroy'])->middleware('auth')->name('compras.destroy');
 Route::get('/compras/{temp_id}/edit', [CompraController::class, 'edit'])->middleware('auth')->name('compras.edit');
 Route::put('/compras/{temp_id}', [CompraController::class, 'update'])->middleware('auth')->name('compras.update');
-Route::get('/verificar-producto/{prod_id}', [CompraController::class, 'verificarProducto'])->middleware('auth');
+Route::get('/verificar-producto-compra/{prod_id}', [CompraController::class, 'verificarProducto'])->middleware('auth');
 
 //Presupuesto Controller
 Route::get('/presupuesto', [PresupuestoController::class, 'index'])->middleware('auth')->name('presupuesto.index');
