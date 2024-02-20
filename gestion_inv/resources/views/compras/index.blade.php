@@ -167,7 +167,7 @@
             // Obtener el valor seleccionado
             var selectedProductId = $(this).val();
             $.ajax({
-                url: '/verificar-producto/' + selectedProductId,
+                url: '/verificar-producto-compra/' + selectedProductId,
                 type: 'GET',
                 success: function(response) {
                     // Verificar la respuesta del servidor
@@ -195,21 +195,6 @@
                     console.error(error);
                 }
             });
-            if (selectedProductId !== 'opcion') {
-                // Obtener el precio del producto desde el atributo data-precio
-                var selectedProductPrice = $('option:selected', this).data('precio');
-                // Establecer el precio en el campo de entrada
-                $('#dcompra_precio').val(selectedProductPrice);
-                // Actualizar el campo oculto de precio si es necesario
-                $('#precio').val(selectedProductPrice);
-                // Calcular el total cuando cambia el producto (precio y cantidad)
-                calcularTotal();
-            } else {
-                // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
-                $('#dcompra_precio').val('');
-                $('#precio').val('');
-                // Limpiar el campo de total
-            }
         });
 
         function confirmarEliminacion(btnEliminar) {
@@ -247,12 +232,7 @@
             });
         });
 
-    });
-
-
-    document.addEventListener("DOMContentLoaded", function() {
-        // Obtener el input del número de factura
-        const inputFactura = document.getElementById('compra_factura_input');
+        inputFactura = document.getElementById('compra_factura_input');
 
         // Agregar un event listener para verificar la unicidad del número de factura al cambiar su valor
         inputFactura.addEventListener('change', function() {
@@ -274,7 +254,9 @@
                 })
                 .catch(error => console.error('Error al verificar el número de factura:', error));
         });
+
     });
+
 </script>
 
 </body>

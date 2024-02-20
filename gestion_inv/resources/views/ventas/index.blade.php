@@ -156,8 +156,6 @@
     $(document).ready(function () {
         // Manejar el cambio en la selección del producto
 
-        console.log(calcularTotalAcumulado());
-
         // Calcula el total acumulado al cargar la página
         var totalAcumulado = calcularTotalAcumulado();
 

@@ -226,6 +226,23 @@ public function createCompra(Request $request)
         ]);
     }
 
+    public function verificarProducto($prod_id)
+    {
+        // Buscar el detalle en la tabla temporal que coincide con el prod_id
+        $detalle = DB::table('temp_compra_detalles')
+            ->where('prod_id', $prod_id)
+            ->first();
+
+        // Verificar si se encontró el detalle
+        if ($detalle) {
+            // Si el detalle existe, devolver su ID en la respuesta JSON
+            return response()->json(['existe' => true, 'temp_id' => $detalle->temp_id]);
+        } else {
+            // Si no se encuentra el detalle, devolver false en la respuesta JSON
+            return response()->json(['existe' => false]);
+        }
+    }
+
 }
 
     
