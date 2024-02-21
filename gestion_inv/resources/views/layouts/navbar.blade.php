@@ -1,3 +1,3 @@
 <nav class="navbar navbar-expand navbar-dark bg-white fixed-top">
-  <a class="navbar-brand text-dark ml-auto" href="#">Easy System</a>
+  <a class="navbar-brand text-dark ml-auto" href="{{ asset('manual.pdf') }}">Easy System</a>
 </nav>

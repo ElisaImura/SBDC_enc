@@ -197,6 +197,32 @@
             });
         });
 
+        $('#dcompra_pventa').change(function () {
+            // Obtener el valor de pventa y pcompra
+            var pventa = parseInt($(this).val());
+            var pcompra = parseInt($('#dcompra_pcompra').val());
+
+            // Limpiar el campo de entrada
+            $(this).val('');
+
+            // Verificar si pventa es menor que pcompra
+            if (pventa < pcompra) {
+                // Mostrar el alert
+                Swal.fire({
+                    title: 'El precio de venta es menor al precio de compra',
+                    text: '¿Está seguro de continuar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, continuar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#dcompra_pventa').val(pventa);
+                    }
+                });
+            }
+        });
+
         function confirmarEliminacion(btnEliminar) {
             var formulario = btnEliminar.closest('form');
         
