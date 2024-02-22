@@ -258,6 +258,8 @@
 
     });
 
+
+//Hay que mejorar esta seccion porque no funciona siempre. Como que tarda en cargar.
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('tbody').addEventListener('click', function(event) {
         if (event.target && event.target.matches('.btnEliminarCompra')) {
