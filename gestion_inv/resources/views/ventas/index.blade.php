@@ -71,10 +71,11 @@
                                 <label for="cli_id">Cliente:</label>
                                 <select name="cli_id" id="cliente" class="form-control" required>
                                     <option value="">Seleccione una Opción</option>
-                                    @foreach($clientes as $cli_id => $cli_nombre)
-                                        <option value="{{ $cli_id }}">{{ $cli_nombre }}</option>
+                                    @foreach($clientes as $cliente)
+                                        <option value="{{ $cliente->cli_id }}">{{ $cliente->cli_nombre }} {{ $cliente->cli_apellido }}</option>
                                     @endforeach
                                 </select>
+                                
                             </div>
                             <button type="submit" class="btn btn-primary">Concretar venta</button>
                         </form>

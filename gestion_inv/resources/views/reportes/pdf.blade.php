@@ -44,7 +44,7 @@
                     <tr>
                         <td>{{ $venta->venta_id }}</td>
                         <td>{{ $venta->venta_fecha }}</td>
-                        <td>{{ $venta->cliente->cli_nombre }}</td>
+                        <td>{{ $venta->cliente->cli_nombre }} {{ $venta->cliente->cli_apellido }}</td>
                         <td>
                             @foreach ($venta->detalles as $detalle)
                                 {{ $detalle->producto->prod_nombre }}

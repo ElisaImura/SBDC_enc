@@ -22,14 +22,14 @@ class VentaController extends Controller
             $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
             $ventas = Venta::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $clientes = Cliente::pluck('cli_nombre','cli_id');
+            $clientes = Cliente::all();
             $temp_venta_detalles = DetalleTemp::all();
             return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas', 'temp_venta_detalles'));
         }else{
             $venta_detalles = Venta_detalle::all(); // Obtén todas las categorías
             $ventas = Venta::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $clientes = Cliente::pluck('cli_nombre','cli_id');
+            $clientes = Cliente::all();
             return view('ventas.index', compact('venta_detalles', 'productos', 'clientes','ventas'));
         }
         

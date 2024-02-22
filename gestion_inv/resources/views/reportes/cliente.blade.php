@@ -22,7 +22,7 @@
                     <option value="">Seleccione un cliente</option>
                     <option value="todo">Todo</option>
                     @foreach ($clientes as $cliente)
-                        <option value="{{ $cliente->cli_nombre }}">{{ $cliente->cli_nombre }}</option>
+                        <option value="{{ $cliente->cli_nombre }}">{{ $cliente->cli_nombre }} {{ $cliente->cli_apellido }}</option>
                     @endforeach
                 </select>
             </div>
