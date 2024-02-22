@@ -118,7 +118,7 @@
                                                     <form action="{{ route('compras.destroy', ['temp_id' => $dcompra->temp_id]) }}" method="POST" id="formEliminarCompra-{{ $dcompra->temp_id }}" data-id="{{ $dcompra->temp_id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btnEliminarCompra" onclick="confirmarEliminacion(this)">
+                                                        <button type="button" class="btn btn-danger btnEliminarCompra" id="btnEliminarCompra-{{ $dcompra->temp_id }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -167,7 +167,7 @@
             // Obtener el valor seleccionado
             var selectedProductId = $(this).val();
             $.ajax({
-                url: '/verificar-producto-compra/' + selectedProductId,
+                url: './verificar-producto-compra/' + selectedProductId,
                 type: 'GET',
                 success: function(response) {
                     // Verificar la respuesta del servidor
@@ -185,7 +185,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
-                                window.location.href = '/compras/' + detalleId + '/edit';
+                                window.location.href = './compras/' + detalleId + '/edit';
                             }
                         });
                     }
@@ -201,8 +201,10 @@
             // Obtener el valor de pventa y pcompra
             var pventa = parseInt($(this).val());
             var pcompra = parseInt($('#dcompra_pcompra').val());
+
             // Verificar si pventa es menor que pcompra
             if (pventa < pcompra) {
+        // Limpiar el campo de entrada
                 $(this).val('');
                 // Mostrar el alert
                 Swal.fire({
@@ -219,25 +221,6 @@
                 });
             }
         });
-
-        function confirmarEliminacion(btnEliminar) {
-            var formulario = btnEliminar.closest('form');
-        
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Esta acción no se puede revertir",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    formulario.submit();
-                }
-            });
-        }
         
 
         window.addEventListener('load', function() {
@@ -247,11 +230,6 @@
             formsEliminar.forEach(function(formEliminar) {
                 // Obtiene el botón de eliminar dentro del formulario actual
                 var btnEliminarCompra = formEliminar.querySelector('.btnEliminarCompra');
-                
-                // Asigna el evento click al botón de eliminar
-                btnEliminarCompra.addEventListener('click', function() {
-                    confirmarEliminacion(formEliminar); // Pasa el formulario actual como argumento
-                });
             });
         });
 
@@ -263,7 +241,7 @@
             const facturaValue = inputFactura.value;
 
             // Realizar una petición AJAX para verificar si el número de factura ya existe
-            fetch(`/verificarFactura/${facturaValue}`)
+            fetch('./verificarFactura/${facturaValue}')
                 .then(response => response.json())
                 .then(data => {
                     // Si el número de factura ya existe, mostrar un mensaje de error
@@ -279,6 +257,29 @@
         });
 
     });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('tbody').addEventListener('click', function(event) {
+        if (event.target && event.target.matches('.btnEliminarCompra')) {
+            var formulario = event.target.closest('form');
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede revertir",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formulario.submit();
+                }
+            });
+        }
+    });
+});
 
 </script>
 
