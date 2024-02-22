@@ -201,12 +201,9 @@
             // Obtener el valor de pventa y pcompra
             var pventa = parseInt($(this).val());
             var pcompra = parseInt($('#dcompra_pcompra').val());
-
-            // Limpiar el campo de entrada
-            $(this).val('');
-
             // Verificar si pventa es menor que pcompra
             if (pventa < pcompra) {
+                $(this).val('');
                 // Mostrar el alert
                 Swal.fire({
                     title: 'El precio de venta es menor al precio de compra',
