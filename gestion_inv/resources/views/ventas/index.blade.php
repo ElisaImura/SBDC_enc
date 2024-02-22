@@ -187,7 +187,7 @@
             // Obtener el valor seleccionado
             var selectedProductId = $(this).val();
             $.ajax({
-                url: '/verificar-producto/' + selectedProductId,
+                url: './verificar-producto/' + selectedProductId,
                 type: 'GET',
                 success: function(response) {
                     // Verificar la respuesta del servidor
@@ -205,7 +205,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
-                                window.location.href = '/ventas/' + detalleId + '/edit';
+                                window.location.href = './ventas/' + detalleId + '/edit';
                             }
                         });
                     }
