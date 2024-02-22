@@ -26,7 +26,7 @@
                             <div class="card-header">Crear Cliente</div>
                             
                             <div class="card-body">
-                              <form method="POST" action="/clientes/create">
+                              <form method="POST" action="{{ route('clientes.create') }}">
                                     @csrf <!-- Campo CSRF -->
 
                                     <div class="form-group">
