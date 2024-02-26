@@ -13,47 +13,15 @@ use PDF;
 
 class ReporteController extends Controller
 {
-    public function formularioCliente()
+    public function formulario()
     {
-        if (Schema::hasTable('Presupuesto_temp_venta_detalles')) {
-            $ventas = Venta::all(); // Obtén todos los ventas
-            $compras = Compra::all();
-            $venta_detalles = Venta_detalle::all();
-            $compra_detalles = Compra_detalle::all();
-            $clientes = Cliente::all();
-            $proveedores = Proveedor::all();
-            return view('reportes.cliente', compact( 'ventas', 'compras','clientes','proveedores'));
-        }else{
-            $ventas = Venta::all(); // Obtén todos los ventas
-            $compras = Compra::all();
-            $venta_detalles = Venta_detalle::all();
-            $compra_detalles = Compra_detalle::all();
-            $clientes = Cliente::all();
-            $proveedores = Proveedor::all();
-            return view('reportes.cliente', compact( 'ventas', 'compras','clientes','proveedores'));
-        }
-
-    }
-    public function formularioProveedor()
-    {
-        if (Schema::hasTable('Presupuesto_temp_venta_detalles')) {
-            $ventas = Venta::all(); // Obtén todos los ventas
-            $compras = Compra::all();
-            $venta_detalles = Venta_detalle::all();
-            $compra_detalles = Compra_detalle::all();
-            $clientes = Cliente::all();
-            $proveedores = Proveedor::all();
-            return view('reportes.proveedor', compact( 'ventas', 'compras','clientes','proveedores'));
-        }else{
-            $ventas = Venta::all(); // Obtén todos los ventas
-            $compras = Compra::all();
-            $venta_detalles = Venta_detalle::all();
-            $compra_detalles = Compra_detalle::all();
-            $clientes = Cliente::all();
-            $proveedores = Proveedor::all();
-            return view('reportes.proveedor', compact( 'ventas', 'compras','clientes','proveedores'));
-        }
-
+        $ventas = Venta::all(); // Obtén todos los ventas
+        $compras = Compra::all();
+        $venta_detalles = Venta_detalle::all();
+        $compra_detalles = Compra_detalle::all();
+        $clientes = Cliente::all();
+        $proveedores = Proveedor::all();
+        return view('reportes.reportes', compact( 'ventas', 'compras','clientes','proveedores'));
     }
 
     public function generar(Request $request)

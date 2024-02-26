@@ -31,13 +31,8 @@
         </a>
       </li>
       <li class="mb-1">
-        <a href="{{ route('reportes.proveedor') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
-          Reportes Compras
-        </a>
-      </li>
-      <li class="mb-1">
-        <a href="{{ route('reportes.cliente') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
-          Reportes Ventas
+        <a href="{{ route('reportes.reportes') }}" class="text-dark btn btn-toggle d-flex align-items-center rounded collapsed link-dark text-decoration-none">
+          Reportes
         </a>
       </li>
       <li class="mb-1">
