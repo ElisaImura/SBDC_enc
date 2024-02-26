@@ -6,19 +6,19 @@
 @include('layouts.navbar') 
 
 <body>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </div>
-    @endif
 
     <div id="main-container">
         @include('layouts.sidebar')
 
         <div class="content">
             <div class="container">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </div>
+                @endif
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
@@ -28,12 +28,12 @@
                                     @csrf <!-- Campo CSRF -->
                                     <div class="form-group">
                                         <label for="prod_nombre">Nombre:</label>
-                                        <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ old('prod_nombre') }}">
+                                        <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ old('prod_nombre') }}" required>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="cat_id">Categoría:</label>
-                                        <select name="cat_id" id="categoria" class="form-control">
+                                        <select name="cat_id" id="categoria" class="form-control" required>
                                             <option value="opcion">Seleccione una Opción</option>
                                             @foreach($categorias as $cat_id => $nombre)
                                                 <option value="{{ $cat_id }}">{{ $nombre }}</option>
@@ -43,7 +43,7 @@
                                     
                                     <div class="form-group">
                                         <label for="prod_descripcion">Descripción:</label>
-                                        <input type="text" name="prod_descripcion" id="prod_descripcion" class="form-control" value="{{ old('prod_descripcion') }}">
+                                        <input type="text" name="prod_descripcion" id="prod_descripcion" class="form-control" value="{{ old('prod_descripcion') }}" required>
                                     </div>
 
                                     <div class="form-group">

@@ -25,7 +25,7 @@
                             <div class="card-header">Crear Proveedor</div>
                             
                             <div class="card-body">
-                              <form method="POST" action="/proveedores/create">
+                              <form method="POST" action="./create">
                                     @csrf <!-- Campo CSRF -->
 
                                     <div class="form-group">

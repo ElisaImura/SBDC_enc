@@ -126,13 +126,13 @@ public function createCompra(Request $request)
 
     public function destroy($temp_id)
     {
-            $temp_compra_detalles = TempCompra::find($temp_id);
-            if (!$temp_compra_detalles) {
-                return redirect()->route('compras.index')->with('error', 'Compra no encontrada');
-            }
+        $temp_compra_detalles = TempCompra::find($temp_id);
+        if (!$temp_compra_detalles) {
+            return redirect()->route('compras.index')->with('error', 'Compra no encontrada');
+        }
 
-            $temp_compra_detalles->delete();
-            return redirect()->route('compras.index')->with('success', 'Compra eliminada correctamente');
+        $temp_compra_detalles->delete();
+        return redirect()->route('compras.index')->with('success', 'Compra eliminada correctamente');
 
     }
 
@@ -217,29 +217,33 @@ public function createCompra(Request $request)
     
     public function verificarFactura($facturaValue)
     {
-        // Verificar si ya existe una compra con el mismo número de factura
-        $existingCompra = Compra::where('compra_factura', $facturaValue)->exists();
-        
-        // Devolver una respuesta JSON indicando si la factura existe o no
-        return response()->json([
-            'exists' => $existingCompra
-        ]);
+        if (Schema::hasTable('temp_compra_detalles')) {
+            // Verificar si ya existe una compra con el mismo número de factura
+            $existingCompra = Compra::where('compra_factura', $facturaValue)->exists();
+            
+            // Devolver una respuesta JSON indicando si la factura existe o no
+            return response()->json([
+                'exists' => $existingCompra
+            ]);
+        }
     }
 
     public function verificarProducto($prod_id)
     {
-        // Buscar el detalle en la tabla temporal que coincide con el prod_id
-        $detalle = DB::table('temp_compra_detalles')
-            ->where('prod_id', $prod_id)
-            ->first();
+        if (Schema::hasTable('temp_compra_detalles')) {
+            // Buscar el detalle en la tabla temporal que coincide con el prod_id
+            $detalle = DB::table('temp_compra_detalles')
+                ->where('prod_id', $prod_id)
+                ->first();
 
-        // Verificar si se encontró el detalle
-        if ($detalle) {
-            // Si el detalle existe, devolver su ID en la respuesta JSON
-            return response()->json(['existe' => true, 'temp_id' => $detalle->temp_id]);
-        } else {
-            // Si no se encuentra el detalle, devolver false en la respuesta JSON
-            return response()->json(['existe' => false]);
+            // Verificar si se encontró el detalle
+            if ($detalle) {
+                // Si el detalle existe, devolver su ID en la respuesta JSON
+                return response()->json(['existe' => true, 'temp_id' => $detalle->temp_id]);
+            } else {
+                // Si no se encuentra el detalle, devolver false en la respuesta JSON
+                return response()->json(['existe' => false]);
+            }
         }
     }
 
