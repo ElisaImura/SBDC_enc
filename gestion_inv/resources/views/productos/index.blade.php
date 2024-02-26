@@ -13,14 +13,19 @@
       <!-- Content -->
       <div class="content">
             <div class="container mt-4">
+                <h1 class="titulo_principal text-center">Listado de Productos</h1>
+
                 @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
                 @endif
-
-                <h1 class="titulo_principal text-center">Listado de Productos</h1>
-
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a href="{{ route('nuevoProducto') }}" class="btn btn-primary">Agregar Producto</a>
                 </div>

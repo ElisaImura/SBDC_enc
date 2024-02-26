@@ -283,52 +283,29 @@
             }
         }
 
-        function confirmarEliminacion() {
-            // Obtiene el formulario asociado al botón clickeado
-            var formulario = event.target.closest('form');
-            
-            // Obtiene el valor del atributo data-id del formulario
-            var id = formulario.dataset.id;
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Esta acción no se puede revertir",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Envía el formulario para eliminar la venta
-                    formulario.submit();
-                }
-            });
-        }
+    });
 
-        window.addEventListener('load', function() {
-            document.querySelector('tbody').addEventListener('click', function(event) {
-                if (event.target && event.target.matches('.btnEliminarVenta')) {
-                    var formulario = event.target.closest('form');
+    window.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('tbody').addEventListener('click', function(event) {
+            if (event.target && event.target.matches('.btnEliminarVenta')) {
+                var formulario = event.target.closest('form');
 
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: "Esta acción no se puede revertir",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Sí, eliminar',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            formulario.submit();
-                        }
-                    });
-                }
-            });
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formulario.submit();
+                    }
+                });
+            }
         });
-
     });
 
 </script>

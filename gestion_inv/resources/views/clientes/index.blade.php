@@ -11,12 +11,17 @@
 
         <div class="content">
             <div class="container">
-                @if (session('success'))
-                <div class="alert alert-success">
-                    {{session('success')}}
-                </div>
-                @endif
                 <h1 class="titulo_principal text-center">Listado de Clientes</h1>
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a href="{{ route('nuevoCliente') }}" class="btn btn-primary">Nuevo Cliente</a>
                 </div>
@@ -85,20 +90,8 @@
                         cancelButtonText: 'Cancelar'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Envía el formulario de forma asincrónica
-                            $.ajax({
-                                url: formulario.action,
-                                method: 'POST',
-                                data: $(formulario).serialize(),
-                                success: function(response) {
-                                    // Manejar la respuesta, por ejemplo, recargar la página
-                                    window.location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                    // Manejar el error, si es necesario
-                                    console.error(error);
-                                }
-                            });
+                            // Envía el formulario para eliminar la venta
+                            formulario.submit();
                         }
                     });
                 });
