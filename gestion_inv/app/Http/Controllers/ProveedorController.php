@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
+use App\Models\Compra;
 use Illuminate\Http\Request;
 
 class ProveedorController extends Controller
@@ -36,12 +37,17 @@ class ProveedorController extends Controller
     
         return redirect()->route('proveedores.index')->with('success', 'Se creó correctamente.');
     }
-    
 
     public function destroy($prove_id)
-{
-    try {   
-        $proveedor= Proveedor::find($prove_id);
+    {
+        // Verificar si el proveedor está siendo utilizado en alguna compra
+        $compras = Compra::where('prove_id', $prove_id)->exists();
+        if ($compras) {
+            return redirect()->route('proveedores.index')->with('error', 'No se puede eliminar el proveedor porque está siendo utilizado en una o más compras.');
+        }
+
+        // Si el proveedor no está siendo utilizado en ninguna compra, eliminarlo
+        $proveedor = Proveedor::find($prove_id);
 
         if (!$proveedor) {
             return redirect()->route('proveedores.index')->with('error', 'Proveedor no encontrado');
@@ -49,10 +55,7 @@ class ProveedorController extends Controller
 
         $proveedor->delete();
         return redirect()->route('proveedores.index')->with('success', 'Proveedor eliminado correctamente');
-    } catch (\Exception $e) {
-        return redirect()->route('proveedores.index')->with('error', 'Proveedor no se puede eliminar');
     }
-}
 
     public function formulario(){
 

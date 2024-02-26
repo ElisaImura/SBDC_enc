@@ -285,44 +285,30 @@
             }
         }
 
-        function confirmarEliminacion() {
-            // Obtiene el formulario asociado al botón clickeado
-            var formulario = event.target.closest('form');
-            
-            // Obtiene el valor del atributo data-id del formulario
-            var id = formulario.dataset.id;
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Esta acción no se puede revertir",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Envía el formulario para eliminar la venta
-                    formulario.submit();
-                }
-            });
-        }
+    });
+    
+    //Hay que mejorar esta seccion porque no funciona siempre. Como que tarda en cargar.
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('tbody').addEventListener('click', function(event) {
+            if (event.target && event.target.matches('.btnEliminarVenta')) {
+                var formulario = event.target.closest('form');
 
-        window.addEventListener('load', function() {
-            var formsEliminar = document.querySelectorAll('form[id^="formEliminarVenta-"]');
-
-            // Itera sobre cada formulario de eliminar
-            formsEliminar.forEach(function(formEliminar) {
-                // Obtiene el botón de eliminar dentro del formulario actual
-                var btnEliminarVenta = formEliminar.querySelector('.btnEliminarVenta');
-                
-                // Asigna el evento click al botón de eliminar
-                btnEliminarVenta.addEventListener('click', function() {
-                    confirmarEliminacion(formEliminar); // Pasa el formulario actual como argumento
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formulario.submit();
+                    }
                 });
-            });
+            }
         });
-
     });
 
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Producto;
 
 class CategoriaController extends Controller
 {
@@ -33,20 +34,22 @@ public function create(Request $request)
     return redirect()->route('categorias.index')->with('success', 'Se creó correctamente.');
 }
 
-
     public function destroy($cat_id)
     {
-        try {
-            $categoria = Categoria::find($cat_id);
-            if (!$categoria) {
-                return redirect()->route('categorias.index')->with('error', 'Categoría no encontrada');
-            }
-
-            $categoria->delete();
-            return redirect()->route('categorias.index')->with('success', 'Categoría eliminada correctamente');
-        } catch (\Exception $e) {
-            return redirect()->route('categorias.index')->with('error', 'Categoría no se puede eliminar');
+        // Verificar si la categoría está siendo utilizada por algún producto
+        $productos = Producto::where('cat_id', $cat_id)->exists();
+        if ($productos) {
+            return redirect()->route('categorias.index')->with('error', 'No se puede eliminar la categoría porque está siendo utilizada por uno o más productos.');
         }
+
+        // Si la categoría no está siendo utilizada por ningún producto, eliminarla
+        $categoria = Categoria::find($cat_id);
+        if (!$categoria) {
+            return redirect()->route('categorias.index')->with('error', 'Categoría no encontrada');
+        }
+
+        $categoria->delete();
+        return redirect()->route('categorias.index')->with('success', 'Categoría eliminada correctamente');
     }
 
     public function edit($cat_id)

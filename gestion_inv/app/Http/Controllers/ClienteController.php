@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -50,8 +51,15 @@ class ClienteController extends Controller
     
 
     public function destroy($cli_id)
-{
-    try {   
+    {
+    // Verificar si el cliente está siendo utilizado en alguna venta
+        $ventas = Venta::where('cli_id', $cli_id)->exists();
+
+        if ($ventas) {
+            return redirect()->route('clientes.index')->with('error', 'No se puede eliminar el cliente porque está siendo utilizado en una o más ventas.');
+        }
+
+        // Si el cliente no está siendo utilizado en ninguna venta, eliminarlo
         $cliente = Cliente::find($cli_id);
 
         if (!$cliente) {
@@ -60,10 +68,7 @@ class ClienteController extends Controller
 
         $cliente->delete();
         return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente');
-    } catch (\Exception $e) {
-        return redirect()->route('clientes.index')->with('error', 'Cliente no se puede eliminar');
     }
-}
 
     public function formulario(){
 

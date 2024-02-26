@@ -13,7 +13,16 @@
         <div class="content">
             <div class="container">
                 <h1 class="titulo_principal text-center">Categorías</h1>
-
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="mt-4 row">
                     <div id="aggCat" class="col-md-5">
                         <div class="card">
@@ -102,20 +111,8 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Envía el formulario de forma asincrónica
-                        $.ajax({
-                            url: formulario.attr('action'),
-                            method: 'POST',
-                            data: formulario.serialize(),
-                            success: function(response) {
-                                // Manejar la respuesta, por ejemplo, recargar la página
-                                window.location.reload();
-                            },
-                            error: function(xhr, status, error) {
-                                // Manejar el error, si es necesario
-                                console.error(error);
-                            }
-                        });
+                        // Envía el formulario para eliminar la venta
+                        formulario.submit();
                     }
                 });
             });
