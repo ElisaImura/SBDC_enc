@@ -103,20 +103,7 @@
                         cancelButtonText: 'Cancelar'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Envía el formulario de forma asincrónica
-                            $.ajax({
-                                url: formulario.action,
-                                method: 'POST',
-                                data: $(formulario).serialize(),
-                                success: function(response) {
-                                    // Manejar la respuesta, por ejemplo, recargar la página
-                                    window.location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                    // Manejar el error, si es necesario
-                                    console.error(error);
-                                }
-                            });
+                            formulario.submit();
                         }
                     });
                 });
