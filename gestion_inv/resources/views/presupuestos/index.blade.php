@@ -307,17 +307,25 @@
         }
 
         window.addEventListener('load', function() {
-            var formsEliminar = document.querySelectorAll('form[id^="formEliminarVenta-"]');
+            document.querySelector('tbody').addEventListener('click', function(event) {
+                if (event.target && event.target.matches('.btnEliminarVenta')) {
+                    var formulario = event.target.closest('form');
 
-            // Itera sobre cada formulario de eliminar
-            formsEliminar.forEach(function(formEliminar) {
-                // Obtiene el botón de eliminar dentro del formulario actual
-                var btnEliminarVenta = formEliminar.querySelector('.btnEliminarVenta');
-                
-                // Asigna el evento click al botón de eliminar
-                btnEliminarVenta.addEventListener('click', function() {
-                    confirmarEliminacion(formEliminar); // Pasa el formulario actual como argumento
-                });
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Esta acción no se puede revertir",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formulario.submit();
+                        }
+                    });
+                }
             });
         });
 
