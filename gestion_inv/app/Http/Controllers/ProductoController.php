@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Venta_detalle;
+use App\Models\Compra_detalle;
+use App\Models\DetalleTemp;
+use App\Models\PresupuestoDetalleTemp;
+use App\Models\TempCompra;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -51,23 +56,42 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('success', 'Se creó correctamente.');
     }
-        
 
     public function destroy($prod_id)
-{
-    try {   
-        $producto = Producto::find($prod_id);
+    {
+        try {
+            // Verificar si el producto está siendo utilizado en alguna venta
+            $ventaDetalles = Venta_detalle::where('prod_id', $prod_id)->exists();
 
-        if (!$producto) {
-            return redirect()->route('productos.index')->with('error', 'Producto no encontrado');
+            // Verificar si el producto está siendo utilizado en alguna compra
+            $compraDetalles = Compra_detalle::where('prod_id', $prod_id)->exists();
+
+            // Verificar si el producto está siendo utilizado en alguna detalle temporal
+            $detallesTemp = DetalleTemp::where('prod_id', $prod_id)->exists();
+
+            // Verificar si el producto está siendo utilizado en alguna detalle de presupuesto temporal
+            $presupuestoDetallesTemp = PresupuestoDetalleTemp::where('prod_id', $prod_id)->exists();
+
+            // Verificar si el producto está siendo utilizado en alguna detalle de compra temporal
+            $tempCompraDetalles = TempCompra::where('prod_id', $prod_id)->exists();
+
+            if ($ventaDetalles || $compraDetalles || $detallesTemp || $presupuestoDetallesTemp || $tempCompraDetalles) {
+                return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está siendo utilizado en ventas, compras u otras operaciones.');
+            }
+
+            // Si el producto no está siendo utilizado en ninguna tabla, eliminarlo
+            $producto = Producto::find($prod_id);
+
+            if (!$producto) {
+                return redirect()->route('productos.index')->with('error', 'Producto no encontrado');
+            }
+
+            $producto->delete();
+            return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');
         }
-
-        $producto->delete();
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
-    } catch (\Exception $e) {
-        return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');
     }
-}
 
     public function formulario(){
 
