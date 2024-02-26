@@ -186,7 +186,7 @@
             // Obtener el valor seleccionado
             var selectedProductId = $(this).val();
             $.ajax({
-                url: '/presupuesto-verificar-producto/' + selectedProductId,
+                url: './presupuesto-verificar-producto/' + selectedProductId,
                 type: 'GET',
                 success: function(response) {
                     // Verificar la respuesta del servidor
