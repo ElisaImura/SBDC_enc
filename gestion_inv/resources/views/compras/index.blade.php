@@ -68,18 +68,22 @@
                         <form id="form-concretarCompra" method="post" action="{{ route('compras.concretarCompra') }}">
                             @csrf
                             <div class="form-group">
-                                <label for="busquedaProveedor">Buscar proveedor:</label>
-                                <input type="text" id="texto" class="form-control" placeholder="Ingrese el nombre o RUC del proveedor"> 
-                                <div id="resultados" class="bg-light border"></div>
-
+                                <label for="prove_id">Proveedor:</label>
+                                <select name="prove_id" id="proveedor" class="form-control" required>
+                                    <option value="">Seleccione una Opción</option>
+                                    @foreach($proveedores as $prove_id => $prove_nombre)
+                                        <option value="{{ $prove_id }}">{{ $prove_nombre }}</option>
+                                    @endforeach
+                                </select>
+                                
                                 <div class="form-group">
                                     <label for="compra_factura">Factura N°</label>
                                     <input type="number" class="form-control" name="compra_factura" id="compra_factura_input" placeholder="Numero de Factura" required>
                                 </div>
-                            </div>
+                             </div>
                             <button type="submit" class="btn btn-primary">Concretar compra</button>
                         </form>
-                    </div>
+                      </div>
                 </div>
 
 
@@ -200,7 +204,7 @@
 
             // Verificar si pventa es menor que pcompra
             if (pventa < pcompra) {
-        // Limpiar el campo de entrada
+            // Limpiar el campo de entrada
                 $(this).val('');
                 // Mostrar el alert
                 Swal.fire({
@@ -278,32 +282,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-window.addEventListener('load', function() {
-    document.getElementById("texto").addEventListener("keyup", function() {
-        // Obtener el valor del input de búsqueda
-        var searchTerm = document.getElementById("texto").value;
-
-        // Construir la URL completa con el término de búsqueda
-        var url = window.location.origin + '/compras/buscador?texto=' + searchTerm;
-
-        // Realizar la solicitud fetch al endpoint
-        fetch(url, {
-                method: 'POST' // Cambiado a método POST
-            })
-            .then(response => response.text())
-            .then(
-                document.getElementById('resultados').innerHTML = '<ul>
-                    <li>Proveedor 1</li>
-                    <li>Proveedor 2</li>
-                    <li>Proveedor 3</li>
-                    <!-- Agregar más proveedores aquí -->
-                </ul>';
-            )
-            .catch(error => console.log(error));
-    });
-});
-
 
 </script>
 

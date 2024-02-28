@@ -36,12 +36,6 @@ class CompraController extends Controller
         
     }
 
-    public function lista()
-    {
-        $proveedores = Proveedor::all();
-        return view('compras.lista', compact('proveedores'));
-    }
-
     public function createTempTable()
     {
     
@@ -252,13 +246,6 @@ public function createCompra(Request $request)
             }
         }
     }
-    public function buscador(Request $request)
-    {
-        $proveedores = Proveedor::where('prove_nombre', 'like', $request->texto."%")->take(5)->get();
-
-        return view("compras.lista", compact("proveedores"));
-    }
-
 
 }
 
