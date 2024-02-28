@@ -28,83 +28,103 @@
 
     @if ($tipoReporte === 'ventas' && isset($datos['ventas']) && count($datos['ventas']) > 0)
 <p>Se realizaron un total de {{ $total }} {{ $tipoReporte }} en el rango de fechas proporcionado.</p>
+@if (count($datos['ventas']) > 0)
+<p> Cliente: {{ $datos['ventas'][0]->cliente->cli_nombre }} {{ $datos['ventas'][0]->cliente->cli_apellido }}</p>
+@endif
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <th>Cliente</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $totalGeneral = 0; // Inicializamos el total general en 0
+                @endphp
                 @foreach ($datos['ventas'] as $venta)
-                    <tr>
-                        <td>{{ $venta->venta_id }}</td>
-                        <td>{{ $venta->venta_fecha }}</td>
-                        <td>{{ $venta->cliente->cli_nombre }} {{ $venta->cliente->cli_apellido }}</td>
-                        <td>
-                            @foreach ($venta->detalles as $detalle)
-                                {{ $detalle->producto->prod_nombre }}
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($venta->detalles as $detalle)
-                                {{ $detalle->dventa_cantidad }}
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($venta->detalles as $detalle)
-                                {{ $detalle->dventa_precio }}
-                            @endforeach
-                        </td>
-                    </tr>
+                    @php
+                        $totalVenta = 0; // Inicializamos el total de la venta en 0
+                    @endphp
+                    @foreach ($venta->detalles as $detalle)
+                        <tr>
+                            <td>{{ $venta->venta_id }}</td>
+                            <td>{{ $venta->venta_fecha }}</td>
+                            <td>{{ $detalle->producto->prod_nombre }}</td>
+                            <td>{{ $detalle->dventa_cantidad }}</td>
+                            <td>{{ $detalle->dventa_precio }}</td>
+                        </tr>
+                        @php
+                            $totalVenta += $detalle->dventa_precio; // Sumamos el precio de venta al total de la venta
+                        @endphp
+                    @endforeach
+                    @php
+                        $totalGeneral += $totalVenta; // Sumamos el total de la venta al total general
+                    @endphp
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">Total General:</td>
+                    <td>{{ $totalGeneral }}</td>
+                </tr>
+            </tfoot>
+            
+            
         </table>
     @elseif ($tipoReporte === 'compras' && isset($datos['compras']) && count($datos['compras']) > 0)
         <h2>Compras</h2>
 <p>Se realizaron un total de {{ $total }} {{ $tipoReporte }} en el rango de fechas proporcionado.</p>
+@if (count($datos['compras']) > 0)
+<p> Proveedor: {{ $datos['compras'][0]->proveedor->prove_nombre }} {{ $datos['compras'][0]->proveedor->prove_apellido }}</p>
+@endif
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Factura</th>
-                    <th>Proveedor</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Venta</th>
+                    <th>Compra</th>
                     
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $totalGeneral = 0; // Inicializamos el total general en 0
+                @endphp
                 @foreach ($datos['compras'] as $compra)
-                <tr>
-                    <td>{{ $compra->compra_id }}</td>
-                    <td>{{ $compra->compra_fecha }}</td>
-                    <td>{{ $compra->compra_factura }}</td>
-                    <td>{{ $compra->proveedor->prove_nombre }}</td>
-                    <td>
-                        @foreach ($compra->detalles as $detalle)
-                            {{ $detalle->producto->prod_nombre }}
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach ($compra->detalles as $detalle)
-                            {{ $detalle->dcompra_cantidad }}
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach ($compra->detalles as $detalle)
-                            {{ $detalle->dcompra_precio }}
-                        @endforeach
-                    </td>
-                </tr>
-            @endforeach
+                    @php
+                        $totalCompra = 0; 
+                    @endphp
+                    @foreach ($compra->detalles as $detalle)
+                        <tr>
+                            <td>{{ $compra->compra_id }}</td>
+                            <td>{{ $compra->compra_fecha }}</td>
+                            <td>{{ $compra->compra_factura }}</td>
+                            <td>{{ $detalle->producto->prod_nombre }}</td>
+                            <td>{{ $detalle->dcompra_cantidad }}</td>
+                            <td>{{ $detalle->dcompra_precio }}</td>
+                        </tr>
+                        @php
+                            $totalCompra += $detalle->dcompra_precio; // Sumamos el precio de venta al total de la venta
+                        @endphp
+                    @endforeach
+                    @php
+                        $totalGeneral += $totalCompra; // Sumamos el total de la venta al total general
+                    @endphp
+                @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">Total General:</td>
+                    <td>{{ $totalGeneral }}</td>
+                </tr>
+            </tfoot>
         </table>
     @else
         <p>No se encontraron datos para el tipo de reporte seleccionado.</p>

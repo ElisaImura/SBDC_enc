@@ -100,4 +100,6 @@ class ClienteController extends Controller
     $cliente = Cliente::with('cliente')->findOrFail($cli_id);
     return view('clientes.show', compact('cliente'));
 }
+
+
 }
