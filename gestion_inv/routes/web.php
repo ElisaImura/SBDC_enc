@@ -98,7 +98,8 @@ Route::delete('/compras/{temp_id}', [CompraController::class, 'destroy'])->middl
 Route::get('/compras/{temp_id}/edit', [CompraController::class, 'edit'])->middleware('auth')->name('compras.edit');
 Route::put('/compras/{temp_id}', [CompraController::class, 'update'])->middleware('auth')->name('compras.update');
 Route::get('/verificar-producto-compra/{prod_id}', [CompraController::class, 'verificarProducto'])->middleware('auth')->name('verificar_producto_compra');
-
+Route::get('/compras/lista', [CompraController::class, 'lista'])->middleware('auth')->name('compras.lista');
+Route::post('/compras/buscador',[CompraController::class, 'buscador'])->middleware('auth')->name('compras.search');
 
 //Presupuesto Controller
 Route::get('/presupuesto', [PresupuestoController::class, 'index'])->middleware('auth')->name('presupuesto.index');
