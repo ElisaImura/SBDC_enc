@@ -23,14 +23,14 @@ class CompraController extends Controller
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
             $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $proveedores = Proveedor::pluck('prove_nombre','prove_id');
+            $proveedores = Proveedor::all();
             $temp_compra_detalles = TempCompra::all();
             return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras', 'temp_compra_detalles'));
         }else{
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
             $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $proveedores = Proveedor::pluck('prove_nombre','prove_id');
+            $proveedores = Proveedor::all();
             return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras'));
         }
         

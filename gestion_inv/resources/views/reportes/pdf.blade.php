@@ -76,7 +76,7 @@
                     <th>Proveedor</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Venta</th>
+                    <th>Compra</th>
                     
                 </tr>
             </thead>
