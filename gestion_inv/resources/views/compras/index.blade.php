@@ -4,6 +4,8 @@
 </head> 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 @include('layouts.navbar') 
 
@@ -68,18 +70,27 @@
                         <form id="form-concretarCompra" method="post" action="{{ route('compras.concretarCompra') }}">
                             @csrf
                             <div class="form-group">
-                                <label for="busquedaProveedor">Buscar proveedor:</label>
-                                <input type="text" id="texto" class="form-control" placeholder="Ingrese el nombre o RUC del proveedor"> 
-                                <div id="resultados" class="bg-light border"></div>
-
+                                <div class="form-group">
+                                    <label for="prove_id">Proveedor:</label>
+                                    <select name="prove_id" id="proveedor" class="form-control select2" required>
+                                        <option value="">Seleccione una Opción</option>
+                                        <?php
+                                            // Obtener todos los proveedores y ordenarlos por el nombre
+                                            $proveedores = App\Models\Proveedor::orderBy('prove_nombre')->get();
+                                        ?>
+                                        @foreach($proveedores as $proveedor)
+                                            <option value="{{ $proveedor->prove_id }}">{{ $proveedor->prove_nombre }} - {{ $proveedor->prove_ruc }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>                               
                                 <div class="form-group">
                                     <label for="compra_factura">Factura N°</label>
                                     <input type="number" class="form-control" name="compra_factura" id="compra_factura_input" placeholder="Numero de Factura" required>
                                 </div>
-                            </div>
+                             </div>
                             <button type="submit" class="btn btn-primary">Concretar compra</button>
                         </form>
-                    </div>
+                      </div>
                 </div>
 
 
@@ -200,7 +211,7 @@
 
             // Verificar si pventa es menor que pcompra
             if (pventa < pcompra) {
-        // Limpiar el campo de entrada
+            // Limpiar el campo de entrada
                 $(this).val('');
                 // Mostrar el alert
                 Swal.fire({
@@ -279,28 +290,58 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-window.addEventListener('load', function() {
-    document.getElementById("texto").addEventListener("keyup", function() {
-        // Obtener el valor del input de búsqueda
-        var searchTerm = document.getElementById("texto").value;
+$(document).ready(function() {
+    // Inicializar Select2 en el select de proveedores
+    $('#proveedor').select2({
+        placeholder: 'Buscar proveedor...',
+        allowClear: true,
+        width: '100%',
+        dropdownParent: $('body'), // Especificar el cuerpo del documento como el elemento padre
+        theme: 'bootstrap', // Aplicar el tema de Bootstrap
+        dropdownPosition: 'below',
+    });
 
-        // Construir la URL completa con el término de búsqueda
-        var url = window.location.origin + '/compras/buscador?texto=' + searchTerm;
+    // Estilos personalizados para el select2
+    $('.select2-container--bootstrap .select2-selection--single').css({
+        'height': 'calc(1.5em + 0.75rem + 2px)',
+        'padding': '0.375rem 0.2rem',
+        'font-size': '1rem',
+        'font-weight': '400',
+        'line-height': '1.5',
+        'color': '#495057',
+        'background-color': '#fff',
+        'background-clip': 'padding-box',
+        'border': '1px solid #ced4da',
+        'border-radius': '0.25rem',
+        'transition': 'border-color .15s ease-in-out, box-shadow .15s ease-in-out'
+    });
 
-        // Realizar la solicitud fetch al endpoint
-        fetch(url, {
-                method: 'POST' // Cambiado a método POST
-            })
-            .then(response => response.text())
-            .then(
-                document.getElementById('resultados').innerHTML = '<ul>
-                    <li>Proveedor 1</li>
-                    <li>Proveedor 2</li>
-                    <li>Proveedor 3</li>
-                    <!-- Agregar más proveedores aquí -->
-                </ul>';
-            )
-            .catch(error => console.log(error));
+    // Estilos para la lista desplegable del select2
+    $('.select2-container--bootstrap .select2-dropdown').css({
+        'font-size': '1rem',
+        'line-height': '1.5',
+        'color': '#495057',
+        'background-color': '#fff',
+        'border': '1px solid #ced4da',
+        'border-radius': '0.25rem',
+        'transition': 'border-color .15s ease-in-out, box-shadow .15s ease-in-out'
+    });
+
+    // Estilos para las opciones del select2
+    $('.select2-container--bootstrap .select2-results__option').css({
+        'padding': '0.5rem 0.75rem',
+        'margin-bottom': '0',
+        'transition': 'background-color .15s'
+    });
+
+    // Estilo para el placeholder del select2
+    $('.select2-container--bootstrap .select2-selection__placeholder').css({
+        'color': '#6C757D' // Cambiar el color del texto del placeholder
+    });
+
+    // Ocultar el botón de limpieza después de la selección
+    $('#proveedor').on('select2:select', function (e) {
+        $('.select2-container--bootstrap .select2-selection__clear').hide();
     });
 });
 

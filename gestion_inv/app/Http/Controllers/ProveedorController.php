@@ -80,8 +80,8 @@ class ProveedorController extends Controller
     }
 
     public function show($prove_id)
-{
-    $proveedor= Proveedor::with('proveedor')->findOrFail($prove_id);
-    return view('proveedores.show', compact('proveedor'));
-}
+    {
+        $proveedor= Proveedor::with('proveedor')->findOrFail($prove_id);
+        return view('proveedores.show', compact('proveedor'));
+    }
 }

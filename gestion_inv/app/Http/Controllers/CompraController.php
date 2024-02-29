@@ -23,23 +23,17 @@ class CompraController extends Controller
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
             $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $proveedores = Proveedor::pluck('prove_nombre','prove_id');
+            $proveedores = Proveedor::all();
             $temp_compra_detalles = TempCompra::all();
             return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras', 'temp_compra_detalles'));
         }else{
             $compra_detalles = Compra_detalle::all(); // Obtén todas las categorías
             $compras = Compra::all(); // Obtén todas las categorías
             $productos = Producto::all(); // Obtén todos los productos
-            $proveedores = Proveedor::pluck('prove_nombre','prove_id');
+            $proveedores = Proveedor::all();
             return view('compras.index', compact('compra_detalles', 'productos', 'proveedores','compras'));
         }
         
-    }
-
-    public function lista()
-    {
-        $proveedores = Proveedor::all();
-        return view('compras.lista', compact('proveedores'));
     }
 
     public function createTempTable()
@@ -252,13 +246,6 @@ public function createCompra(Request $request)
             }
         }
     }
-    public function buscador(Request $request)
-    {
-        $proveedores = Proveedor::where('prove_nombre', 'like', $request->texto."%")->take(5)->get();
-
-        return view("compras.lista", compact("proveedores"));
-    }
-
 
 }
 
