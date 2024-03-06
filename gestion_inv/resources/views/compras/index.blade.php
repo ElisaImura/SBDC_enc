@@ -4,9 +4,14 @@
 </head> 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    /* Estilo para el placeholder en Select2 */
+    .select2-container .select2-selection--single .select2-selection__placeholder {
+        color: #6C757D !important;
+    }
+</style>
 @include('layouts.navbar') 
 
 <body>
@@ -38,7 +43,11 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="prod_id">Producto:</label>
-                                    <select name="prod_id" id="prod_id" class="form-control" required>
+                                    <select name="prod_id" id="prod_id" class="select2-container-selection__rendered form-control js-example-basic-single select2" required>
+                                        <?php
+                                            // Obtener todos los productos y ordenarlos por el nombre
+                                            $productos = App\Models\Producto::orderBy('prod_nombre')->get();
+                                        ?>
                                         <option value="">Seleccione una Opción</option>
                                         @foreach($productos as $producto)
                                             <option value="{{ $producto->prod_id }}" data-precio="{{ $producto->prod_precioventa }}" data-cantidad="{{$producto->prod_cant}}">{{ $producto->prod_nombre }}</option>
@@ -72,12 +81,12 @@
                             <div class="form-group">
                                 <div class="form-group">
                                     <label for="prove_id">Proveedor:</label>
-                                    <select name="prove_id" id="proveedor" class="form-control select2" required>
-                                        <option value="">Seleccione una Opción</option>
+                                    <select name="prove_id" id="proveedor" class="select2-container-selection__rendered form-control js-example-basic-single select2" placeholder="Buscar" required>
                                         <?php
                                             // Obtener todos los proveedores y ordenarlos por el nombre
                                             $proveedores = App\Models\Proveedor::orderBy('prove_nombre')->get();
                                         ?>
+                                        <option value="">Seleccione una Opción</option>
                                         @foreach($proveedores as $proveedor)
                                             <option value="{{ $proveedor->prove_id }}">{{ $proveedor->prove_nombre }} - {{ $proveedor->prove_ruc }}</option>
                                         @endforeach
@@ -266,85 +275,77 @@
     });
 
 
-//Hay que mejorar esta seccion porque no funciona siempre. Como que tarda en cargar.
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('tbody').addEventListener('click', function(event) {
-        if (event.target && event.target.matches('.btnEliminarCompra')) {
-            var formulario = event.target.closest('form');
+    //Hay que mejorar esta seccion porque no funciona siempre. Como que tarda en cargar.
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('tbody').addEventListener('click', function(event) {
+            if (event.target && event.target.matches('.btnEliminarCompra')) {
+                var formulario = event.target.closest('form');
 
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Esta acción no se puede revertir",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    formulario.submit();
-                }
-            });
-        }
-    });
-});
-
-$(document).ready(function() {
-    // Inicializar Select2 en el select de proveedores
-    $('#proveedor').select2({
-        placeholder: 'Buscar proveedor...',
-        allowClear: true,
-        width: '100%',
-        dropdownParent: $('body'), // Especificar el cuerpo del documento como el elemento padre
-        theme: 'bootstrap', // Aplicar el tema de Bootstrap
-        dropdownPosition: 'below',
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formulario.submit();
+                    }
+                });
+            }
+        });
     });
 
-    // Estilos personalizados para el select2
-    $('.select2-container--bootstrap .select2-selection--single').css({
-        'height': 'calc(1.5em + 0.75rem + 2px)',
-        'padding': '0.375rem 0.2rem',
-        'font-size': '1rem',
-        'font-weight': '400',
-        'line-height': '1.5',
-        'color': '#495057',
-        'background-color': '#fff',
-        'background-clip': 'padding-box',
-        'border': '1px solid #ced4da',
-        'border-radius': '0.25rem',
-        'transition': 'border-color .15s ease-in-out, box-shadow .15s ease-in-out'
-    });
+    $(document).ready(function() {
+        // Inicializar Select2 en el select de proveedores
+        $('#proveedor').select2({
+          placeholder: 'Seleccionar Proveedor',
+          width: '100%',
+        });
 
-    // Estilos para la lista desplegable del select2
-    $('.select2-container--bootstrap .select2-dropdown').css({
-        'font-size': '1rem',
-        'line-height': '1.5',
-        'color': '#495057',
-        'background-color': '#fff',
-        'border': '1px solid #ced4da',
-        'border-radius': '0.25rem',
-        'transition': 'border-color .15s ease-in-out, box-shadow .15s ease-in-out'
-    });
+        $('#prod_id').select2({
+          placeholder: 'Seleccionar Producto',
+          width: '100%',
+        });
 
-    // Estilos para las opciones del select2
-    $('.select2-container--bootstrap .select2-results__option').css({
-        'padding': '0.5rem 0.75rem',
-        'margin-bottom': '0',
-        'transition': 'background-color .15s'
-    });
+        $('.select2-container .select2-selection--multiple').css({
+            'color': '#6C757D',
+            'border': '1px solid #ced4da',
+            'height': 'calc(1.5em + 0.75rem + 2px)',
+            'font-family': 'inherit',
+        });
 
-    // Estilo para el placeholder del select2
-    $('.select2-container--bootstrap .select2-selection__placeholder').css({
-        'color': '#6C757D' // Cambiar el color del texto del placeholder
-    });
+        /* Estilos para mantener la apariencia del select */
+        $('.select2-container .select2-selection--single').css({
+            'height': 'calc(1.5em + 0.75rem + 2px)',
+            'padding': '0.375rem 0.75rem',
+            'font-size': '1rem',
+            'line-height': '1.5',
+            'color': '#6C757D',
+            'background-color': '#fff',
+            'background-clip': 'padding-box',
+            'border': '1px solid #ced4da',
+            'border-radius': '0.25rem',
+        });
 
-    // Ocultar el botón de limpieza después de la selección
-    $('#proveedor').on('select2:select', function (e) {
-        $('.select2-container--bootstrap .select2-selection__clear').hide();
-    });
-});
+        $('.select2-container .select2-selection--single .select2-selection__arrow').css({
+            'height': 'calc(1.5em + 0.75rem)',
+            'right': '5px',
+            'top': 'auto',
+            'bottom': '0',
+        });
 
+        $('.select2-container--default .select2-selection--single .select2-selection__rendered').css({
+            'height': 'calc(1.5em + 0.75rem)',
+            'margin-bottom': '10px',
+            'line-height': '25px',
+            'color': '#6C757D',
+            'padding': '0px',
+        });
+    });
 
 </script>
 
