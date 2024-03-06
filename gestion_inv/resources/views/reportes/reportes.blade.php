@@ -66,7 +66,7 @@
                 <label for="fecha_fin">Fecha de fin:</label>
                 <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
             </div>
-            <button type="submit" class="btn btn-primary">Generar Reporte</button>
+            <button type="submit" class="btn btnAccion">Generar Reporte</button>
         </form>
     </div>
 

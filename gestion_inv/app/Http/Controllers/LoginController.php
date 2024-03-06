@@ -7,6 +7,9 @@ use App\Models\User;
 use App\Models\Venta;
 use App\Models\Compra;
 use App\Models\Producto;
+use App\Models\Cliente;
+use App\Models\Proveedor;
+use App\Models\Categoria;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +17,7 @@ class LoginController extends Controller
 {
     public function dashboard()
     {
-       // Calcular el total de compras
+        // Calcular el total de compras
         $totalCompras = Compra::count();
 
         // Calcular el total de ventas
@@ -23,8 +26,18 @@ class LoginController extends Controller
         // Calcular el total de productos
         $totalProductos = Producto::count();
 
+        // Calcular el total de compras
+        $totalClientes = Cliente::count();
+
+        // Calcular el total de ventas
+        $totalProveedores = Proveedor::count();
+
+        // Calcular el total de productos
+        $totalCategorias = Categoria::count();
+
+
         // Pasar los datos al dashboard
-        return view('dashboard', compact('totalCompras', 'totalVentas', 'totalProductos'));
+        return view('dashboard', compact('totalCompras', 'totalVentas', 'totalProductos', 'totalClientes', 'totalProveedores', 'totalCategorias'));
     }
 
     public function register(Request $request)

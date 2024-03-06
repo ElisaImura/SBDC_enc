@@ -14,12 +14,12 @@
 
         <!-- Content -->
         <div class="content vista">
-            <div class="container mt-5">
+            <div class="container">
                 <h1 class="text-center mb-4">Biblioteca de Media</h1>
                 <form action="{{ route('media.search') }}" method="GET">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Buscar producto" name="search">
-                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                        <button class="btn btnAccion" type="submit">Buscar</button>
                     </div>
                 </form>
                 @if ($productos->isEmpty())

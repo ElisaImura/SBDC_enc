@@ -24,6 +24,10 @@ body {
   flex: 1;
 }
 
+.tablas{
+  margin-bottom: 85px !important;
+}
+
 .titulo_principal {
   margin-bottom: 30px;
 }
@@ -189,4 +193,13 @@ nav{
 
 .btn-block {
     height: 100%;
+}
+
+
+
+
+
+
+.btnAccion{
+  background-color: #b6bcc2 !important;
 }

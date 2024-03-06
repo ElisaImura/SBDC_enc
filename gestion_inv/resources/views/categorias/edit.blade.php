@@ -27,7 +27,7 @@
                                     value="{{ $categoria->cat_nombre }}" required>
 
                             </div>
-                            <button type="submit" class="btn btn-primary">Actualizar Categoría</button>
+                            <button type="submit" class="btn btnAccion">Actualizar Categoría</button>
                         </form>
                     </div>
                 </div>

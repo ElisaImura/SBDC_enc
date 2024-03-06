@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" id="botonEnviar" class="btn btn-primary">Guardar</button>
+                                        <button type="submit" id="botonEnviar" class="btn btnAccion">Guardar</button>
                                     </div>
                                 </form>
                             </div>
