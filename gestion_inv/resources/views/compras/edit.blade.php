@@ -11,6 +11,13 @@
     .select2-container .select2-selection--single .select2-selection__placeholder {
         color: #495057 !important;
     }
+
+    /* Estilo para el hover del Select2 */
+    .select2-container--default .select2-results__option[aria-selected=true]:hover,
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #f0f0f0; /* Cambia este valor al gris que desees */
+        color: black;
+    }
 </style>
 @include('layouts.navbar') 
 
@@ -24,7 +31,7 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Editar Venta</div>
+                            <div class="card-header Frojo-Lblanco">Editar Venta</div>
 
                             <div class="card-body">
                                 <form method="POST" action="{{ route('compras.update', ['temp_id' => $temp_compra_detalles->temp_id]) }}">

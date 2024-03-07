@@ -14,7 +14,7 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Editar Producto</div>
+                            <div class="card-header Frojo-Lblanco">Editar Producto</div>
 
                             <div class="card-body">
                                 <form method="POST" action="{{ route('productos.update', ['prod_id' => $producto->prod_id]) }}">

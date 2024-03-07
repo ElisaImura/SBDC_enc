@@ -31,7 +31,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+                                    <button type="submit" class="btn btnAccion">Iniciar Sesion</button>
                                 </div>
                             </form>
                         </div>

@@ -22,7 +22,7 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Crear Proveedor</div>
+                            <div class="card-header Frojo-Lblanco">Crear Proveedor</div>
                             
                             <div class="card-body">
                               <form method="POST" action="./create">

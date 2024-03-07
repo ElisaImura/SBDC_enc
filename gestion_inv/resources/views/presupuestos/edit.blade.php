@@ -15,7 +15,7 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Editar Detalle de Presupuesto</div>
+                            <div class="card-header Frojo-Lblanco">Editar Detalle de Presupuesto</div>
 
                             <div class="card-body">
                                 <form method="POST" action="{{ route('presupuesto.update', ['temp_id' => $Presupuesto_temp_venta_detalles->temp_id]) }}">

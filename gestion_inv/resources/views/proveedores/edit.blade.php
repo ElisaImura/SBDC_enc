@@ -22,7 +22,7 @@
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Edicion de Proveedores</div>
+                            <div class="card-header Frojo-Lblanco">Edicion de Proveedores</div>
 
                             <div class="card-body">
                                 <form method="POST" action="{{ route('proveedores.update', ['prove_id' => $proveedor->prove_id]) }}">

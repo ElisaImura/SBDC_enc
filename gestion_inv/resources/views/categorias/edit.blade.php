@@ -14,7 +14,7 @@
         <div class="content">
             <div class="container mt-4">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header Frojo-Lblanco">
                         <strong>Editar Categoría</strong>
                     </div>
                     <div class="card-body">

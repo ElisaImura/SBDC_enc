@@ -23,7 +23,7 @@
                     <div class="col-md-8">
 
                         <div class="card">
-                            <div class="card-header">Crear Cliente</div>
+                            <div class="card-header Frojo-Lblanco">Crear Cliente</div>
                             
                             <div class="card-body">
                               <form method="POST" action="{{ route('clientes.create') }}">
