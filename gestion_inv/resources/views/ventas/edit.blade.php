@@ -36,6 +36,7 @@
                                     @csrf
                                     @method('PUT') <!-- Cambiado a PUT -->
                                     <div class="form-group">
+                                        <input type="text" name="producto" id="producto" class="form-control" value="{{ $temp_venta_detalles->prod_id }}" hidden>
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="select2-container-selection__rendered form-control js-example-basic-single select2" required>
                                             <?php
@@ -103,6 +104,51 @@
                     $('#precio').val('');
                     // Limpiar el campo de total
                     $('#total').val('');
+                }
+            });
+
+            var updatingSelect = false; // Bandera para controlar la actualización del select
+
+            // Manejar el cambio en la selección del producto
+            $('#prod_id').on('change', function(){
+                if (!updatingSelect) {
+                    // Obtener el valor seleccionado
+                    var selectedProductId = $(this).val();
+                    $.ajax({
+                        // Utiliza la URL absoluta en lugar de la ruta relativa
+                        url: '{{ url("/verificar-producto") }}/' + selectedProductId,
+                        type: 'GET',
+                        success: function(response) {
+                            // Verificar la respuesta del servidor
+                            if (response.existe) {
+                                updatingSelect = true; // Establecer la bandera en true para evitar bucles infinitos
+                                // Obtener el valor del campo oculto #producto
+                                var selectedProductId = $('#producto').val();
+                                
+                                // Establecer el valor seleccionado en el select #prod_id
+                                $('#prod_id').val(selectedProductId).trigger('change');
+                                updatingSelect = false; // Restablecer la bandera a false después de la actualización
+                                // Si el producto existe, mostrar un SweetAlert con el botón personalizado
+                                var detalleId = response.temp_id;
+                                Swal.fire({
+                                    title: 'Este producto ya está agregado',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Volver', // Cambiar el texto del botón
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
+                                        window.location.href = '{{ url("/ventas") }}';
+                                    }
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Manejar el error si ocurre
+                            console.error(error);
+                        }
+                    });
                 }
             });
 

@@ -28,7 +28,7 @@
                                     @csrf <!-- Campo CSRF -->
                                     <div class="form-group">
                                         <label for="prod_nombre">Nombre:</label>
-                                        <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ old('prod_nombre') }}" required>
+                                        <input type="text" name="prod_nombre" id="prod_nombre" class="form-control" value="{{ old('prod_nombre') }}" placeholder="Nombre del producto" required>
                                     </div>
                                     
                                     <div class="form-group">
@@ -43,7 +43,7 @@
                                     
                                     <div class="form-group">
                                         <label for="prod_descripcion">Descripción:</label>
-                                        <input type="text" name="prod_descripcion" id="prod_descripcion" class="form-control" value="{{ old('prod_descripcion') }}" required>
+                                        <input type="text" name="prod_descripcion" id="prod_descripcion" class="form-control" value="{{ old('prod_descripcion') }}" placeholder="Descripcion del producto" required>
                                     </div>
 
                                     <div class="form-group">

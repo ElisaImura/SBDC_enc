@@ -11,6 +11,7 @@ use App\Models\PresupuestoDetalleTemp;
 use App\Models\TempCompra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class ProductoController extends Controller
 {
@@ -42,7 +43,7 @@ class ProductoController extends Controller
         // Verifica si se ha enviado una imagen
         if ($request->hasFile('prod_imagen')) {
             // Mueve la imagen al directorio deseado
-            $imagen = time().".".$request->prod_imagen->extension();
+            $imagen = $request->prod_imagen->getClientOriginalName();
             $request->prod_imagen->move(public_path("image"), $imagen);
         }
 
@@ -62,41 +63,53 @@ class ProductoController extends Controller
 
     public function destroy($prod_id)
     {
-        try {
-            // Obtener el nombre de la imagen asociada al producto
-            $producto = Producto::findOrFail($prod_id);
-            $imagen = $producto->prod_imagen;
+        // Obtener el nombre de la imagen asociada al producto
+        $producto = Producto::findOrFail($prod_id);
+        $imagen = $producto->prod_imagen;
 
-            // Verificar si el producto está siendo utilizado en alguna venta
-            $ventaDetalles = Venta_detalle::where('prod_id', $prod_id)->exists();
-            // Verificar si el producto está siendo utilizado en alguna compra
-            $compraDetalles = Compra_detalle::where('prod_id', $prod_id)->exists();
-            // Verificar si el producto está siendo utilizado en alguna detalle temporal
-            $detallesTemp = DetalleTemp::where('prod_id', $prod_id)->exists();
+        // Verificar si el producto está siendo utilizado en alguna venta
+        $ventaDetalles = Venta_detalle::where('prod_id', $prod_id)->exists();
+        // Verificar si el producto está siendo utilizado en alguna compra
+        $compraDetalles = Compra_detalle::where('prod_id', $prod_id)->exists();
+        
+        // Inicializar $detallesTemp
+        $detallesTemp = false;
+        $presupuestoDetallesTemp = false;
+        $tempCompraDetalles = false;
+
+        if (Schema::hasTable('Presupuesto_temp_venta_detalles')) {
             // Verificar si el producto está siendo utilizado en alguna detalle de presupuesto temporal
             $presupuestoDetallesTemp = PresupuestoDetalleTemp::where('prod_id', $prod_id)->exists();
+        }
+
+        if (Schema::hasTable('DetalleTemp')) {
+            // Verificar si el producto está siendo utilizado en alguna detalle temporal
+            $detallesTemp = DetalleTemp::where('prod_id', $prod_id)->exists();
+        }
+
+        if (Schema::hasTable('TempCompra')) {
             // Verificar si el producto está siendo utilizado en alguna detalle de compra temporal
             $tempCompraDetalles = TempCompra::where('prod_id', $prod_id)->exists();
-
-            if ($ventaDetalles || $compraDetalles || $detallesTemp || $presupuestoDetallesTemp || $tempCompraDetalles) {
-                return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está siendo utilizado en ventas, compras u otras operaciones.');
-            }
-
-            // Si el producto no está siendo utilizado en ninguna tabla, eliminarlo
-            $producto->delete();
-
-            // Eliminar la imagen asociada al producto
-            if (!empty($imagen)) {
-                $path = public_path('image') . '/' . $imagen;
-                if (File::exists($path)) {
-                    File::delete($path);
-                }
-            }
-
-            return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
-        } catch (\Exception $e) {
-            return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');
         }
+
+        if ($ventaDetalles || $compraDetalles || $detallesTemp || $presupuestoDetallesTemp || $tempCompraDetalles) {
+            return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está siendo utilizado en ventas, compras u otras operaciones.');
+        }
+
+
+
+        // Si el producto no está siendo utilizado en ninguna tabla, eliminarlo
+        $producto->delete();
+
+        // Eliminar la imagen asociada al producto
+        if (!empty($imagen)) {
+            $path = public_path('image') . '/' . $imagen;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
+
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
     }
 
     public function formulario(){
@@ -114,10 +127,44 @@ class ProductoController extends Controller
 
     public function update(Request $request, $prod_id)
     {
+        // Validación de entrada
+        $rules = [
+            'prod_nombre' => 'required',
+            'cat_id' => 'required',
+            'prod_descripcion' => 'required',
+            'prod_imagen' => 'nullable|mimes:jpeg,jpg,png',
+        ];
+
+        $mensaje = [
+            'required' => 'El :attribute campo es requerido',
+            'cat_id.required' => 'El campo de categoría es requerido',
+        ];
+
+        $this->validate($request, $rules, $mensaje);
+
+        $imagen = null;
+
+        // Verifica si se ha enviado una imagen
+        if ($request->hasFile('prod_imagen')) {
+            // Mueve la imagen al directorio deseado
+            $imagen = time().".".$request->prod_imagen->extension();
+            $request->prod_imagen->move(public_path("image"), $imagen);
+        }
+
         $producto = Producto::find($prod_id);
+
+        // Eliminar la imagen asociada al producto
+        if (!empty($producto->prod_imagen)) {
+            $path = public_path('image') . '/' . $producto->prod_imagen;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
+
         $producto->prod_nombre = $request->input('prod_nombre');
         $producto->prod_descripcion = $request->input('prod_descripcion');
         $producto->cat_id = $request->input('cat_id'); // Asumiendo que 'cat_id' es la clave foránea
+        $producto->prod_imagen = $imagen;
         $producto->save();
 
         // Verifica el valor del parámetro 'source' para determinar la redirección

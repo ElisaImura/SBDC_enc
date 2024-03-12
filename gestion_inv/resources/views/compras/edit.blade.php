@@ -38,6 +38,7 @@
                                     @csrf
                                     @method('PUT') <!-- Cambiado a PUT -->
                                     <div class="form-group">
+                                        <input type="text" name="producto" id="producto" class="form-control" value="{{ $temp_compra_detalles->prod_id }}" hidden>
                                         <label for="prod_id">Producto:</label>
                                         <select name="prod_id" id="prod_id" class="select2-container-selection__rendered form-control js-example-basic-multiple select2" required>
                                             <?php
@@ -82,15 +83,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-
-        $(document).ready(function () {
+    <script>        
+        $(document).ready(function() {
             // Manejar el cambio en la selección del producto
-            $('#prod_id').change(function () {
+            $('#prod_id').on('change', function(){
                 // Obtener el valor seleccionado
                 var selectedProductId = $(this).val();
 
-                if (selectedProductId !== 'opcion') {
+                if (selectedProductId !== '') {
                     // Obtener el precio del producto desde el atributo data-precio
                     var selectedProductPrice = $('option:selected', this).data('precio');
                     // Establecer el precio en el campo de entrada
@@ -98,11 +98,54 @@
                     // Actualizar el campo oculto de precio si es necesario
                     $('#precio').val(selectedProductPrice);
                 } else {
-                    // Limpiar el campo de precio si la opción seleccionada es "Seleccione una Opción"
+                    // Limpiar el campo de precio si no se seleccionó ningún producto
                     $('#dcompra_precio').val('');
                     $('#precio').val('');
-                    // Limpiar el campo de total
-                    $('#total').val('');
+                }
+            });
+
+            var updatingSelect = false; // Bandera para controlar la actualización del select
+
+            // Manejar el cambio en la selección del producto
+            $('#prod_id').on('change', function(){
+                if (!updatingSelect) {
+                    // Obtener el valor seleccionado
+                    var selectedProductId = $(this).val();
+                    $.ajax({
+                        // Utiliza la URL absoluta en lugar de la ruta relativa
+                        url: '{{ url("/verificar-producto-compra") }}/' + selectedProductId,
+                        type: 'GET',
+                        success: function(response) {
+                            // Verificar la respuesta del servidor
+                            if (response.existe) {
+                                updatingSelect = true; // Establecer la bandera en true para evitar bucles infinitos
+                                // Obtener el valor del campo oculto #producto
+                                var selectedProductId = $('#producto').val();
+                                
+                                // Establecer el valor seleccionado en el select #prod_id
+                                $('#prod_id').val(selectedProductId).trigger('change');
+                                updatingSelect = false; // Restablecer la bandera a false después de la actualización
+                                // Si el producto existe, mostrar un SweetAlert con el botón personalizado
+                                var detalleId = response.temp_id;
+                                Swal.fire({
+                                    title: 'Este producto ya está agregado',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Volver', // Cambiar el texto del botón
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Redirigir al usuario al formulario de edición del detalle temporal correspondiente
+                                        window.location.href = '{{ url("/compras") }}';
+                                    }
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Manejar el error si ocurre
+                            console.error(error);
+                        }
+                    });
                 }
             });
         });
