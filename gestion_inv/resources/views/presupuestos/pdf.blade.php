@@ -20,8 +20,6 @@
         }
 
         th {
-            background-color: #b4d3f5;
-            color: #fff;
             text-align: center; /* Centra el texto en las celdas del encabezado */
         }
 
@@ -48,6 +46,16 @@
             margin: 20px;
             border: 1px solid black; /* Define el borde de página */
         }
+
+        .Frojo-Lblanco{
+          background-color: #D80E15 !important;
+          color: white !important;
+        }
+
+        .border-all-black td,
+        .border-all-black th {
+          border: 1px solid black;
+        }
     </style>
 </head> 
 
@@ -61,10 +69,10 @@
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
+                        <table class="table border-all-black table-hover">
+                            <thead class="Frojo-Lblanco">
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Nº</th>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
@@ -75,7 +83,7 @@
                                 @if (Schema::hasTable('Presupuesto_temp_venta_detalles'))
                                 @foreach ($Presupuesto_temp_venta_detalles as $dventa)
                                 <tr id="row_{{ $dventa->temp_id }}">
-                                    <td>{{ $dventa->temp_id ?? 'NN' }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $dventa->producto->prod_nombre }}</td>
                                     <td>{{ $dventa->dventa_cantidad }}</td>
                                     <td>{{ $dventa->dventa_precio }}</td>

@@ -10,6 +10,7 @@ use App\Models\DetalleTemp;
 use App\Models\PresupuestoDetalleTemp;
 use App\Models\TempCompra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductoController extends Controller
 {
@@ -24,12 +25,14 @@ class ProductoController extends Controller
         // Validación de entrada
         $rules = [
             'prod_nombre' => 'required',
+            'cat_id' => 'required',
             'prod_descripcion' => 'required',
             'prod_imagen' => 'nullable|mimes:jpeg,jpg,png',
         ];
 
         $mensaje = [
             'required' => 'El :attribute campo es requerido',
+            'cat_id.required' => 'El campo de categoría es requerido',
         ];
 
         $this->validate($request, $rules, $mensaje);
@@ -60,18 +63,18 @@ class ProductoController extends Controller
     public function destroy($prod_id)
     {
         try {
+            // Obtener el nombre de la imagen asociada al producto
+            $producto = Producto::findOrFail($prod_id);
+            $imagen = $producto->prod_imagen;
+
             // Verificar si el producto está siendo utilizado en alguna venta
             $ventaDetalles = Venta_detalle::where('prod_id', $prod_id)->exists();
-
             // Verificar si el producto está siendo utilizado en alguna compra
             $compraDetalles = Compra_detalle::where('prod_id', $prod_id)->exists();
-
             // Verificar si el producto está siendo utilizado en alguna detalle temporal
             $detallesTemp = DetalleTemp::where('prod_id', $prod_id)->exists();
-
             // Verificar si el producto está siendo utilizado en alguna detalle de presupuesto temporal
             $presupuestoDetallesTemp = PresupuestoDetalleTemp::where('prod_id', $prod_id)->exists();
-
             // Verificar si el producto está siendo utilizado en alguna detalle de compra temporal
             $tempCompraDetalles = TempCompra::where('prod_id', $prod_id)->exists();
 
@@ -80,13 +83,16 @@ class ProductoController extends Controller
             }
 
             // Si el producto no está siendo utilizado en ninguna tabla, eliminarlo
-            $producto = Producto::find($prod_id);
+            $producto->delete();
 
-            if (!$producto) {
-                return redirect()->route('productos.index')->with('error', 'Producto no encontrado');
+            // Eliminar la imagen asociada al producto
+            if (!empty($imagen)) {
+                $path = public_path('image') . '/' . $imagen;
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
             }
 
-            $producto->delete();
             return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
         } catch (\Exception $e) {
             return redirect()->route('productos.index')->with('error', 'Producto no se puede eliminar');

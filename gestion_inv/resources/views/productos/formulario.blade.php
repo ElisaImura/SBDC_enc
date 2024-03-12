@@ -33,8 +33,8 @@
                                     
                                     <div class="form-group">
                                         <label for="cat_id">Categoría:</label>
-                                        <select name="cat_id" id="categoria" class="form-control" required>
-                                            <option value="opcion">Seleccione una Opción</option>
+                                        <select name="cat_id" id="categoria" class="form-control">
+                                            <option value="">Seleccione una Opción</option>
                                             @foreach($categorias as $cat_id => $nombre)
                                                 <option value="{{ $cat_id }}">{{ $nombre }}</option>
                                             @endforeach

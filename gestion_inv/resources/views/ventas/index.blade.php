@@ -11,6 +11,12 @@
     .select2-container .select2-selection--single .select2-selection__placeholder {
         color: #6C757D !important;
     }
+    /* Estilo para el hover del Select2 */
+    .select2-container--default .select2-results__option[aria-selected=true]:hover,
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #f0f0f0; /* Cambia este valor al gris que desees */
+        color: black;
+    }
 </style>
 
 @include('layouts.navbar') 
@@ -109,7 +115,7 @@
                             <table class="table border-all-black table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Nº</th>
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Precio</th>
@@ -121,7 +127,7 @@
                                     @if (Schema::hasTable('temp_venta_detalles'))
                                     @foreach ($temp_venta_detalles as $dventa)
                                     <tr id="row_{{ $dventa->temp_id }}">
-                                        <td>{{ $dventa->temp_id ?? 'NN' }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $dventa->producto->prod_nombre }}</td>
                                         <td>{{ $dventa->dventa_cantidad }}</td>
                                         <td>{{ $dventa->dventa_precio }}</td>

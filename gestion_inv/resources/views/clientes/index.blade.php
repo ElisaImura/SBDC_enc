@@ -28,7 +28,7 @@
                 <table class="table border-all-black table-hover" style="text-align: center;">
                     <thead class="Frojo-Lblanco">
                         <tr>
-                            <th>ID</th>
+                            <th>Nº</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>RUC</th>
@@ -40,7 +40,7 @@
                     <tbody>
                         @foreach ($clientes as $cliente)
                         <tr>
-                            <td>{{ $cliente->cli_id ?? 'NN'}}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $cliente->cli_nombre ?? 'NN' }}</td>
                             <td>{{ $cliente->cli_apellido ?? 'NN' }}</td>
                             <td>{{ $cliente->cli_ruc ?? 'NN'}}</td>

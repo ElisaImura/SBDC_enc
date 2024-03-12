@@ -173,5 +173,15 @@ class PresupuestoController extends Controller
         // Descarga el PDF
         return $pdf->download('presupuestos.pdf');
     }
+    
+    public function recargarVista() {
 
+        $this->generarPDF();
+
+        // Elimina la tabla
+        Schema::dropIfExists('Presupuesto_temp_venta_detalles');
+
+        // Redirige al usuario de vuelta a la vista
+        return redirect()->route('presupuesto.index')->with('success', 'Presupuesto creado con éxito.');
+    }
 }

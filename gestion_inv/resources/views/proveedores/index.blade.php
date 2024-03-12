@@ -27,10 +27,10 @@
                         Nuevo Proveedor
                     </a>
                 </div>
-                <table class="table border-all-black" style="text-align: center;">
+                <table class="table border-all-black table-hover" style="text-align: center;">
                     <thead class="Frojo-Lblanco">
                         <tr>
-                            <th>ID</th>
+                            <th>Nº</th>
                             <th>Nombre</th>
                             <th>RUC</th>
                             <th>Acciones</th>
@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach ($proveedores as $proveedor)
                         <tr>
-                            <td>{{ $proveedor->prove_id ?? 'NN'}}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $proveedor->prove_nombre ?? 'NN' }}</td>
                             <td>{{ $proveedor->prove_ruc ?? 'NN'}}</td>
                             <td style="width: 280px">

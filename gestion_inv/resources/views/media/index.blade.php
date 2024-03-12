@@ -29,19 +29,28 @@
                         @foreach($productos as $producto)
                         <div class="col col-md-4">
                             <div class="card cartas">
-                                @if($producto->prod_imagen)
-                                <div class="img-container">
-                                    <img src="{{ asset('image/' . $producto->prod_imagen) }}" class="card-img-top fixed-img" alt="{{ $producto->prod_nombre }}">
-                                </div>
+                                @if($producto->prod_imagen) <!-- Verifica si el producto tiene una imagen -->
+                                    @if(file_exists(public_path('image/' . $producto->prod_imagen))) <!-- Verifica si el archivo de imagen existe -->
+                                        <div class="img-container">
+                                            <!-- Si el archivo de imagen existe, muestra la etiqueta <img> con la URL de la imagen -->
+                                            <img src="{{ asset('image/' . $producto->prod_imagen) }}" class="card-img-top fixed-img" alt="{{ $producto->prod_nombre }}">
+                                        </div>
+                                    @else
+                                        <!-- Si el archivo de imagen no existe, muestra el mensaje "Not found" -->
+                                        <div class="no-media">
+                                            <span>Not found</span>
+                                        </div>
+                                    @endif
                                 @else
-                                <div class="no-media">
-                                    <span>No media</span>
-                                </div>
+                                    <!-- Si el producto no tiene imagen, muestra el mensaje "No media" -->
+                                    <div class="no-media">
+                                        <span>No media</span>
+                                    </div>
                                 @endif
                                 <div id="card-media" class="card-body">
                                     <h5 class="card-title">{{ $producto->prod_nombre }}</h5>
                                     <div class="row justify-content-between">
-                                        <div class="col">
+                                        <div class="col-7">
                                             <p class="card-text">{{ $producto->prod_descripcion }}</p>
                                         </div>
                                         <div class="col">

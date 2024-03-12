@@ -121,7 +121,7 @@
                             <table class="table border-all-black table-hover" style="margin: 0px;">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Nº</th>
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Compra</th>
@@ -133,7 +133,7 @@
                                     @if (Schema::hasTable('temp_compra_detalles'))
                                     @foreach ($temp_compra_detalles as $dcompra)
                                     <tr id="row_{{ $dcompra->temp_id }}">
-                                        <td>{{ $dcompra->temp_id ?? 'NN' }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $dcompra->producto->prod_nombre }}</td>
                                         <td>{{ $dcompra->dcompra_cantidad }}</td>
                                         <td>{{ $dcompra->dcompra_pcompra}}</td>

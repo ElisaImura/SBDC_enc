@@ -5,6 +5,19 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 @include('layouts.navbar') 
 
+<style>
+    /* Estilo para el placeholder en Select2 */
+    .select2-container .select2-selection--single .select2-selection__placeholder {
+        color: #495057 !important;
+    }
+    /* Estilo para el hover del Select2 */
+    .select2-container--default .select2-results__option[aria-selected=true]:hover,
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #f0f0f0; /* Cambia este valor al gris que desees */
+        color: black;
+    }
+</style>
+
 <body>
     <div id="main-container">
         @include('layouts.sidebar')

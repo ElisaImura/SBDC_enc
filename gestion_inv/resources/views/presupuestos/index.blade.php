@@ -94,7 +94,7 @@
                             <table class="table border-all-black table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Nº</th>
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Precio</th>
@@ -106,7 +106,7 @@
                                     @if (Schema::hasTable('Presupuesto_temp_venta_detalles'))
                                     @foreach ($Presupuesto_temp_venta_detalles as $dventa)
                                     <tr id="row_{{ $dventa->temp_id }}">
-                                        <td>{{ $dventa->temp_id ?? 'NN' }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $dventa->producto->prod_nombre }}</td>
                                         <td>{{ $dventa->dventa_cantidad }}</td>
                                         <td>{{ $dventa->dventa_precio }}</td>
@@ -150,7 +150,7 @@
                                     </form>
                                     <form id="PDF" method="post" action="{{ route('presupuesto.generarPDF') }}">
                                         @csrf
-                                        <button type="submit" class="btn btnAccion">Aceptar</button>
+                                        <button type="submit" class="btn btnAccion" id="generarPDF">Aceptar</button>
                                     </form>
                                 </div>
                             </div>
@@ -212,7 +212,8 @@
                 success: function(response) {
                     // Verificar la respuesta del servidor
                     if (response.existe) {
-                        $('#form-presupuesto')[0].reset();
+                        $('#prod_id').val('').trigger('change');
+                        $('#total').val('').trigger('change');
                         // Si el producto existe, mostrar un SweetAlert con el botón personalizado
                         var detalleId = response.temp_id;
 
@@ -326,6 +327,13 @@
                     }
                 });
             }
+        });
+
+        document.getElementById('generarPDF').addEventListener('click', function() {
+            // Después de que se complete la descarga del PDF, redirige al usuario a la ruta de recarga de la vista
+            setTimeout(function() {
+                window.location.href = "{{ route('presupuesto.recargar_vista') }}";
+            }, 1000); // Espera 500 milisegundos (medio segundo) antes de redirigir (ajusta el tiempo según sea necesario)
         });
     });
 

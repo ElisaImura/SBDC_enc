@@ -30,10 +30,10 @@
                     <a href="{{ route('nuevoProducto') }}" class="btn btnAccion">Agregar Producto</a>
                 </div>
 
-                <table class="table border-all-black" style="text-align: center;">
+                <table class="table border-all-black table-hover" style="text-align: center;">
                     <thead class="Frojo-Lblanco">
                         <tr>
-                            <th>ID</th>
+                            <th>Nº</th>
                             <th>Categoría</th>
                             <th>Nombre</th>
                             <th>Descripción</th>
@@ -46,7 +46,7 @@
                     <tbody>
                         @foreach ($productos as $producto)
                             <tr>
-                                <td>{{ $producto->prod_id ?? 'NN' }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $producto->categoria->cat_nombre ?? 'NN' }}</td>
                                 <td>{{ $producto->prod_nombre ?? 'NN' }}</td>
                                 <td>{{ $producto->prod_descripcion ?? 'NN' }}</td>

@@ -112,6 +112,7 @@ Route::post('/presupuesto/reiniciar', [PresupuestoController::class, 'reiniciar'
 Route::post('/presupuesto/crearCliente', [PresupuestoController::class, 'crearCliente'])->middleware('auth')->name('presupuesto.crearCliente');
 Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::class, 'verificarProducto'])->middleware('auth');
 Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->middleware('auth')->name('presupuesto.generarPDF');
+Route::get('/presupuesto-recargar', [PresupuestoController::class, 'recargarVista'])->middleware('auth')->name('presupuesto.recargar_vista');
 
 //Generar Reportes 
 
