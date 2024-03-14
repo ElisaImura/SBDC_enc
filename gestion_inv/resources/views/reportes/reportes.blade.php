@@ -17,6 +17,11 @@
         background-color: #f0f0f0; /* Cambia este valor al gris que desees */
         color: black;
     }
+    /* Estilo para los checkboxes */
+    .checkbox-group {
+        display: inline-block;
+        margin-right: 10px;
+    }
 </style>
 
 @include('layouts.navbar') 
@@ -27,83 +32,161 @@
     @include('layouts.sidebar')
 
     <div class="content vista">
-        <h1 class="mt-4">Generar Reporte</h1>
+        <div class="container">
+            <h1 class="titulo_principal text-center">Generar Reporte</h1>
 
-        <form action="{{ route('reportes.pdf') }}" method="GET">
-            <div class="form-group">
-                <label for="tipo_reporte">Tipo de reporte:</label>
-                <select class="form-control" id="tipo_reporte" name="tipo_reporte" required>
-                    <option value="vacio">Seleccione una opción</option>
-                    <option value="ventas">Ventas</option>
-                    <option value="compras">Compras</option>
-                </select>
-            </div>
-            <div class="form-group" id="div_proveedor" style="display: none;">
-                <label for="nombre_proveedor">Proveedor:</label>
-                <select name="prove_id" id="proveedor" class="select2-container-selection__rendered form-control js-example-basic-single select2" placeholder="Buscar" required>
-                    <?php
-                        // Obtener todos los proveedores y ordenarlos por el nombre
-                        $proveedores = App\Models\Proveedor::orderBy('prove_nombre')->get();
-                    ?>
-                    <option value="">Seleccione una Opción</option>
-                    @foreach($proveedores as $proveedor)
-                        <option value="{{ $proveedor->prove_id }}">{{ $proveedor->prove_nombre }} - {{ $proveedor->prove_ruc }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group" id="div_cliente" style="display: none;">
-                <label for="nombre_cliente">Cliente:</label>
-                <select name="cli_id" id="cliente" class="select2-container-selection__rendered form-control js-example-basic-single select2" required>
-                    <?php
-                        // Obtener todos los proveedores y ordenarlos por el nombre
-                        $clientes = App\Models\Cliente::orderBy('cli_nombre')->get();
-                    ?>
-                    <option value="">Seleccione una Opción</option>
-                    @foreach($clientes as $cliente)
-                        <option value="{{ $cliente->cli_id }}">{{ $cliente->cli_nombre }} {{ $cliente->cli_apellido }} - {{ $cliente->cli_ruc }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="fecha_inicio">Fecha de inicio:</label>
-                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
-            </div>
-            <div class="form-group">
-                <label for="fecha_fin">Fecha de fin:</label>
-                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
-            </div>
-            <button type="submit" class="btn btnAccion">Generar Reporte</button>
-        </form>
+            <form id="reporteForm" action="{{ route('reportes.pdf') }}" method="GET">
+                <div class="form-group" style="margin-bottom: 40px;">
+                    <h4>Tipo de reporte:</h4>
+                    <div class="checkbox-group">
+                        <label for="tipo_ventas">Ventas</label>
+                        <input type="checkbox" id="tipo_ventas" name="tipo_reporte" value="ventas">
+                    </div>
+                    <div class="checkbox-group">
+                        <label for="tipo_compras">Compras</label>
+                        <input type="checkbox" id="tipo_compras" name="tipo_reporte" value="compras">
+                    </div>
+                    <div id="div_proveedor" style="display: none;">
+                        <label for="nombre_proveedor">Proveedor:</label>
+                        <select name="prove_id" id="proveedor" class="select2-container-selection__rendered form-control js-example-basic-single select2" placeholder="Buscar">
+                            <?php
+                                // Obtener todos los proveedores y ordenarlos por el nombre
+                                $proveedores = App\Models\Proveedor::orderBy('prove_nombre')->get();
+                            ?>
+                            <option value="">Seleccione una Opción</option>
+                            <option value="todo">Todo</option>
+                            @foreach($proveedores as $proveedor)
+                                <option value="{{ $proveedor->prove_id }}">{{ $proveedor->prove_nombre }} - {{ $proveedor->prove_ruc }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div id="div_cliente" style="display: none;">
+                        <label for="nombre_cliente">Cliente:</label>
+                        <select name="cli_id" id="cliente" class="select2-container-selection__rendered form-control js-example-basic-single select2">
+                            <?php
+                                // Obtener todos los proveedores y ordenarlos por el nombre
+                                $clientes = App\Models\Cliente::orderBy('cli_nombre')->get();
+                            ?>
+                            <option value="">Seleccione una Opción</option>
+                            <option value="todo">Todo</option>
+                            @foreach($clientes as $cliente)
+                                <option value="{{ $cliente->cli_id }}">{{ $cliente->cli_nombre }} {{ $cliente->cli_apellido }} - {{ $cliente->cli_ruc }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" id="fecha_div" style="margin-bottom: 30px;">
+                    <div>
+                        <h4>Rango de datos:</h4>
+                        <div class="checkbox-group">
+                            <label for="todo">Todo</label>
+                            <input type="checkbox" id="todo" name="todo">
+                        </div>
+                        <div class="checkbox-group">
+                            <label for="periodo_tiempo">Seleccionar un periodo de tiempo</label>
+                            <input type="checkbox" id="periodo_tiempo" name="periodo_tiempo">
+                        </div>
+                    </div>
+                    <div id="fechas" style="display: none;">
+                        <div style="margin-bottom: 10px;">
+                            <label for="fecha_inicio">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                        </div>
+                        <div>
+                            <label for="fecha_fin">Fecha de fin:</label>
+                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btnAccion">Generar Reporte</button>
+            </form>
+        </div>
     </div>
 
     <!-- Bootstrap JS (opcional, solo si necesitas funcionalidad JS de Bootstrap) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#tipo_reporte').change(function() {
-                var tipoReporte = $(this).val();
-                if (tipoReporte === 'ventas') {
-                    $('#div_proveedor').hide().find('select').prop('required', false);
-                    $('#div_cliente').show().find('select').prop('required', true);
-                } else if (tipoReporte === 'compras') {
-                    $('#div_cliente').hide().find('select').prop('required', false);
-                    $('#div_proveedor').show().find('select').prop('required', true);
-                } else {
-                    $('#div_cliente').hide().find('select').prop('required', false);
-                    $('#div_proveedor').hide().find('select').prop('required', false);
+            // Función para validar el formulario antes de enviarlo
+            $('#reporteForm').submit(function(event) {
+                var isValid = true;
+
+                // Verificar si el tipo de reporte está seleccionado
+                if (!$('#tipo_ventas').is(':checked') && !$('#tipo_compras').is(':checked')) {
+                    isValid = false;
+                }
+
+                // Verificar si se seleccionó un periodo de tiempo y las fechas están llenas
+                if ($('#periodo_tiempo').is(':checked') && ($('#fecha_inicio').val() === '' || $('#fecha_fin').val() === '')) {
+                    isValid = false;
+                }
+
+                // Si el formulario no es válido, detener el envío
+                if (!isValid) {
+                    event.preventDefault();
                 }
             });
-        });
 
-        $(document).ready(function() {
+            // Mostrar u ocultar las secciones de proveedor o cliente según el tipo de reporte seleccionado
+            $('#tipo_ventas').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#div_proveedor').hide();
+                    $('#div_cliente').show();
+                    $('#tipo_compras').prop('checked', false);
+                    $('#cliente').prop('required', true); // Hacer el campo obligatorio
+                    $('#proveedor').prop('required', false);
+                    $('#proveedor').val('').trigger('change');
+                } else {
+                    $('#div_cliente').hide();
+                    $('#cliente').prop('required', false); // No requerir el campo si no está visible
+                }
+            });
+
+            $('#tipo_compras').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#div_cliente').hide();
+                    $('#div_proveedor').show();
+                    $('#tipo_ventas').prop('checked', false);
+                    $('#proveedor').prop('required', true); // Hacer el campo obligatorio
+                    $('#cliente').prop('required', false);
+                    $('#cliente').val('').trigger('change');
+                } else {
+                    $('#div_proveedor').hide();
+                    $('#proveedor').prop('required', false); // No requerir el campo si no está visible
+                }
+            });
+
+            // Mostrar u ocultar las fechas dependiendo del checkbox seleccionado
+            $('#periodo_tiempo').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#fechas').show();
+                    $('#todo').prop('checked', false);
+                    $('#fecha_inicio').prop('required', true); // Hacer los campos obligatorios
+                    $('#fecha_fin').prop('required', true);
+                } else {
+                    $('#fechas').hide();
+                    $('#fecha_inicio').prop('required', false); // No requerir los campos si no están visibles
+                    $('#fecha_fin').prop('required', false);
+                }
+            });
+
+            $('#todo').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#fechas').hide();
+                    $('#periodo_tiempo').prop('checked', false);
+                    $('#fecha_inicio').prop('required', false); // No requerir los campos si no están visibles
+                    $('#fecha_fin').prop('required', false);
+                }
+            });
+
             $('#cliente').select2({
-              placeholder: 'Seleccionar Cliente',
-              width: '100%',
+                placeholder: 'Seleccionar Cliente',
+                width: '100%',
             });
 
             $('#proveedor').select2({
-              placeholder: 'Seleccionar Proveedor',
-              width: '100%',
+                placeholder: 'Seleccionar Proveedor',
+                width: '100%',
             });
 
             $('.select2-container .select2-selection--multiple').css({
