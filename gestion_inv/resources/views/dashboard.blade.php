@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <a class="text-muted" href="{{ asset('manual.pdf') }}">Manual de uso</a>
+                    <a class="text-muted" href="{{ asset('manual.pdf') }}">Manual de usuario</a>
                 </div>
             </div>
         </div>

@@ -57,70 +57,69 @@ class ReporteController extends Controller
         $fechaInicio = $request->input('fecha_inicio');
         $fechaFin = $request->input('fecha_fin');
         $tipoReporte = $request->input('tipo_reporte');
-        $nombreCliente = $request->input('nombre_cliente'); // Nombre del cliente
-        $nombreProveedor = $request->input('nombre_proveedor'); // Nombre del proveedor
+        $IDCliente = $request->input('cli_id'); // ID del cliente
+        $IDProveedor = $request->input('prove_id'); // ID del proveedor
         $todo = $request->has('todo');
-        
         // Consulta de datos filtrada por fechas y tipo de reporte
         $datos = [];
 
         if(!$todo){
             if ($tipoReporte === 'ventas') {
-                // Si el nombre del cliente es "todo", no aplicar ningún filtro por cliente
-                if ($nombreCliente && $nombreCliente !== 'todo') {
-                    $datos['ventas'] = Venta::with('detalles')
-                                            ->whereHas('cliente', function ($query) use ($nombreCliente) {
-                                                $query->where('cli_nombre', $nombreCliente);
-                                            })
-                                            ->whereBetween('venta_fecha', [$fechaInicio, $fechaFin])
-                                            ->get();
-                } else {
+                // Si el cliente es "todo", no aplicar ningún filtro por cliente
+                if ($IDCliente === 'todo') {
                     // Obtener todas las ventas en el rango de fechas
                     $datos['ventas'] = Venta::with('detalles')
                                             ->whereBetween('venta_fecha', [$fechaInicio, $fechaFin])
                                             ->get();
+                } else {
+                    $datos['ventas'] = Venta::with('detalles')
+                                            ->whereHas('cliente', function ($query) use ($IDCliente) {
+                                                $query->where('cli_id', $IDCliente);
+                                            })
+                                            ->whereBetween('venta_fecha', [$fechaInicio, $fechaFin])
+                                            ->get();
                 }
             } else {
-                // Si el nombre del proveedor es "todo", no aplicar ningún filtro por proveedor
-                if ($nombreProveedor && $nombreProveedor !== 'todo') {
+                // Si el proveedor es "todo", no aplicar ningún filtro por proveedor
+                if ($IDProveedor === 'todo') {
+                    // Obtener todas las compras en el rango de fechas
                     $datos['compras'] = Compra::with('detalles')
-                                            ->whereHas('proveedor', function ($query) use ($nombreProveedor) {
-                                                $query->where('prove_nombre', $nombreProveedor);
-                                            })
                                             ->whereBetween('compra_fecha', [$fechaInicio, $fechaFin])
                                             ->get();
                 } else {
-                    // Obtener todas las compras en el rango de fechas
                     $datos['compras'] = Compra::with('detalles')
+                                            ->whereHas('proveedor', function ($query) use ($IDProveedor) {
+                                                $query->where('prove_ID', $IDProveedor);
+                                            })
                                             ->whereBetween('compra_fecha', [$fechaInicio, $fechaFin])
                                             ->get();
                 }
             }
         }else{
             if ($tipoReporte === 'ventas') {
-                // Si el nombre del cliente es "todo", no aplicar ningún filtro por cliente
-                if ($nombreCliente && $nombreCliente !== 'todo') {
-                    $datos['ventas'] = Venta::with('detalles')
-                                            ->whereHas('cliente', function ($query) use ($nombreCliente) {
-                                                $query->where('cli_nombre', $nombreCliente);
-                                            })
-                                            ->get();
-                } else {
+                // Si el cliente es "todo", no aplicar ningún filtro por cliente
+                if ($IDCliente === 'todo') {
                     // Obtener todas las ventas en el rango de fechas
                     $datos['ventas'] = Venta::with('detalles')
                                             ->get();
-                }
-            } else {
-                // Si el nombre del proveedor es "todo", no aplicar ningún filtro por proveedor
-                if ($nombreProveedor && $nombreProveedor !== 'todo') {
-                    $datos['compras'] = Compra::with('detalles')
-                                            ->whereHas('proveedor', function ($query) use ($nombreProveedor) {
-                                                $query->where('prove_nombre', $nombreProveedor);
+                } else {
+                    $datos['ventas'] = Venta::with('detalles')
+                                            ->whereHas('cliente', function ($query) use ($IDCliente) {
+                                                $query->where('cli_ID', $IDCliente);
                                             })
                                             ->get();
-                } else {
+                }
+            } else {
+                // Si el proveedor es "todo", no aplicar ningún filtro por proveedor
+                if ($IDProveedor === 'todo') {
                     // Obtener todas las compras en el rango de fechas
                     $datos['compras'] = Compra::with('detalles')
+                                            ->get();
+                } else {
+                    $datos['compras'] = Compra::with('detalles')
+                                            ->whereHas('proveedor', function ($query) use ($IDProveedor) {
+                                                $query->where('prove_ID', $IDProveedor);
+                                            })
                                             ->get();
                 }
             }
