@@ -55,7 +55,8 @@ Route::get('/productos/{prod_id}/edit', [ProductoController::class, 'edit'])->mi
 Route::put('/productos/{prod_id}', [ProductoController::class, 'update'])->middleware('auth')->name('productos.update');
 Route::delete('/productos/{prod_id}', [ProductoController::class, 'destroy'])->middleware('auth')->name('productos.destroy');
 Route::post('/productos/create', [ProductoController::class, 'create'])->middleware('auth')->name('productos.create');
-Route::get('/productos/formulario',[ProductoController::class,'formulario'])->middleware('auth')->name('nuevoProducto'); 
+Route::get('/productos/formulario',[ProductoController::class,'formulario'])->middleware('auth')->name('nuevoProducto');
+Route::post('/productos/stock-config',[ProductoController::class,'ConfigStock'])->middleware('auth')->name('ConfigStock'); 
 
 // Cliente Controller
 Route::get('/clientes', [ClienteController::class, 'index'])->middleware('auth')->name('clientes.index');
@@ -88,6 +89,7 @@ Route::post('/ventas/concretarVenta', [VentaController::class, 'concretarVenta']
 Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->middleware('auth')->name('ventas.crearCliente');
 Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarProducto'])->middleware('auth');
 Route::get('/verificar-factura/{facturaValue}', [CompraController::class, 'verificarFactura'])->middleware('auth');
+Route::get('/ventas/cancelar', [VentaController::class, 'cancelar'])->middleware('auth')->name('ventas.cancelar');
 
 //Compra Controller
 Route::get('/compras', [CompraController::class, 'index'])->middleware('auth')->name('compras.index');
@@ -98,6 +100,7 @@ Route::delete('/compras/{temp_id}', [CompraController::class, 'destroy'])->middl
 Route::get('/compras/{temp_id}/edit', [CompraController::class, 'edit'])->middleware('auth')->name('compras.edit');
 Route::put('/compras/{temp_id}', [CompraController::class, 'update'])->middleware('auth')->name('compras.update');
 Route::get('/verificar-producto-compra/{prod_id}', [CompraController::class, 'verificarProducto'])->middleware('auth')->name('verificar_producto_compra');
+Route::get('/compras/cancelar', [CompraController::class, 'cancelar'])->middleware('auth')->name('compras.cancelar');
 
 
 //Presupuesto Controller

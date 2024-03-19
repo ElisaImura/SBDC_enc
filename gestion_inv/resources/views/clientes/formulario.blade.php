@@ -6,19 +6,18 @@
 @include('layouts.navbar') 
 
 <body>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            <li>{{$error}}</li>
-            @endforeach
-        </div>
-    @endif
-
     <div id="main-container">
         @include('layouts.sidebar')
 
         <div class="content">
             <div class="container">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        <li>{{$error}}</li>
+                        @endforeach
+                    </div>
+                @endif
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
 
@@ -31,26 +30,26 @@
 
                                     <div class="form-group">
                                         <label for="cli_nombre">Nombre:</label>
-                                        <input type="text" name="cli_nombre" id="cli_nombre" class="form-control" value="{{old('cli_nombre')}}">
+                                        <input type="text" name="cli_nombre" id="cli_nombre" class="form-control" value="{{old('cli_nombre')}}" required>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="cli_apellido">Apellido:</label>
-                                        <input type="text" name="cli_apellido" id="cli_apellido" class="form-control" value="{{old('cli_apellido')}}">
+                                        <input type="text" name="cli_apellido" id="cli_apellido" class="form-control" value="{{old('cli_apellido')}}"  required>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="cli_ruc">RUC:</label>
-                                        <input type="text" name="cli_ruc" id="cli_ruc" class="form-control" value="{{old('cli_ruc')}}">
+                                        <input type="text" name="cli_ruc" id="cli_ruc" class="form-control" value="{{old('cli_ruc')}}"  required>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="cli_direccion">Direccion:</label>
-                                        <input type="text" name="cli_direccion" id="cli_direccion" class="form-control" value="{{old('cli_direccion')}}">
+                                        <input type="text" name="cli_direccion" id="cli_direccion" class="form-control" value="{{old('cli_direccion')}}"  required>
                                     </div>
                                     <div class="form-group">
                                         <label for="cli_telefono">Telefono:</label>
-                                        <input type="text" name="cli_telefono" id="cli_telefono" class="form-control" value="{{old('prod_preciocosto')}}">
+                                        <input type="text" name="cli_telefono" id="cli_telefono" class="form-control" value="{{old('prod_preciocosto')}}"  required>
                                     </div>
                                     
                                     <div class="form-group">

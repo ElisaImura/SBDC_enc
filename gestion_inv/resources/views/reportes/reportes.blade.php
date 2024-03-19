@@ -40,11 +40,11 @@
                     <h4>Tipo de reporte:</h4>
                     <div class="checkbox-group">
                         <label for="tipo_ventas">Ventas</label>
-                        <input type="checkbox" id="tipo_ventas" name="tipo_reporte" value="ventas">
+                        <input type="checkbox" id="tipo_ventas" name="tipo_ventas" value="ventas">
                     </div>
                     <div class="checkbox-group">
                         <label for="tipo_compras">Compras</label>
-                        <input type="checkbox" id="tipo_compras" name="tipo_reporte" value="compras">
+                        <input type="checkbox" id="tipo_compras" name="tipo_compras" value="compras">
                     </div>
                     <div id="div_proveedor" style="display: none;">
                         <label for="nombre_proveedor">Proveedor:</label>
@@ -105,26 +105,92 @@
 
     <!-- Bootstrap JS (opcional, solo si necesitas funcionalidad JS de Bootstrap) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener referencia al input de fecha de inicio
+            const fechaInicioInput = document.getElementById('fecha_inicio');
+
+            // Agregar un event listener para el evento 'change' al input de fecha de inicio
+            fechaInicioInput.addEventListener('change', function() {
+                // Obtener la fecha de inicio seleccionada por el usuario
+                const fechaInicioSeleccionada = new Date(this.value);
+
+                // Obtener la fecha actual
+                const fechaActual = new Date();
+
+                // Verificar si la fecha de inicio seleccionada es posterior a la fecha actual
+                if (fechaInicioSeleccionada > fechaActual) {
+                    this.value = '';
+                    Swal.fire({
+                        title: 'Fecha inválida',
+                        text: "La fecha de inicio debe ser igual o posterior a la fecha actual",
+                        icon: 'warning',
+                        confirmButtonColor: '#1B2E51',
+                        confirmButtonText: 'Entendido',
+                    });
+                }
+            });
+        });
         $(document).ready(function() {
             // Función para validar el formulario antes de enviarlo
-            $('#reporteForm').submit(function(event) {
-                var isValid = true;
+            // Agregar un evento de escucha para el evento submit del formulario
+            document.getElementById('reporteForm').addEventListener('submit', function(event) {
+                // Evitar que se envíe el formulario automáticamente
+                event.preventDefault();
 
-                // Verificar si el tipo de reporte está seleccionado
-                if (!$('#tipo_ventas').is(':checked') && !$('#tipo_compras').is(':checked')) {
-                    isValid = false;
+                // Validar los datos del formulario
+                const tipoVentas = document.getElementById('tipo_ventas').checked;
+                const tipoCompras = document.getElementById('tipo_compras').checked;
+                const proveedor = document.getElementById('proveedor').value;
+                const cliente = document.getElementById('cliente').value;
+                const todo = document.getElementById('todo').checked;
+                const periodoTiempo = document.getElementById('periodo_tiempo').checked;
+                const fechaInicio = document.getElementById('fecha_inicio').value;
+                const fechaFin = document.getElementById('fecha_fin').value;
+
+                // Realizar la validación de los datos según tus requerimientos
+                // Por ejemplo, podrías verificar que se haya seleccionado al menos un tipo de reporte
+                if (!tipoVentas && !tipoCompras) {
+                    Swal.fire({
+                        title: 'No seleccionó el tipo de reporte',
+                        text: "Necesita seleccionar al menos un tipo de reporte",
+                        icon: 'warning',
+                        confirmButtonColor: '#1B2E51',
+                        confirmButtonText: 'Entendido',
+                    });
+                    return; // Evitar que el formulario se envíe si no se selecciona ningún tipo de reporte
                 }
 
-                // Verificar si se seleccionó un periodo de tiempo y las fechas están llenas
-                if ($('#periodo_tiempo').is(':checked') && ($('#fecha_inicio').val() === '' || $('#fecha_fin').val() === '')) {
-                    isValid = false;
+                if (!todo && !periodoTiempo) {
+                    Swal.fire({
+                        title: 'No seleccionó el rango de datos',
+                        text: "Necesita seleccionar el rango de datos",
+                        icon: 'warning',
+                        confirmButtonColor: '#1B2E51',
+                        confirmButtonText: 'Entendido',
+                    });
+                    return; // Evitar que el formulario se envíe si no se selecciona ningún tipo de reporte
                 }
 
-                // Si el formulario no es válido, detener el envío
-                if (!isValid) {
-                    event.preventDefault();
+                // Convertir las cadenas de fecha en objetos de fecha para compararlas
+                const fechaInicioObj = new Date(fechaInicio);
+                const fechaFinObj = new Date(fechaFin);
+
+                // Validar si la fecha de fin es anterior a la fecha de inicio
+                if (fechaFinObj < fechaInicioObj) {
+                    Swal.fire({
+                        title: 'Fecha inválida',
+                        text: "La fecha de fin debe ser igual o posterior a la fecha de inicio",
+                        icon: 'warning',
+                        confirmButtonColor: '#1B2E51',
+                        confirmButtonText: 'Entendido',
+                    });
+                    return;
                 }
+
+                // Si todas las validaciones pasan, enviar el formulario
+                this.submit();
             });
 
             // Mostrar u ocultar las secciones de proveedor o cliente según el tipo de reporte seleccionado
@@ -167,6 +233,8 @@
                     $('#fechas').hide();
                     $('#fecha_inicio').prop('required', false); // No requerir los campos si no están visibles
                     $('#fecha_fin').prop('required', false);
+                    $('#fecha_inicio').val(''); // Borrar fechas
+                    $('#fecha_fin').val('');
                 }
             });
 

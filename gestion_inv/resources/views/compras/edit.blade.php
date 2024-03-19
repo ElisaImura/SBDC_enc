@@ -60,12 +60,12 @@
 
                                     <input type="hidden" name="pcompra" id="pcompra" value="">
                                     <div class="form-group">
-                                        <label for="dcompra_pcompra">Precio Compra</label>
+                                        <label for="dcompra_pcompra">Precio Compra:</label>
                                         <input type="number" class="form-control" name="dcompra_pcompra" id="dcompra_pcompra" placeholder="Precio Compra" value="{{ $temp_compra_detalles->dcompra_pcompra }}" required>
                                     </div>
                                     <input type="hidden" name="pventa" id="pventa" value="">
                                     <div class="form-group">
-                                        <label for="dcompra_pventa">Precio Venta</label>
+                                        <label for="dcompra_pventa">Precio Venta:</label>
                                         <input type="number" class="form-control" name="dcompra_pventa" id="dcompra_pventa" placeholder="Precio Venta" value="{{ $temp_compra_detalles->dcompra_pventa }}" required>
                                     </div>
 

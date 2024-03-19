@@ -22,7 +22,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="cat_nombre">Nombre de la categoría</label>
+                                <label for="cat_nombre">Nombre de la categoría:</label>
                                 <input type="text" class="form-control" name="cat_nombre"
                                     value="{{ $categoria->cat_nombre }}" required>
 

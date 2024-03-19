@@ -5,20 +5,19 @@
 
 @include('layouts.navbar') 
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-            <li>{{$error}}</li>
-        @endforeach
-    </div>
-@endif
-
 <body>
     <div id="main-container">
         @include('layouts.sidebar')
 
         <div class="content">
             <div class="container">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </div>
+                @endif
                 <div id="form" class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">

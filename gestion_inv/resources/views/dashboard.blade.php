@@ -13,6 +13,12 @@
         .custom-header-color {
             background-color: #343A40; 
         }
+        p{
+            font-size: 20px;
+        }
+        .card-body{
+            min-height: 120px;
+        }
     </style>
 </head>
 <body>
@@ -30,8 +36,7 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Compras</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalCompras }}</h5>
-                                    <p class="card-text">Cantidad de compras realizadas</p>
+                                    <p class="card-text"><strong>{{ $totalCompras }}</strong> compras realizadas</p>
                                 </div>
                             </div>
                         </div>
@@ -39,8 +44,7 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Ventas</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalVentas }}</h5>
-                                    <p class="card-text">Cantidad de ventas realizadas</p>
+                                    <p class="card-text"><strong>{{ $totalVentas }}</strong> ventas realizadas</p>
                                 </div>
                             </div>
                         </div>
@@ -48,8 +52,10 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Productos</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalProductos }}</h5>
-                                    <p class="card-text">Cantidad de productos existentes</p>
+                                    <p class="card-text"><strong>{{ $totalProductos }}</strong> productos existentes</p>
+                                    @if ($totalCritico!=0)
+                                        <a href="{{ route('productos.index') }}" class="card-text" style="font-size: 20px; color: red"><strong>{{ $totalCritico }}</strong> productos con stock crítico</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -59,8 +65,7 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Clientes</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalClientes }}</h5>
-                                    <p class="card-text">Cantidad de clientes registrados</p>
+                                    <p class="card-text"><strong>{{ $totalClientes }}</strong> clientes registrados</p>
                                 </div>
                             </div>
                         </div>
@@ -68,8 +73,7 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Proveedores</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalProveedores }}</h5>
-                                    <p class="card-text">Cantidad de proveedores registrados</p>
+                                    <p class="card-text"><strong>{{ $totalProveedores }}</strong> proveedores registrados</p>
                                 </div>
                             </div>
                         </div>
@@ -77,8 +81,7 @@
                             <div class="card custom-bg-color mb-3">
                                 <div class="card-header text-white custom-header-color">Categorias</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $totalCategorias }}</h5>
-                                    <p class="card-text">Cantidad de categorias existentes</p>
+                                    <p class="card-text"><strong>{{ $totalCategorias }}</strong> categorias existentes</p>
                                 </div>
                             </div>
                         </div>

@@ -23,15 +23,21 @@ class ClienteController extends Controller
             'cli_ruc' => 'required',
             'cli_direccion' => 'required',
             'cli_telefono' => 'required',
-            //'cat_id' => 'required|exists:categorias,cat_id',
         ];
-    
+        
+        $atributos = [
+            'cli_nombre' => 'nombre',
+            'cli_apellido' => 'apellido',
+            'cli_ruc' => 'RUC',
+            'cli_direccion' => 'dirección',
+            'cli_telefono' => 'teléfono',
+        ];
+
         $mensaje = [
-            'required' => 'El :attribute campo es requerido',
-            //'exists' => 'La categoría seleccionada no es válida',
+            'required' => 'El campo :attribute es requerido',
         ];
     
-        $this->validate($request, $rules, $mensaje);
+        $this->validate($request, $rules, $mensaje, $atributos);
     
         // Obtenemos el cat_id del request después de la validació
     

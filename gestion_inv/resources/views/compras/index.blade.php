@@ -63,18 +63,18 @@
                                 </div>
                                                             
                                 <div class="form-group">
-                                    <label for="dcompra_cantidad">Cantidad</label>
+                                    <label for="dcompra_cantidad">Cantidad:</label>
                                     <input type="number" class="form-control" name="dcompra_cantidad" id="dcompra_cantidad" placeholder="Cantidad" required>
                                 </div>
                             
                                 <input type="hidden" name="pcompra" id="pcompra" value="">
                                 <div class="form-group">
-                                    <label for="dcompra_pcompra">Precio Compra</label>
+                                    <label for="dcompra_pcompra">Precio Compra:</label>
                                     <input type="number" class="form-control" name="dcompra_pcompra" id="dcompra_pcompra" placeholder="Precio Compra" required>
                                 </div>
                                 <input type="hidden" name="pventa" id="pventa" value="">
                                 <div class="form-group">
-                                    <label for="dcompra_pventa">Precio Venta</label>
+                                    <label for="dcompra_pventa">Precio Venta:</label>
                                     <input type="number" class="form-control" name="dcompra_pventa" id="dcompra_pventa" placeholder="Precio Venta" required>
                                 </div>
                                 <button id="botonEnviar" type="submit" class="btn btnAccion">Agregar</button>
@@ -100,7 +100,7 @@
                                     </select>
                                 </div>                               
                                 <div class="form-group">
-                                    <label for="compra_factura">Factura N°</label>
+                                    <label for="compra_factura">Factura N°:</label>
                                     <input type="number" class="form-control" name="compra_factura" id="compra_factura_input" placeholder="Numero de Factura" required>
                                 </div>
                              </div>
@@ -167,9 +167,15 @@
                                 @endif
                                 
                                 </tbody>
-
-
                             </table>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between" style="padding: 0px 10px; margin-top: 15px;">
+                        <div class="col-md-5">
+                            <strong><p id="TextoTotal">Total precio de Compra: </strong><span id="total-value"></span></p>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end">
+                            <a id="botonCancelar" type="submit" class="btn btnAccion">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -187,6 +193,32 @@
 <script>
     
     $(document).ready(function () {
+        // Calcula el total acumulado al cargar la página
+        var totalAcumulado = calcularTotalAcumulado();
+
+        // Muestra el total acumulado en la página
+        mostrarTotalAcumulado(totalAcumulado);
+
+        function calcularTotalAcumulado() {
+            var totalAcumulado = 0;
+            // Recorre cada fila de la tabla y suma los totales
+            $('table tbody tr').each(function () {
+                var totalDetalle = parseFloat($(this).find('td:eq(4)').text());
+                if (!isNaN(totalDetalle)) {
+                    totalAcumulado += totalDetalle;
+                }
+            });
+            return totalAcumulado;
+        }
+
+        function mostrarTotalAcumulado(totalAcumulado) {
+            if (totalAcumulado > 0) {
+                $('#total-value').text(totalAcumulado);
+            } else {
+                $('#total-value').text(" -");
+            }
+        }
+
         // Manejar el cambio en la selección del producto
         $('#prod_id').change(function () {
             // Obtener el valor seleccionado
@@ -305,6 +337,24 @@
                     }
                 });
             }
+        });
+
+        document.getElementById('botonCancelar').addEventListener('click', function(event) {
+            var formulario = event.target.closest('form');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede revertir",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, cancelar compra',
+                cancelButtonText: 'No, continuar compra'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('compras.cancelar') }}";
+                }
+            });
         });
     });
 

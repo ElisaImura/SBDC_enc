@@ -57,7 +57,7 @@
 
                                     <input type="hidden" name="precio" id="precio" value="{{ $Presupuesto_temp_venta_detalles->dventa_precio }}">
                                     <div class="form-group">
-                                        <label for="dventa_precio">Precio</label>
+                                        <label for="dventa_precio">Precio:</label>
                                         <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" value="{{ $Presupuesto_temp_venta_detalles->dventa_precio }}" readonly>
                                     </div>
                                                                 

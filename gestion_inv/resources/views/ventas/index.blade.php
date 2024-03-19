@@ -63,13 +63,13 @@
                                 </div>
                                                             
                                 <div class="form-group">
-                                    <label for="dventa_cant">Cantidad</label>
+                                    <label for="dventa_cant">Cantidad:</label>
                                     <input type="number" class="form-control" name="dventa_cantidad" id="dventa_cantidad" placeholder="Cantidad" required>
                                 </div>
                             
                                 <input type="hidden" name="precio" id="precio" value="">
                                 <div class="form-group">
-                                    <label for="dventa_precio">Precio</label>
+                                    <label for="dventa_precio">Precio:</label>
                                     <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" placeholder="Precio" required readonly>
                                 </div>
                             
@@ -162,7 +162,14 @@
                                 </tbody>
                             </table>
 
-                            <strong><p id="TextoTotal">Total: </strong><span id="total-value"></span></p>
+                            <div class="row justify-content-between" style="padding: 0px 10px;">
+                                <div class="col-md-5">
+                                    <strong><p id="TextoTotal">Total: </strong><span id="total-value"></span></p>
+                                </div>
+                                <div class="col-md-4 d-flex justify-content-end">
+                                    <a id="botonCancelar" type="submit" class="btn btnAccion">Cancelar</a>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -335,6 +342,24 @@
                     }
                 });
             }
+        });
+
+        document.getElementById('botonCancelar').addEventListener('click', function(event) {
+            var formulario = event.target.closest('form');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede revertir",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, cancelar venta',
+                cancelButtonText: 'No, continuar venta'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('ventas.cancelar') }}";
+                }
+            });
         });
     });
 

@@ -28,6 +28,25 @@
                 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a href="{{ route('nuevoProducto') }}" class="btn btnAccion">Agregar Producto</a>
+                    <a class="btn btnAccion" id="mostrarFormStock">Configurar Stock Mínimo</a>
+                </div>
+
+                <div id="formStock" style="margin-bottom: 25px;" hidden>
+                    <div class="card">
+                        <div class="card-header Frojo-Lblanco">
+                            <strong>Configuración de Stock Mínimo</strong>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ route('ConfigStock') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="stock_min">Cantidad de Stock Minimo:</label>
+                                    <input type="number" class="form-control" name="stock_min" placeholder="Cantidad de Stock Minimo" required>
+                                </div>
+                                <button type="submit" class="btn btnAccion">Terminar configuración</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <table class="table border-all-black table-hover" style="text-align: center;">
@@ -45,15 +64,19 @@
                     </thead>
                     <tbody>
                         @foreach ($productos as $producto)
+                            @php
+                                $stock = App\Models\Stock::first(); // Obtener el primer registro de la tabla Stock
+                                $stock_min = $stock->stock_min; // Obtener el valor del atributo stock_min
+                            @endphp
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $producto->categoria->cat_nombre ?? 'NN' }}</td>
-                                <td>{{ $producto->prod_nombre ?? 'NN' }}</td>
-                                <td>{{ $producto->prod_descripcion ?? 'NN' }}</td>
-                                <td>{{ $producto->prod_cant ?? 'NN' }}</td>
-                                <td>{{ $producto->prod_precioventa ?? 'NN' }}</td>
-                                <td>{{ $producto->prod_preciocosto ?? 'NN' }}</td>
-                                <td style="width: 280px;">
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $loop->iteration }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->categoria->cat_nombre ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_nombre ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_descripcion ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_cant ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_precioventa ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_preciocosto ?? 'NN' }}</td>
+                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif" style="width: 280px;">
                                     <form action="{{ route('productos.destroy', ['prod_id' => $producto->prod_id]) }}" method="POST" id="formEliminarProducto-{{ $producto->prod_id }}" data-id="{{ $producto->prod_id }}" style="margin: 0px;">
                                         @csrf
                                         @method('DELETE')
@@ -110,6 +133,16 @@
                         }
                     });
                 });
+            });
+
+            document.getElementById('mostrarFormStock').addEventListener('click', function() {
+                var formStock = document.getElementById('formStock');
+                formStock.removeAttribute('hidden');
+            });
+
+            document.getElementById('formConfigStock').addEventListener('submit', function() {
+                var formStock = document.getElementById('formStock');
+                formStock.setAttribute('hidden', true);
             });
         });
     </script>

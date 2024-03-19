@@ -56,8 +56,26 @@ class CompraController extends Controller
     
             $table->timestamps();
         });
-    
-    
+
+        // Verificar si el evento ya existe
+        $eventoExistente = DB::selectOne("SELECT * FROM information_schema.events WHERE event_name = 'eliminar_temp_compra_detalles'");
+
+        // Si el evento no existe, crearlo
+        if (!$eventoExistente) {
+            // Crear un evento para eliminar la tabla temporal después de cierto tiempo
+            try {
+                DB::unprepared('CREATE EVENT eliminar_temp_compra_detalles
+                    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 3 HOUR
+                    DO
+                    BEGIN
+                        DROP TABLE IF EXISTS temp_compra_detalles;
+                    END');
+            } catch (QueryException $e) {
+                // Manejar excepción si el evento ya está creado o si hay algún otro problema
+                // Por ejemplo, puedes simplemente omitirlo o manejarlo de acuerdo a tus necesidades
+            }
+        } 
+
         return redirect()->route('compras.index')->with('success', 'Se creó correctamente.');
     }
 
@@ -120,9 +138,19 @@ public function createCompra(Request $request)
     }
 }
 
+    public function cancelar(Request $request)
+    {
+      
+        if (Schema::hasTable('temp_compra_detalles')) {
+            // Paso 3: Eliminar los datos de la tabla temporal
+            Schema::dropIfExists('temp_compra_detalles');
 
-
-
+            // Redirigir o devolver una respuesta como sea necesario
+            return redirect()->route('compras.index')->with('success', 'Compra cancelada correctamente');
+        }else{
+            return redirect()->route('compras.index')->with('error', 'No existe compra para cancelar');
+        }
+    }
 
     public function destroy($temp_id)
     {

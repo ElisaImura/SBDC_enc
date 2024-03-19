@@ -28,6 +28,10 @@ body {
   margin-bottom: 85px !important;
 }
 
+.critico{
+  color: red;
+}
+
 .titulo_principal {
   margin-bottom: 30px;
 }

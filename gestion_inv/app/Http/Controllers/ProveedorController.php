@@ -23,11 +23,15 @@ class ProveedorController extends Controller
         ];
     
         $mensaje = [
-            'required' => 'El :attribute campo es requerido',
-            //'exists' => 'La categoría seleccionada no es válida',
+            'required' => 'El campo :attribute es requerido',
+        ];
+
+        $atributos = [
+            'prove_nombre' => 'nombre',
+            'prove_ruc' => 'RUC',
         ];
     
-        $this->validate($request, $rules, $mensaje);
+        $this->validate($request, $rules, $mensaje, $atributos);
 
         Proveedor::create([
             'prove_nombre' => $request->input('prove_nombre'),

@@ -27,14 +27,14 @@ class ReporteController extends Controller
     public function generar(Request $request)
     {
         // Validar la solicitud
-        $request->validate([
-            'fecha_inicio' => 'date',
-            'fecha_fin' => 'date|after_or_equal:fecha_inicio',
-        ]);
 
         // Lógica para obtener los datos necesarios para el reporte
         $datos = $this->obtenerDatos($request);
-        $tipoReporte = $request->input('tipo_reporte');
+        if($request->has('tipo_ventas')){
+            $tipoReporte = 'ventas';
+        }else{
+            $tipoReporte = 'compras';
+        }
         $todo = $request->has('todo');
         if(!$todo){
             $fechaInicio = $request->input('fecha_inicio');
@@ -44,6 +44,7 @@ class ReporteController extends Controller
             $fechaFin = null;
         }
         $total = count($datos[$tipoReporte]);
+        
         // Generar la vista del reporte en formato PDF
         $pdf = PDF::loadView('reportes.pdf', ['datos' => $datos, 'tipoReporte' => $tipoReporte,'total' => $total, 'todo' => $todo, 'fechaInicio' => $fechaInicio, 'fechaFin' => $fechaFin,]);
 
@@ -56,15 +57,19 @@ class ReporteController extends Controller
         // Obtener fechas del formulario
         $fechaInicio = $request->input('fecha_inicio');
         $fechaFin = $request->input('fecha_fin');
-        $tipoReporte = $request->input('tipo_reporte');
+        if($request->has('tipo_ventas')){
+            $tipoReporte = 'ventas';
+        }else{
+            $tipoReporte = 'compras';
+        }
         $IDCliente = $request->input('cli_id'); // ID del cliente
         $IDProveedor = $request->input('prove_id'); // ID del proveedor
-        $todo = $request->has('todo');
+        $todo = $request->has('todo'); //Se refiere a todas las fechas sin rango especifico
         // Consulta de datos filtrada por fechas y tipo de reporte
         $datos = [];
 
         if(!$todo){
-            if ($tipoReporte === 'ventas') {
+            if ($tipoReporte == 'ventas') {
                 // Si el cliente es "todo", no aplicar ningún filtro por cliente
                 if ($IDCliente === 'todo') {
                     // Obtener todas las ventas en el rango de fechas
@@ -96,7 +101,7 @@ class ReporteController extends Controller
                 }
             }
         }else{
-            if ($tipoReporte === 'ventas') {
+            if ($tipoReporte == 'ventas') {
                 // Si el cliente es "todo", no aplicar ningún filtro por cliente
                 if ($IDCliente === 'todo') {
                     // Obtener todas las ventas en el rango de fechas

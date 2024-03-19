@@ -10,6 +10,7 @@ use App\Models\Producto;
 use App\Models\Cliente;
 use App\Models\Proveedor;
 use App\Models\Categoria;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,12 @@ class LoginController extends Controller
         // Calcular el total de productos
         $totalProductos = Producto::count();
 
+        // Obtener el stock mínimo
+        $stockMinimo = Stock::pluck('stock_min')->first();
+
+        // Calcular el total de productos con stock crítico (cantidad menor al stock mínimo)
+        $totalCritico = Producto::where('prod_cant', '<', $stockMinimo)->count();
+
         // Calcular el total de compras
         $totalClientes = Cliente::count();
 
@@ -37,7 +44,7 @@ class LoginController extends Controller
 
 
         // Pasar los datos al dashboard
-        return view('dashboard', compact('totalCompras', 'totalVentas', 'totalProductos', 'totalClientes', 'totalProveedores', 'totalCategorias'));
+        return view('dashboard', compact('totalCompras', 'totalVentas', 'totalProductos', 'totalClientes', 'totalProveedores', 'totalCategorias', 'totalCritico'));
     }
 
     public function register(Request $request)

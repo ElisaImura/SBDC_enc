@@ -50,7 +50,7 @@
 </head>
 <body>
     <h1>Reporte de
-    @if ($tipoReporte === 'ventas')
+        @if ($tipoReporte === 'ventas')
             Ventas
         @endif
         @if ($tipoReporte === 'compras')
@@ -65,6 +65,9 @@
             <p>Se realizaron un total de {{ $total }} {{ $tipoReporte }}.</p>
         @endif
         @foreach ($datos['ventas'] as $venta)
+            @php
+                $totalGeneral = 0;
+            @endphp
             <div>
                 <p><strong>Cliente:</strong> {{ $venta->cliente->cli_nombre }} {{ $venta->cliente->cli_apellido }} <span style="float:right;"><strong>Fecha:</strong> {{ $venta->venta_fecha }}</span></p>
             </div>
@@ -74,6 +77,7 @@
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,10 +86,15 @@
                             <td>{{ $detalle->producto->prod_nombre }}</td>
                             <td>{{ $detalle->dventa_cantidad }}</td>
                             <td>{{ $detalle->dventa_precio }}</td>
+                            <td>{{ ($detalle->dventa_precio)*($detalle->dventa_cantidad) }}</td>
                         </tr>
+                        @php
+                            $totalGeneral += ($detalle->dventa_precio * $detalle->dventa_cantidad);
+                        @endphp
                     @endforeach
                 </tbody>
             </table>
+            <p><span style="float:right;"><strong>Total General:</strong> {{ $totalGeneral }}</span></p>
             <div class="line"></div>
         @endforeach
     @elseif ($tipoReporte === 'compras' && isset($datos['compras']) && count($datos['compras']) > 0)
@@ -95,6 +104,9 @@
             <p>Se realizaron un total de {{ $total }} {{ $tipoReporte }}.</p>
         @endif
         @foreach ($datos['compras'] as $compra)
+            @php
+                $totalGeneral = 0;
+            @endphp
             <div>
                 <p><strong>Proveedor:</strong> {{ $compra->proveedor->prove_nombre }} <span style="float:right;"><strong>Fecha:</strong> {{ $compra->compra_fecha }}</span></p>
                 <p><strong>Factura:</strong> {{ $compra->compra_factura }}</p>
@@ -104,7 +116,8 @@
                     <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
-                        <th>Precio</th>
+                        <th>Precio de costo</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,10 +126,15 @@
                             <td>{{ $detalle->producto->prod_nombre }}</td>
                             <td>{{ $detalle->dcompra_cantidad }}</td>
                             <td>{{ $detalle->dcompra_precio }}</td>
+                            <td>{{ ($detalle->dcompra_precio)*($detalle->dcompra_cantidad) }}</td>
                         </tr>
+                        @php
+                            $totalGeneral += ($detalle->dcompra_precio * $detalle->dcompra_cantidad);
+                        @endphp
                     @endforeach
                 </tbody>
             </table>
+            <p><span style="float:right;"><strong>Total General:</strong> {{ $totalGeneral }}</span></p>
             <div class="line"></div>
         @endforeach
     @else

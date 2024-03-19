@@ -37,8 +37,6 @@ class VentaController extends Controller
 
     public function createTempTable()
     {
-
-
         // Verifica si la tabla temporal ya existe y, si es así, elimínala
         if (Schema::hasTable('temp_venta_detalles')) {
             Schema::dropIfExists('temp_venta_detalles');
@@ -56,34 +54,53 @@ class VentaController extends Controller
     
             $table->timestamps();
         });
-    
+        
+        // Verificar si el evento ya existe
+        $eventoExistente = DB::selectOne("SELECT * FROM information_schema.events WHERE event_name = 'eliminar_temp_venta_detalles'");
+
+        // Si el evento no existe, crearlo
+        if (!$eventoExistente) {
+            try {
+                DB::unprepared('CREATE EVENT eliminar_temp_venta_detalles
+                    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 3 HOUR
+                    DO
+                    BEGIN
+                        DROP TABLE IF EXISTS temp_venta_detalles;
+                    END');
+            } catch (QueryException $e) {
+                // Manejar excepción si hay algún problema al crear el evento
+                // Por ejemplo, puedes simplemente omitirlo o manejarlo de acuerdo a tus necesidades
+            }
+        }
     
         return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
     }
 
     
     public function createDetalleTemp(Request $request)
-{
-    // Verifica si la tabla temporal existe
-    if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
-        // La tabla no existe, crea la tabla temporal
-        $this->createTempTable();
+    {
+        // Verifica si la tabla temporal existe
+        if (!Schema::connection('mysql')->hasTable('temp_venta_detalles')) {
+            // La tabla no existe, crea la tabla temporal
+            $this->createTempTable();
+        }
+
+        // Procede a insertar los datos en la tabla temporal sin un modelo
+        $total = $request->input('total') ?? 0; // Asigna un valor predeterminado si 'total' no está presente en la solicitud
+
+        DB::table('temp_venta_detalles')->insert([
+            'prod_id' => $request->input('prod_id'),
+            'dventa_precio' => $request->input('dventa_precio'),
+            'dventa_cantidad' => $request->input('dventa_cantidad'),
+            'total' => $total,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
     }
 
-    // Procede a insertar los datos en la tabla temporal sin un modelo
-    $total = $request->input('total') ?? 0; // Asigna un valor predeterminado si 'total' no está presente en la solicitud
 
-    DB::table('temp_venta_detalles')->insert([
-        'prod_id' => $request->input('prod_id'),
-        'dventa_precio' => $request->input('dventa_precio'),
-        'dventa_cantidad' => $request->input('dventa_cantidad'),
-        'total' => $total,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-
-    return redirect()->route('ventas.index')->with('success', 'Se creó correctamente.');
-}
     public function createVenta(Request $request)
     {
 
@@ -175,6 +192,20 @@ class VentaController extends Controller
             return redirect()->route('ventas.index')->with('success', 'Venta creada correctamente');
         }else{
             return redirect()->route('ventas.index')->with('error', 'No se puede crear venta sin detalles');
+        }
+    }
+
+    public function cancelar(Request $request)
+    {
+      
+        if (Schema::hasTable('temp_venta_detalles')) {
+            // Paso 3: Eliminar los datos de la tabla temporal
+            Schema::dropIfExists('temp_venta_detalles');
+
+            // Redirigir o devolver una respuesta como sea necesario
+            return redirect()->route('ventas.index')->with('success', 'Venta cancelada correctamente');
+        }else{
+            return redirect()->route('ventas.index')->with('error', 'No existe venta para cancelar');
         }
     }
 

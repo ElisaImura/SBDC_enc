@@ -9,6 +9,7 @@ use App\Models\Compra_detalle;
 use App\Models\DetalleTemp;
 use App\Models\PresupuestoDetalleTemp;
 use App\Models\TempCompra;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
@@ -125,6 +126,16 @@ class ProductoController extends Controller
         return view('productos.edit', ['source' => $source], compact('producto'));
     }
 
+    public function ConfigStock(Request $request)
+    {
+        $stock = Stock::find(1);
+
+        $stock->stock_min = $request->input('stock_min');
+        $stock->save();
+
+        return redirect()->route('productos.index')->with('success', 'Stock minimo configurado correctamente');
+    }
+
     public function update(Request $request, $prod_id)
     {
         // Validación de entrada
@@ -176,9 +187,9 @@ class ProductoController extends Controller
     }
 
     public function show($prod_id)
-{
-    $producto = Producto::with('categoria')->findOrFail($prod_id);
-    return view('productos.show', compact('producto'));
-}
+    {
+        $producto = Producto::with('categoria')->findOrFail($prod_id);
+        return view('productos.show', compact('producto'));
+    }
 
 }

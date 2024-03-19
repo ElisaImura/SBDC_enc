@@ -53,7 +53,24 @@ class PresupuestoController extends Controller
     
             $table->timestamps();
         });
-    
+
+        // Verificar si el evento ya existe
+        $eventoExistente = DB::selectOne("SELECT * FROM information_schema.events WHERE event_name = 'eliminar_Presupuesto_temp_venta_detalles'");
+
+        // Si el evento no existe, crearlo
+        if (!$eventoExistente) {
+            try {
+                DB::unprepared('CREATE EVENT eliminar_Presupuesto_temp_venta_detalles
+                    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 3 HOUR
+                    DO
+                    BEGIN
+                        DROP TABLE IF EXISTS Presupuesto_temp_venta_detalles;
+                    END');
+            } catch (QueryException $e) {
+                // Manejar excepción si hay algún problema al crear el evento
+                // Por ejemplo, puedes simplemente omitirlo o manejarlo de acuerdo a tus necesidades
+            }
+        }    
     
         return redirect()->route('presupuesto.index')->with('success', 'Se creó correctamente.');
     }

@@ -63,18 +63,18 @@
                                 </div>
                                                             
                                 <div class="form-group">
-                                    <label for="dventa_cant">Cantidad</label>
+                                    <label for="dventa_cant">Cantidad:</label>
                                     <input type="number" class="form-control" name="dventa_cantidad" id="dventa_cantidad" placeholder="Cantidad" required>
                                 </div>
                             
                                 <input type="hidden" name="precio" id="precio" value="">
                                 <div class="form-group">
-                                    <label for="dventa_precio">Precio</label>
+                                    <label for="dventa_precio">Precio:</label>
                                     <input type="number" class="form-control" name="dventa_precio" id="dventa_precio" placeholder="Precio" required readonly>
                                 </div>
                             
                                 <div class="form-group">
-                                    <label for="total"></label>
+                                    <label for="total">Total:</label>
                                     <input type="number" class="form-control" name="total" id="total" placeholder="Total" required readonly>
                                 </div>
                                 <button id="botonEnviar" type="submit" class="btn btnAccion">Agregar</button>
