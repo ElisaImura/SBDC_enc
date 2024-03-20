@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - reportes</title>
+    <title>Stocking - Reportes</title>
     @include('layouts.head')   
 </head> 
 
@@ -16,11 +16,6 @@
     .select2-container--default .select2-results__option--highlighted[aria-selected] {
         background-color: #f0f0f0; /* Cambia este valor al gris que desees */
         color: black;
-    }
-    /* Estilo para los checkboxes */
-    .checkbox-group {
-        display: inline-block;
-        margin-right: 10px;
     }
 </style>
 
@@ -46,13 +41,13 @@
                         <label for="tipo_compras">Compras</label>
                         <input type="checkbox" id="tipo_compras" name="tipo_compras" value="compras">
                     </div>
+                    <div class="checkbox-group">
+                        <label for="tipo_stock">Stock</label>
+                        <input type="checkbox" id="tipo_stock" name="tipo_stock" value="stock">
+                    </div>
                     <div id="div_proveedor" style="display: none;">
                         <label for="nombre_proveedor">Proveedor:</label>
                         <select name="prove_id" id="proveedor" class="select2-container-selection__rendered form-control js-example-basic-single select2" placeholder="Buscar">
-                            <?php
-                                // Obtener todos los proveedores y ordenarlos por el nombre
-                                $proveedores = App\Models\Proveedor::orderBy('prove_nombre')->get();
-                            ?>
                             <option value="">Seleccione una Opción</option>
                             <option value="todo">Todo</option>
                             @foreach($proveedores as $proveedor)
@@ -63,10 +58,6 @@
                     <div id="div_cliente" style="display: none;">
                         <label for="nombre_cliente">Cliente:</label>
                         <select name="cli_id" id="cliente" class="select2-container-selection__rendered form-control js-example-basic-single select2">
-                            <?php
-                                // Obtener todos los proveedores y ordenarlos por el nombre
-                                $clientes = App\Models\Cliente::orderBy('cli_nombre')->get();
-                            ?>
                             <option value="">Seleccione una Opción</option>
                             <option value="todo">Todo</option>
                             @foreach($clientes as $cliente)
@@ -75,7 +66,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group" id="fecha_div" style="margin-bottom: 30px;">
+                <div class="form-group" id="fecha_div" style="margin-bottom: 30px; display: none;">
                     <div>
                         <h4>Rango de datos:</h4>
                         <div class="checkbox-group">
@@ -142,6 +133,7 @@
                 // Validar los datos del formulario
                 const tipoVentas = document.getElementById('tipo_ventas').checked;
                 const tipoCompras = document.getElementById('tipo_compras').checked;
+                const tipoStock = document.getElementById('tipo_stock').checked;
                 const proveedor = document.getElementById('proveedor').value;
                 const cliente = document.getElementById('cliente').value;
                 const todo = document.getElementById('todo').checked;
@@ -151,7 +143,7 @@
 
                 // Realizar la validación de los datos según tus requerimientos
                 // Por ejemplo, podrías verificar que se haya seleccionado al menos un tipo de reporte
-                if (!tipoVentas && !tipoCompras) {
+                if (!tipoVentas && !tipoCompras && !tipoStock) {
                     Swal.fire({
                         title: 'No seleccionó el tipo de reporte',
                         text: "Necesita seleccionar al menos un tipo de reporte",
@@ -162,15 +154,17 @@
                     return; // Evitar que el formulario se envíe si no se selecciona ningún tipo de reporte
                 }
 
-                if (!todo && !periodoTiempo) {
-                    Swal.fire({
-                        title: 'No seleccionó el rango de datos',
-                        text: "Necesita seleccionar el rango de datos",
-                        icon: 'warning',
-                        confirmButtonColor: '#1B2E51',
-                        confirmButtonText: 'Entendido',
-                    });
-                    return; // Evitar que el formulario se envíe si no se selecciona ningún tipo de reporte
+                if(!tipoStock){
+                    if (!todo && !periodoTiempo) {
+                        Swal.fire({
+                            title: 'No seleccionó el rango de datos',
+                            text: "Necesita seleccionar el rango de datos",
+                            icon: 'warning',
+                            confirmButtonColor: '#1B2E51',
+                            confirmButtonText: 'Entendido',
+                        });
+                        return; // Evitar que el formulario se envíe si no se selecciona ningún tipo de reporte
+                    }
                 }
 
                 // Convertir las cadenas de fecha en objetos de fecha para compararlas
@@ -198,12 +192,15 @@
                 if ($(this).is(':checked')) {
                     $('#div_proveedor').hide();
                     $('#div_cliente').show();
+                    $('#fecha_div').show();
                     $('#tipo_compras').prop('checked', false);
+                    $('#tipo_stock').prop('checked', false);
                     $('#cliente').prop('required', true); // Hacer el campo obligatorio
                     $('#proveedor').prop('required', false);
                     $('#proveedor').val('').trigger('change');
                 } else {
                     $('#div_cliente').hide();
+                    $('#fecha_div').hide();
                     $('#cliente').prop('required', false); // No requerir el campo si no está visible
                 }
             });
@@ -212,13 +209,31 @@
                 if ($(this).is(':checked')) {
                     $('#div_cliente').hide();
                     $('#div_proveedor').show();
+                    $('#fecha_div').show();
                     $('#tipo_ventas').prop('checked', false);
+                    $('#tipo_stock').prop('checked', false);
                     $('#proveedor').prop('required', true); // Hacer el campo obligatorio
                     $('#cliente').prop('required', false);
                     $('#cliente').val('').trigger('change');
                 } else {
                     $('#div_proveedor').hide();
+                    $('#fecha_div').hide();
                     $('#proveedor').prop('required', false); // No requerir el campo si no está visible
+                }
+            });
+
+            $('#tipo_stock').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#div_cliente').hide();
+                    $('#div_proveedor').hide();
+                    $('#fecha_div').hide();
+                    $('#tipo_ventas').prop('checked', false);
+                    $('#tipo_compras').prop('checked', false);
+                    $('#proveedor').prop('required', true); // Hacer el campo obligatorio
+                    $('#cliente').prop('required', false);
+                    $('#cliente').val('').trigger('change');
+                    $('#proveedor').prop('required', false);
+                    $('#proveedor').val('').trigger('change');
                 }
             });
 

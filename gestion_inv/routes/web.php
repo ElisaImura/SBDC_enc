@@ -30,10 +30,10 @@ Route::view('/', "log.inicio")->name('inicio');
 //Login Controller
 Route::view('/login', "log.login")->name('login');
 Route::view('/registro', "log.register")->name('registro');
-
 Route::post('/validar-registro', [LoginController::class, 'register'])->name('validar-registro');
 Route::post('/inicia-sesion', [LoginController::class, 'login'])->name('inicia-sesion');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 //Dashboard
 Route::get('/dashboard', [LoginController::class, 'dashboard'])->middleware('auth')->name('dashboard');
@@ -58,6 +58,7 @@ Route::post('/productos/create', [ProductoController::class, 'create'])->middlew
 Route::get('/productos/formulario',[ProductoController::class,'formulario'])->middleware('auth')->name('nuevoProducto');
 Route::post('/productos/stock-config',[ProductoController::class,'ConfigStock'])->middleware('auth')->name('ConfigStock'); 
 
+
 // Cliente Controller
 Route::get('/clientes', [ClienteController::class, 'index'])->middleware('auth')->name('clientes.index');
 Route::post('/clientes', [ClienteController::class, 'store'])->middleware('auth')->name('clientes.store');
@@ -66,6 +67,7 @@ Route::put('/clientes/{cli_id}', [ClienteController::class, 'update'])->middlewa
 Route::delete('/clientes/{cli_id}', [ClienteController::class, 'destroy'])->middleware('auth')->name('clientes.destroy');
 Route::post('/clientes/create', [ClienteController::class, 'create'])->middleware('auth')->name('clientes.create');
 Route::get('/clientes/formulario',[ClienteController::class,'formulario'])->middleware('auth')->name('nuevoCliente'); 
+
 
 // Proveedor Controller
 Route::get('/proveedores', [ProveedorController::class, 'index'])->middleware('auth')->name('proveedores.index');
@@ -90,6 +92,7 @@ Route::post('/ventas/crearCliente', [VentaController::class, 'crearCliente'])->m
 Route::get('/verificar-producto/{prod_id}', [VentaController::class, 'verificarProducto'])->middleware('auth');
 Route::get('/verificar-factura/{facturaValue}', [CompraController::class, 'verificarFactura'])->middleware('auth');
 Route::get('/ventas/cancelar', [VentaController::class, 'cancelar'])->middleware('auth')->name('ventas.cancelar');
+
 
 //Compra Controller
 Route::get('/compras', [CompraController::class, 'index'])->middleware('auth')->name('compras.index');
@@ -117,8 +120,8 @@ Route::get('/presupuesto-verificar-producto/{prod_id}', [PresupuestoController::
 Route::post('/presupuesto/pdf', [PresupuestoController::class, 'generarPDF'])->middleware('auth')->name('presupuesto.generarPDF');
 Route::get('/presupuesto-recargar', [PresupuestoController::class, 'recargarVista'])->middleware('auth')->name('presupuesto.recargar_vista');
 
-//Generar Reportes 
 
+//Generar Reportes 
 Route::get('/reportes', [ReporteController::class, 'formulario'])->name('reportes.reportes');
 Route::get('/reportes/pdf', [ReporteController::class, 'generar'])->name('reportes.pdf');
 

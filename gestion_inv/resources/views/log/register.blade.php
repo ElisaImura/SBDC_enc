@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Registro</title>
+    <title>Stocking - Registro</title>
     @include('layouts.head')   
 </head> 
 

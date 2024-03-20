@@ -1,5 +1,5 @@
 <head>
-    <title>Media de Productos</title>
+    <title>Stocking - Media de Productos</title>
     @include('layouts.head')
 </head>
 

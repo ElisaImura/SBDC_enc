@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Editar detalle de Compra</title>
+    <title>Stocking - Editar detalle de Compra</title>
     @include('layouts.head') 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>

@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Categoría</title>
+    <title>Stocking - Editar Categoría</title>
     @include('layouts.head')
 </head>
 

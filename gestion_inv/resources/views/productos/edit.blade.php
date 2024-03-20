@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Editar Producto</title>
+    <title>Stocking - Editar Producto</title>
     @include('layouts.head') 
 </head>
 

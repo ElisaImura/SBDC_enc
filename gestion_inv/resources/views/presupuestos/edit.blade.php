@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Editar Producto</title>
+    <title>Stocking - Editar detalle de Presupuesto</title>
     @include('layouts.head') 
 </head>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

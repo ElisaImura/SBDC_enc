@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - presupuesto</title>
+    <title>Stocking - Presupuesto</title>
     <style type="text/css">
         body {
             font-family: 'Arial', sans-serif;

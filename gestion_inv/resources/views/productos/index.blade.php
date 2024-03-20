@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Lista de Productos</title>
+    <title>Stocking - Lista de Productos</title>
     @include('layouts.head')   
 </head> 
 
@@ -25,12 +25,16 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                
+
+                @php
+                    $stock = App\Models\Stock::first(); // Obtener el primer registro de la tabla Stock
+                    $stock_min = $stock->stock_min; // Obtener el valor del atributo stock_min
+                @endphp
+                <p><span style="float:right;"><strong>Stock mínimo:</strong> {{$stock_min}}</span></p><br>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <a href="{{ route('nuevoProducto') }}" class="btn btnAccion">Agregar Producto</a>
                     <a class="btn btnAccion" id="mostrarFormStock">Configurar Stock Mínimo</a>
                 </div>
-
                 <div id="formStock" style="margin-bottom: 25px;" hidden>
                     <div class="card">
                         <div class="card-header Frojo-Lblanco">
@@ -64,19 +68,36 @@
                     </thead>
                     <tbody>
                         @foreach ($productos as $producto)
-                            @php
-                                $stock = App\Models\Stock::first(); // Obtener el primer registro de la tabla Stock
-                                $stock_min = $stock->stock_min; // Obtener el valor del atributo stock_min
-                            @endphp
                             <tr>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $loop->iteration }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->categoria->cat_nombre ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_nombre ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_descripcion ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_cant ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_precioventa ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif">{{ $producto->prod_preciocosto ?? 'NN' }}</td>
-                                <td class="@if ($producto->prod_cant < $stock_min) critico @endif" style="width: 280px;">
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $loop->iteration }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->categoria->cat_nombre ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->prod_nombre ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->prod_descripcion ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->prod_cant ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->prod_precioventa ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif">
+                                    {{ $producto->prod_preciocosto ?? 'NN' }}
+                                </td>
+                                
+                                <td class="@if ($producto->prod_cant == 0) sinStock @elseif ($producto->prod_cant < $stock_min) critico @endif" style="width: 280px;">
                                     <form action="{{ route('productos.destroy', ['prod_id' => $producto->prod_id]) }}" method="POST" id="formEliminarProducto-{{ $producto->prod_id }}" data-id="{{ $producto->prod_id }}" style="margin: 0px;">
                                         @csrf
                                         @method('DELETE')

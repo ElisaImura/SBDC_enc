@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System</title>
+    <title>Stocking</title>
     @include('layouts.head')   
 </head> 
 <body>
@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <h1 class="mb-4">Bienvenido a Easy System</h1>
+                    <h1 class="mb-4">Bienvenido a Stocking</h1>
                     <a class="btn btnAccion" href="{{ route('login') }}">Ingresar al Sistema</a>
                 </div>
             </div>

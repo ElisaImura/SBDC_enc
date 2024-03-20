@@ -29,6 +29,10 @@ body {
 }
 
 .critico{
+  color: orange;
+}
+
+.sinStock{
   color: red;
 }
 
@@ -73,6 +77,13 @@ body {
 #TextoTotal{
   margin: 0;
 }
+/* Estilo para los checkboxes */
+.checkbox-group {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
 
 /*Iconos*/
 .bi{

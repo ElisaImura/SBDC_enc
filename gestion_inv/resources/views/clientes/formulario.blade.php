@@ -1,5 +1,5 @@
 <head>
-    <title>Easy System - Crear Cliente</title>
+    <title>Stocking - Crear Cliente</title>
     @include('layouts.head')   
 </head> 
 
