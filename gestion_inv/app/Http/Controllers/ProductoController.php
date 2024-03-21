@@ -43,9 +43,23 @@ class ProductoController extends Controller
 
         // Verifica si se ha enviado una imagen
         if ($request->hasFile('prod_imagen')) {
-            // Mueve la imagen al directorio deseado
-            $imagen = $request->prod_imagen->getClientOriginalName();
-            $request->prod_imagen->move(public_path("image"), $imagen);
+            // Obtiene el nombre original del archivo
+            $nombreOriginal = $request->prod_imagen->getClientOriginalName();
+
+            // Verifica si ya existe un archivo con el mismo nombre en la carpeta "image"
+            $nombreArchivo = $nombreOriginal;
+            $contador = 1;
+            while (file_exists(public_path("image") . '/' . $nombreArchivo)) {
+                // Genera un nuevo nombre para la imagen con el número entre paréntesis
+                $nombreArchivo = pathinfo($nombreOriginal, PATHINFO_FILENAME) . "($contador)." . pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+                $contador++;
+            }
+
+            // Mueve la imagen al directorio deseado con el nuevo nombre
+            $request->prod_imagen->move(public_path("image"), $nombreArchivo);
+
+            // Asigna el nombre de la imagen a la variable $imagen
+            $imagen = $nombreArchivo;
         }
 
         // Crear nuevo producto
@@ -155,11 +169,24 @@ class ProductoController extends Controller
 
         $imagen = null;
 
-        // Verifica si se ha enviado una imagen
         if ($request->hasFile('prod_imagen')) {
-            // Mueve la imagen al directorio deseado
-            $imagen = time().".".$request->prod_imagen->extension();
-            $request->prod_imagen->move(public_path("image"), $imagen);
+            // Obtiene el nombre original del archivo
+            $nombreOriginal = $request->prod_imagen->getClientOriginalName();
+
+            // Verifica si ya existe un archivo con el mismo nombre en la carpeta "image"
+            $nombreArchivo = $nombreOriginal;
+            $contador = 1;
+            while (file_exists(public_path("image") . '/' . $nombreArchivo)) {
+                // Genera un nuevo nombre para la imagen con el número entre paréntesis
+                $nombreArchivo = pathinfo($nombreOriginal, PATHINFO_FILENAME) . "($contador)." . pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+                $contador++;
+            }
+
+            // Mueve la imagen al directorio deseado con el nuevo nombre
+            $request->prod_imagen->move(public_path("image"), $nombreArchivo);
+
+            // Asigna el nombre de la imagen a la variable $imagen
+            $imagen = $nombreArchivo;
         }
 
         $producto = Producto::find($prod_id);

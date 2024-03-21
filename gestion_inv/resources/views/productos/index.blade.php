@@ -12,7 +12,7 @@
 
       <!-- Content -->
       <div class="content tablas">
-            <div class="container mt-4">
+            <div class="container mt-4 vista">
                 <h1 class="titulo_principal text-center">Listado de Productos</h1>
 
                 @if (session('success'))

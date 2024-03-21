@@ -10,7 +10,7 @@
         @include('layouts.sidebar') 
 
         <div class="content">
-            <div class="container tablas">
+            <div class="container tablas vista">
                 <h1 class="titulo_principal text-center">Listado de Proveedores</h1>
                 @if (session('success'))
                     <div class="alert alert-success">
