@@ -30,9 +30,15 @@ class LoginController extends Controller
         // Obtener el stock mínimo
         $stockMinimo = Stock::pluck('stock_min')->first();
 
-        // Calcular el total de productos con stock crítico (cantidad menor al stock mínimo)
-        $totalCritico = Producto::where('prod_cant', '<', $stockMinimo)->count();
-
+        // Verificar si la tabla de productos está vacía
+        if (Producto::isEmpty()) {
+            // La tabla de productos está vacía
+            $totalCritico = 0; // No hay productos críticos si la tabla está vacía
+        } else {
+            // La tabla de productos no está vacía, calcular el total de productos con stock crítico
+            $totalCritico = Producto::where('prod_cant', '<', $stockMinimo)->count();
+        }
+        
         // Calcular el total de compras
         $totalClientes = Cliente::count();
 
