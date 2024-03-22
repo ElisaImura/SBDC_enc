@@ -27,8 +27,11 @@
                 @endif
 
                 @php
+                    $stock_min = 0;
                     $stock = App\Models\Stock::first(); // Obtener el primer registro de la tabla Stock
-                    $stock_min = $stock->stock_min; // Obtener el valor del atributo stock_min
+                    if($stock!=null){
+                        $stock_min = $stock->stock_min; // Obtener el valor del atributo stock_min
+                    }
                 @endphp
                 <p><span style="float:right;"><strong>Stock mínimo:</strong> {{$stock_min}}</span></p><br>
                 <div class="d-flex justify-content-between align-items-center mb-3">
