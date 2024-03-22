@@ -31,7 +31,7 @@ class LoginController extends Controller
         $stockMinimo = Stock::pluck('stock_min')->first();
 
         // Verificar si la tabla de productos está vacía
-        if (Producto::isEmpty()) {
+        if (Producto::count() === 0) {
             // La tabla de productos está vacía
             $totalCritico = 0; // No hay productos críticos si la tabla está vacía
         } else {
